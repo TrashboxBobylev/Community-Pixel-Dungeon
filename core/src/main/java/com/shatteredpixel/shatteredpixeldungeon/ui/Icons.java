@@ -110,6 +110,7 @@ public enum Icons {
 	DEPTH_TRAPS,
 	DEPTH_SECRETS,
 	CHAL_COUNT,
+	EXPLORED_ICON,
 
 	//icons that appear in the about screen, variable spacing
 	LIBGDX,
@@ -348,6 +349,9 @@ public enum Icons {
 				break;
 			case CHAL_COUNT:
 				icon.frame( icon.texture.uvRectBySize( 112, 64, 7, 7 ) );
+				break;
+			case EXPLORED_ICON:
+				icon.frame( icon.texture.uvRectBySize( 118, 64, 9, 8 ) );
 				break;
 		
 			case LIBGDX:

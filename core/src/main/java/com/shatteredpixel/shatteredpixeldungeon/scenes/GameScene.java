@@ -1308,6 +1308,8 @@ public class GameScene extends PixelScene {
 					}
 				}
 			}
+
+			scene.menu.updateExplored();
 		}
 	}
 

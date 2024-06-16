@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -41,6 +42,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
 
 public class MenuPane extends Component {
@@ -54,6 +56,8 @@ public class MenuPane extends Component {
 	private Image challengeIcon;
 	private BitmapText challengeText;
 	private Button challengeButton;
+
+	private Image exploredIcon;
 
 	private JournalButton btnJournal;
 	private MenuButton btnMenu;
@@ -128,6 +132,11 @@ public class MenuPane extends Component {
 			add(challengeButton);
 		}
 
+		if (Dungeon.level.isLevelExplored(Dungeon.depth)){
+			exploredIcon = Icons.get(Icons.EXPLORED_ICON);
+			add(exploredIcon);
+		}
+
 		btnJournal = new JournalButton();
 		add( btnJournal );
 
@@ -181,6 +190,12 @@ public class MenuPane extends Component {
 			challengeButton.setRect(challengeIcon.x, challengeIcon.y, challengeIcon.width(), challengeIcon.height() + challengeText.height());
 		}
 
+		if (exploredIcon != null){
+			exploredIcon.x = depthIcon.x - 2;
+			exploredIcon.y = depthIcon.y + depthIcon.height() + depthText.height();
+			PixelScene.align(exploredIcon);
+		}
+
 		version.scale.set(PixelScene.align(0.5f));
 		version.measure();
 		version.x = x + WIDTH - version.width();
@@ -204,6 +219,14 @@ public class MenuPane extends Component {
 
 	public void updateKeys(){
 		btnJournal.updateKeyDisplay();
+	}
+
+	public void updateExplored(){
+		if (Dungeon.level.isLevelExplored(Dungeon.depth) && members.contains(exploredIcon)){
+			exploredIcon = Icons.get(Icons.EXPLORED_ICON);
+			add(exploredIcon);
+			layout();
+		}
 	}
 
 	private static class JournalButton extends Button {
