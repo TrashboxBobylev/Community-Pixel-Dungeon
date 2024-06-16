@@ -87,6 +87,13 @@ public class BrokenSeal extends Item {
 		this.glyph = glyph;
 	}
 
+	public void inscribe(){
+		Class<? extends Armor.Glyph> oldGlyphClass = getGlyph() != null ? getGlyph().getClass() : null;
+		Armor.Glyph gl = Armor.Glyph.random( oldGlyphClass );
+		setGlyph(gl);
+		updateQuickslot();
+	}
+
 	public int maxShield( int armTier, int armLvl ){
 		return armTier + armLvl + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
 	}
@@ -151,7 +158,8 @@ public class BrokenSeal extends Item {
 					GLog.w(Messages.get(BrokenSeal.class, "cursed_armor"));
 
 				} else if (armor.glyph != null && seal.getGlyph() != null
-						&& armor.glyph.getClass() != seal.getGlyph().getClass()) {
+						&& (armor.glyph.getClass() != seal.getGlyph().getClass() &&
+							Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) < 3)) {
 					GameScene.show(new WndOptions(new ItemSprite(seal),
 							Messages.get(BrokenSeal.class, "choose_title"),
 							Messages.get(BrokenSeal.class, "choose_desc"),

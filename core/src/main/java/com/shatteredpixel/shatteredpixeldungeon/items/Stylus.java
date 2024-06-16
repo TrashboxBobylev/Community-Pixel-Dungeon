@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -107,6 +109,23 @@ public class Stylus extends Item {
 		curUser.spend(TIME_TO_INSCRIBE);
 		curUser.busy();
 	}
+
+	private void inscribe( BrokenSeal armor ) {
+
+		detach(curUser.belongings.backpack);
+
+		GLog.w( Messages.get(this, "seal_inscribed"));
+
+		armor.inscribe();
+
+		curUser.sprite.operate(curUser.pos);
+		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
+		Enchanting.show(curUser, armor);
+		Sample.INSTANCE.play(Assets.Sounds.BURNING);
+
+		curUser.spend(TIME_TO_INSCRIBE);
+		curUser.busy();
+	}
 	
 	@Override
 	public int value() {
@@ -127,13 +146,19 @@ public class Stylus extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
+			if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3)
+				return item instanceof Armor || item instanceof BrokenSeal;
 			return item instanceof Armor;
 		}
 
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null) {
-				Stylus.this.inscribe( (Armor)item );
+				if (item instanceof BrokenSeal){
+					Stylus.this.inscribe((BrokenSeal) item);
+				} else {
+					Stylus.this.inscribe((Armor) item);
+				}
 			}
 		}
 	};

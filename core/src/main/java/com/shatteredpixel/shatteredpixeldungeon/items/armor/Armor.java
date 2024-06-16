@@ -243,7 +243,7 @@ public class Armor extends EquipableItem {
 			level(newLevel);
 			Badges.validateItemLevelAquired(this);
 		}
-		if (seal.getGlyph() != null){
+		if (seal.getGlyph() != null && Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) < 3){
 			inscribe(seal.getGlyph());
 		}
 		if (isEquipped(Dungeon.hero)){
@@ -320,7 +320,7 @@ public class Armor extends EquipableItem {
 	
 	public float evasionFactor( Char owner, float evasion ){
 		
-		if (hasGlyph(Stone.class, owner) && !((Stone)glyph).testingEvasion()){
+		if (hasGlyph(Stone.class, owner) && !((Stone)getGlyph(Stone.class)).testingEvasion()){
 			return 0;
 		}
 		
@@ -362,9 +362,9 @@ public class Armor extends EquipableItem {
 					}
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl()) * glyph.procChanceMultiplier(owner);
+			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl()) * getGlyph().procChanceMultiplier(owner);
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (2f + 0.5f*buffedLvl()) * glyph.procChanceMultiplier(owner);
+			speed *= (2f + 0.5f*buffedLvl()) * getGlyph().procChanceMultiplier(owner);
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&
@@ -380,7 +380,7 @@ public class Armor extends EquipableItem {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += (1 + buffedLvl()/3f) * glyph.procChanceMultiplier(owner);
+			stealth += (1 + buffedLvl()/3f) * getGlyph().procChanceMultiplier(owner);
 		}
 		
 		return stealth;
@@ -445,6 +445,10 @@ public class Armor extends EquipableItem {
 		if (glyph != null && defender.buff(MagicImmune.class) == null) {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
+		if (defender instanceof Hero && ((Hero) defender).pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+				seal.getGlyph() != null && defender.buff(MagicImmune.class) == null){
+			damage = seal.getGlyph().proc( this, attacker, defender, damage );
+		}
 		
 		if (!levelKnown && defender == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
@@ -471,7 +475,15 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public String name() {
-		return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
+		String name = glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name(super.name()) : super.name();
+		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 && seal != null && seal.getGlyph() != null){
+			if (glyph == null){
+				return seal.getGlyph().name(super.name());
+			}
+			String anotherGlyphName = Messages.get(seal.getGlyph().getClass(), "name").substring(6);
+			name += "/" + Messages.capitalize(anotherGlyphName);
+		}
+		return name;
 	}
 	
 	@Override
@@ -502,12 +514,24 @@ public class Armor extends EquipableItem {
 				break;
 			case NONE:
 		}
+
+		boolean hasGlyph = false;
 		
 		if (glyph != null  && (cursedKnown || !glyph.curse())) {
+			hasGlyph = true;
 			info += "\n\n" +  Messages.capitalize(Messages.get(Armor.class, "inscribed", glyph.name()));
 			if (glyphHardened) info += " " + Messages.get(Armor.class, "glyph_hardened");
 			info += " " + glyph.desc();
 		} else if (glyphHardened){
+			info += "\n\n" + Messages.get(Armor.class, "hardened_no_glyph");
+		}
+
+		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+				seal != null && seal.getGlyph() != null  && (cursedKnown || !seal.getGlyph().curse())) {
+			info += "\n\n" +  Messages.capitalize(Messages.get(Armor.class, "bonus_inscribed", seal.getGlyph().name()));
+			if (glyphHardened && hasGlyph) info += " " + Messages.get(Armor.class, "glyph_hardened");
+			info += " " + seal.getGlyph().desc();
+		} else if (glyphHardened && !hasGlyph){
 			info += "\n\n" + Messages.get(Armor.class, "hardened_no_glyph");
 		}
 		
@@ -610,7 +634,7 @@ public class Armor extends EquipableItem {
 		updateQuickslot();
 		//the hero needs runic transference to actually transfer, but we still attach the glyph here
 		// in case they take that talent in the future
-		if (seal != null){
+		if (seal != null && Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) < 3){
 			seal.setGlyph(glyph);
 		}
 		return this;
@@ -625,7 +649,24 @@ public class Armor extends EquipableItem {
 	}
 
 	public boolean hasGlyph(Class<?extends Glyph> type, Char owner) {
-		return glyph != null && glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
+		boolean armorGlyphCheck = glyph != null && glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
+		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3){
+			armorGlyphCheck = armorGlyphCheck || (seal != null && seal.getGlyph() != null && seal.getGlyph().getClass() == type);
+		}
+		return armorGlyphCheck;
+	}
+
+	public Glyph getGlyph(){
+		return getGlyph(null);
+	}
+
+	public Glyph getGlyph(Class<?extends Glyph> type){
+		if (glyph != null && glyph.getClass() == type)
+			return glyph;
+		else if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+				seal != null && seal.getGlyph() != null && seal.getGlyph().getClass() == type)
+			return seal.getGlyph();
+		return null;
 	}
 
 	//these are not used to process specific glyph effects, so magic immune doesn't affect them

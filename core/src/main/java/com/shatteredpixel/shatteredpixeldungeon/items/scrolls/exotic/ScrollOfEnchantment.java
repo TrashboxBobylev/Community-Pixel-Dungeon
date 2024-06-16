@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -68,7 +70,8 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	}
 
 	public static boolean enchantable( Item item ){
-		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor);
+		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor ||
+				(curUser.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 && item instanceof BrokenSeal));
 	}
 
 	private void confirmCancelation() {
@@ -142,6 +145,20 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				glyphs[2] = Armor.Glyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
 				
 				GameScene.show(new WndGlyphSelect((Armor) item, glyphs[0], glyphs[1], glyphs[2]));
+			}  else if (curUser.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 && item instanceof BrokenSeal) {
+				if (!identifiedByUse) {
+					curItem.detach(curUser.belongings.backpack);
+				}
+				identifiedByUse = false;
+
+				final Armor.Glyph glyphs[] = new Armor.Glyph[3];
+
+				Class<? extends Armor.Glyph> existing = ((BrokenSeal) item).getGlyph() != null ? ((BrokenSeal) item).getGlyph().getClass() : null;
+				glyphs[0] = Armor.Glyph.randomCommon( existing );
+				glyphs[1] = Armor.Glyph.randomUncommon( existing );
+				glyphs[2] = Armor.Glyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
+
+				GameScene.show(new WndSealGlyphSelect((BrokenSeal) item, glyphs[0], glyphs[1], glyphs[2]));
 			} else if (identifiedByUse){
 				((ScrollOfEnchantment)curItem).confirmCancelation();
 			}
@@ -244,6 +261,70 @@ public class ScrollOfEnchantment extends ExoticScroll {
 			if (index < 3) {
 				arm.inscribe(glyphs[index]);
 				GLog.p(Messages.get(StoneOfEnchantment.class, "armor"));
+				((ScrollOfEnchantment)curItem).readAnimation();
+
+				Sample.INSTANCE.play( Assets.Sounds.READ );
+				Enchanting.show(curUser, arm);
+			}
+
+			arm = null;
+			glyphs = null;
+		}
+
+		@Override
+		protected boolean hasInfo(int index) {
+			return index < 3;
+		}
+
+		@Override
+		protected void onInfo( int index ) {
+			GameScene.show(new WndTitledMessage(
+					Icons.get(Icons.INFO),
+					Messages.titleCase(glyphs[index].name()),
+					glyphs[index].desc()));
+		}
+
+		@Override
+		public void onBackPressed() {
+			//do nothing, reader has to cancel
+		}
+
+	}
+
+	public static class WndSealGlyphSelect extends WndOptions {
+
+		private static BrokenSeal arm;
+		private static Armor.Glyph[] glyphs;
+
+		//used in PixelScene.restoreWindows
+		public WndSealGlyphSelect(){
+			this(arm, glyphs[0], glyphs[1], glyphs[2]);
+		}
+
+		public WndSealGlyphSelect(BrokenSeal arm, Armor.Glyph glyph1,
+							  Armor.Glyph glyph2, Armor.Glyph glyph3){
+			super(new ItemSprite(new ScrollOfEnchantment()),
+					Messages.titleCase(new ScrollOfEnchantment().name()),
+					Messages.get(ScrollOfEnchantment.class, "broken_seal") +
+							"\n\n" +
+							Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
+					glyph1.name(),
+					glyph2.name(),
+					glyph3.name(),
+					Messages.get(ScrollOfEnchantment.class, "cancel"));
+			this.arm = arm;
+			glyphs = new Armor.Glyph[3];
+			glyphs[0] = glyph1;
+			glyphs[1] = glyph2;
+			glyphs[2] = glyph3;
+		}
+
+		@Override
+		protected void onSelect(int index) {
+			if (index < 3) {
+				arm.setGlyph(glyphs[index]);
+				updateQuickslot();
+				GLog.p(Messages.get(StoneOfEnchantment.class, "broken_seal"));
 				((ScrollOfEnchantment)curItem).readAnimation();
 
 				Sample.INSTANCE.play( Assets.Sounds.READ );

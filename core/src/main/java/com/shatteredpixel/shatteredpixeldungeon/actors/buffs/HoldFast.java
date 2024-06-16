@@ -50,7 +50,7 @@ public class HoldFast extends Buff {
 
 	public int armorBonus(){
 		if (pos == target.pos && target instanceof Hero){
-			return Char.combatRoll(0, 2* ((Hero) target).pointsInTalent(Talent.HOLD_FAST));
+			return Char.combatRoll(0, 3* ((Hero) target).pointsInTalent(Talent.HOLD_FAST)-1);
 		} else {
 			detach();
 			return 0;
@@ -69,7 +69,7 @@ public class HoldFast extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 2*Dungeon.hero.pointsInTalent(Talent.HOLD_FAST));
+		return Messages.get(this, "desc", 3*Dungeon.hero.pointsInTalent(Talent.HOLD_FAST)-1);
 	}
 
 	private static final String POS = "pos";
