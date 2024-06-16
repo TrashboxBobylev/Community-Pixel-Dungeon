@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -179,6 +180,13 @@ public class Ring extends KindofMisc {
 		
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
+		} else {
+			if (Dungeon.triedIntuitionThings.containsKey(getClass())){
+				desc += "\n";
+				for (Class<?> thing: Dungeon.triedIntuitionThings.get(getClass())){
+					desc += "\n" + Messages.get(Scroll.class, "is_not", Messages.get(thing, "name"));
+				}
+			}
 		}
 		
 		return desc;

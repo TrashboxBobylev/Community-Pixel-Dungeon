@@ -78,22 +78,13 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
-import com.watabou.utils.BArray;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.FileUtils;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.*;
 import com.watabou.utils.Random;
-import com.watabou.utils.SparseArray;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 public class Dungeon {
 
@@ -208,6 +199,7 @@ public class Dungeon {
 	public static HashSet<Integer> chapters;
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
+	public static HashMap<Class<? extends Item>, HashSet<Class<? extends Item>>> triedIntuitionThings;
 
 	//first variable is only assigned when game is started, second is updated every time game is saved
 	public static int initialVersion;
@@ -274,6 +266,8 @@ public class Dungeon {
 		LimitedDrops.reset();
 		
 		chapters = new HashSet<>();
+
+		triedIntuitionThings = new HashMap<>();
 		
 		Ghost.Quest.reset();
 		Wandmaker.Quest.reset();
@@ -619,6 +613,7 @@ public class Dungeon {
 	private static final String LEVEL		= "level";
 	private static final String LIMDROPS    = "limited_drops";
 	private static final String CHAPTERS	= "chapters";
+	private static final String TRIED_INTUITION	= "tried_intuition_things";
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 	
@@ -677,6 +672,13 @@ public class Dungeon {
 				bundleArr[i] = generatedLevels.get(i);
 			}
 			bundle.put( GENERATED_LEVELS, bundleArr);
+
+			Bundle bundleIntuition = new Bundle();
+			for (Class<? extends Item> key: triedIntuitionThings.keySet()){
+				HashSet<Class<? extends Item>> values = triedIntuitionThings.get(key);
+				bundleIntuition.put(key.getName(), values.toArray(new Class[0]));
+			}
+			bundle.put(TRIED_INTUITION, bundleIntuition);
 			
 			Scroll.save( bundle );
 			Potion.save( bundle );
@@ -817,6 +819,20 @@ public class Dungeon {
 			for (int i = 1; i <= Statistics.deepestFloor; i++){
 				generatedLevels.add(i);
 			}
+		}
+
+		triedIntuitionThings = new HashMap<>();
+		Bundle intuitionBundle = bundle.getBundle(TRIED_INTUITION);
+		for (String entry: intuitionBundle.getKeys()){
+			Class<? extends Item> trueEntry = null;
+			String clName = entry.replace("class ", "");
+			if (!clName.equals("")){
+				trueEntry = Reflection.forName( clName );
+			}
+			Class<? extends Item>[] values = intuitionBundle.getClassArray(entry);
+			HashSet<Class<? extends Item>> trueValues = new HashSet<>();
+			Collections.addAll(trueValues, values);
+			triedIntuitionThings.put(trueEntry, trueValues);
 		}
 
 		droppedItems = new SparseArray<>();

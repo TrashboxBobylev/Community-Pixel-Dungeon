@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCor
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -365,7 +366,18 @@ public class Potion extends Item {
 	
 	@Override
 	public String info() {
-		return isKnown() ? desc() : Messages.get(this, "unknown_desc");
+		if (isKnown())
+			return desc();
+		else {
+			String desc = Messages.get(this, "unknown_desc");
+			if (Dungeon.triedIntuitionThings.containsKey(getClass())){
+				desc += "\n";
+				for (Class<?> thing: Dungeon.triedIntuitionThings.get(getClass())){
+					desc += "\n" + Messages.get(Scroll.class, "is_not", Messages.get(thing, "name"));
+				}
+			}
+			return desc;
+		}
 	}
 	
 	@Override

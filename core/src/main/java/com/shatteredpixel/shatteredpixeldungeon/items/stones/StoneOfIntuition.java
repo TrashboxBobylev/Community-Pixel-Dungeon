@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Reflection;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class StoneOfIntuition extends InventoryStone {
 	
@@ -119,6 +120,13 @@ public class StoneOfIntuition extends InventoryStone {
 						curItem.detach( curUser.belongings.backpack );
 						if (curUser.buff(IntuitionUseTracker.class) != null) {
 							curUser.buff(IntuitionUseTracker.class).detach();
+						}
+						if (Dungeon.triedIntuitionThings.containsKey(item.getClass())){
+							Dungeon.triedIntuitionThings.get(item.getClass()).add(curGuess);
+						} else {
+							HashSet<Class<? extends Item>> trueValues = new HashSet<>();
+							Collections.addAll(trueValues, (Class<? extends Item>) curGuess);
+							Dungeon.triedIntuitionThings.put(item.getClass(), trueValues);
 						}
 						GLog.n( Messages.get(WndGuess.class, "incorrect") );
 					}

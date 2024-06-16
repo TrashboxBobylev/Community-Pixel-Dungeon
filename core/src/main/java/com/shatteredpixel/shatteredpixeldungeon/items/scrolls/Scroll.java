@@ -229,10 +229,19 @@ public abstract class Scroll extends Item {
 	
 	@Override
 	public String info() {
-		return isKnown() ?
-			desc() :
-			Messages.get(this, "unknown_desc");
-	}
+        if (isKnown())
+			return desc();
+		else {
+			String desc = Messages.get(this, "unknown_desc");
+			if (Dungeon.triedIntuitionThings.containsKey(getClass())){
+				desc += "\n";
+				for (Class<?> thing: Dungeon.triedIntuitionThings.get(getClass())){
+					desc += "\n" + Messages.get(Scroll.class, "is_not", Messages.get(thing, "name"));
+				}
+			}
+			return desc;
+		}
+    }
 	
 	@Override
 	public boolean isUpgradable() {
