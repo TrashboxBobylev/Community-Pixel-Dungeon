@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -167,7 +168,7 @@ public class DwarfKing extends Mob {
 				return true;
 			}
 
-			if (abilityCooldown <= 0){
+			if (abilityCooldown <= 0 && buff(Silencing.Effect.class) == null){
 
 				if (lastAbility == NONE) {
 					//50/50 either ability

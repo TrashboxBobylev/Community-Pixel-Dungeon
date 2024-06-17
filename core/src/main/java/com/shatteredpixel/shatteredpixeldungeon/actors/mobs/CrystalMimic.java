@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -125,22 +126,24 @@ public class CrystalMimic extends Mimic {
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		if (alignment == Alignment.NEUTRAL && enemy == Dungeon.hero){
-			steal( Dungeon.hero );
+		if (buff(Silencing.Effect.class) == null) {
+			if (alignment == Alignment.NEUTRAL && enemy == Dungeon.hero) {
+				steal(Dungeon.hero);
 
-		} else {
-			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
-				if (Dungeon.level.passable[pos+i] && Actor.findChar(pos+i) == null){
-					candidates.add(pos + i);
+			} else {
+				ArrayList<Integer> candidates = new ArrayList<>();
+				for (int i : PathFinder.NEIGHBOURS8) {
+					if (Dungeon.level.passable[pos + i] && Actor.findChar(pos + i) == null) {
+						candidates.add(pos + i);
+					}
 				}
-			}
 
-			if (!candidates.isEmpty()){
-				ScrollOfTeleportation.appear(enemy, Random.element(candidates));
-			}
+				if (!candidates.isEmpty()) {
+					ScrollOfTeleportation.appear(enemy, Random.element(candidates));
+				}
 
-			if (alignment == Alignment.ENEMY) state = FLEEING;
+				if (alignment == Alignment.ENEMY) state = FLEEING;
+			}
 		}
 		return super.attackProc(enemy, damage);
 	}

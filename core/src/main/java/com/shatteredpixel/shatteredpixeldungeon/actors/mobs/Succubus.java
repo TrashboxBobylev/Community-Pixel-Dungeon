@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
@@ -77,30 +78,32 @@ public class Succubus extends Mob {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		if (enemy.buff(Charm.class) != null ){
-			int shield = (HP - HT) + (5 + damage);
-			if (shield > 0){
-				HP = HT;
-				if (shield < 5){
-					sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5-shield), FloatingText.HEALING);
-				}
+		if (buff(Silencing.Effect.class) == null) {
+			if (enemy.buff(Charm.class) != null) {
+				int shield = (HP - HT) + (5 + damage);
+				if (shield > 0) {
+					HP = HT;
+					if (shield < 5) {
+						sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5 - shield), FloatingText.HEALING);
+					}
 
-				Buff.affect(this, Barrier.class).setShield(shield);
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
-			} else {
-				HP += 5 + damage;
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, "5", FloatingText.HEALING);
-			}
-			if (Dungeon.level.heroFOV[pos]) {
-				Sample.INSTANCE.play( Assets.Sounds.CHARMS );
-			}
-		} else if (Random.Int( 3 ) == 0) {
-			Charm c = Buff.affect( enemy, Charm.class, Charm.DURATION/2f );
-			c.object = id();
-			c.ignoreNextHit = true; //so that the -5 duration from succubus hit is ignored
-			if (Dungeon.level.heroFOV[enemy.pos]) {
-				enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
-				Sample.INSTANCE.play(Assets.Sounds.CHARMS);
+					Buff.affect(this, Barrier.class).setShield(shield);
+					sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
+				} else {
+					HP += 5 + damage;
+					sprite.showStatusWithIcon(CharSprite.POSITIVE, "5", FloatingText.HEALING);
+				}
+				if (Dungeon.level.heroFOV[pos]) {
+					Sample.INSTANCE.play(Assets.Sounds.CHARMS);
+				}
+			} else if (Random.Int(3) == 0) {
+				Charm c = Buff.affect(enemy, Charm.class, Charm.DURATION / 2f);
+				c.object = id();
+				c.ignoreNextHit = true; //so that the -5 duration from succubus hit is ignored
+				if (Dungeon.level.heroFOV[enemy.pos]) {
+					enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+					Sample.INSTANCE.play(Assets.Sounds.CHARMS);
+				}
 			}
 		}
 		
@@ -109,7 +112,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0 && !rooted) {
+		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0 && !rooted && buff(Silencing.Effect.class) == null) {
 			
 			if (blink( target )) {
 				spend(-1 / speed());

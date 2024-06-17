@@ -642,6 +642,7 @@ public class ItemSpriteSheet {
 	public static final int PHASE_SHIFT     = SPELLS+1;
 	public static final int TELE_GRAB       = SPELLS+2;
 	public static final int UNSTABLE_SPELL  = SPELLS+3;
+	public static final int SILENCE         = SPELLS+4;
 
 	public static final int CURSE_INFUSE    = SPELLS+5;
 	public static final int MAGIC_INFUSE    = SPELLS+6;
@@ -656,6 +657,7 @@ public class ItemSpriteSheet {
 		assignItemRect(WILD_ENERGY,     12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
 		assignItemRect(TELE_GRAB,       12, 11);
+		assignItemRect(SILENCE,         12, 11);
 		assignItemRect(UNSTABLE_SPELL,  12, 13);
 
 		assignItemRect(CURSE_INFUSE,    10, 15);

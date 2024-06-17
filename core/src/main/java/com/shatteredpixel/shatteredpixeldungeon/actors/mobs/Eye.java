@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -90,7 +91,7 @@ public class Eye extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 
-		if (beamCooldown == 0) {
+		if (beamCooldown == 0 && buff(Silencing.Effect.class) == null) {
 			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
 
 			if (enemy.invisible == 0 && !isCharmedBy(enemy) && fieldOfView[enemy.pos]
@@ -103,7 +104,7 @@ public class Eye extends Mob {
 				return beamCharged;
 			}
 		} else {
-			return super.canAttack(enemy);
+			return super.canAttack(enemy) && buff(Silencing.Effect.class) == null;
 		}
 	}
 
@@ -126,7 +127,7 @@ public class Eye extends Mob {
 	protected boolean doAttack( Char enemy ) {
 
 		beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
-		if (beamCooldown > 0 || (!beamCharged && !beam.subPath(1, beam.dist).contains(enemy.pos))) {
+		if (beamCooldown > 0 || buff(Silencing.Effect.class) != null || (!beamCharged && !beam.subPath(1, beam.dist).contains(enemy.pos))) {
 			return super.doAttack(enemy);
 		} else if (!beamCharged){
 			((EyeSprite)sprite).charge( enemy.pos );

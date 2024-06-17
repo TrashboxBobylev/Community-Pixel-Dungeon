@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
@@ -127,13 +128,14 @@ public abstract class Elemental extends Mob {
 		if (super.canAttack(enemy)){
 			return true;
 		} else {
-			return rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
+			return buff(Silencing.Effect.class) == null && rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
 		}
 	}
 	
 	protected boolean doAttack( Char enemy ) {
 		
 		if (Dungeon.level.adjacent( pos, enemy.pos )
+				|| buff(Silencing.Effect.class) != null
 				|| rangedCooldown > 0
 				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos != enemy.pos) {
 			
@@ -290,7 +292,7 @@ public abstract class Elemental extends Mob {
 			if (super.canAttack(enemy)){
 				return true;
 			} else {
-				return rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos == enemy.pos;
+				return buff(Silencing.Effect.class) == null && rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos == enemy.pos;
 			}
 		}
 
@@ -300,7 +302,7 @@ public abstract class Elemental extends Mob {
 
 				return super.doAttack( enemy );
 
-			} else if (new Ballistica( pos, enemy.pos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos == enemy.pos) {
+			} else if (buff(Silencing.Effect.class) == null && new Ballistica( pos, enemy.pos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos == enemy.pos) {
 
 				//set up an attack for next turn
 				ArrayList<Integer> candidates = new ArrayList<>();
