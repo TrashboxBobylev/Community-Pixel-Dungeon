@@ -35,14 +35,16 @@ public class RingOfAccuracy extends Ring {
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, soloBuffedBonus()) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, soloBuffedBonus()) - 1f)),
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, soloBuffedBonus()) - 1f)));
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, combinedBuffedBonus(Dungeon.hero)) - 1f)),
+							Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 30f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 30f), Messages.decimalFormat("#.##", 10f));
 		}
 	}
 	
@@ -53,6 +55,10 @@ public class RingOfAccuracy extends Ring {
 	
 	public static float accuracyMultiplier( Char target ){
 		return (float)Math.pow(1.3f, getBuffedBonus(target, Accuracy.class));
+	}
+
+	public static float sneakAttackMultiplier( Char target ){
+		return (float)Math.pow(1.1f, getBuffedBonus(target, Accuracy.class));
 	}
 	
 	public class Accuracy extends RingBuff {
