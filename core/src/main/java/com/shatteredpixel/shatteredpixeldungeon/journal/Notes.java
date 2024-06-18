@@ -178,6 +178,44 @@ public class Notes {
 			bundle.put( KEY, key );
 		}
 	}
+
+	public static class CustomRecord extends Record {
+
+		protected String customNote;
+
+		public CustomRecord() {}
+
+		public CustomRecord(String customNote, int depth ) {
+			this.customNote = customNote;
+			this.depth = depth;
+		}
+
+		@Override
+		public String desc() {
+			return customNote;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return (obj instanceof CustomRecord)
+					&& customNote.equals(((CustomRecord) obj).customNote)
+					&& depth() == ((CustomRecord) obj).depth();
+		}
+
+		private static final String NOTE	= "custom_note";
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			customNote = bundle.getString(NOTE);
+		}
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( NOTE, customNote );
+		}
+	}
 	
 	private static ArrayList<Record> records;
 	
@@ -246,6 +284,20 @@ public class Notes {
 		} else {
 			return 0;
 		}
+	}
+
+	public static boolean add( String note ) {
+		CustomRecord l = new CustomRecord( note, Dungeon.depth );
+		if (!records.contains(l)) {
+			boolean result = records.add(new CustomRecord(note, Dungeon.depth));
+			Collections.sort(records);
+			return result;
+		}
+		return false;
+	}
+
+	public static boolean remove( String note ) {
+		return records.remove( new CustomRecord(note, Dungeon.depth) );
 	}
 	
 	public static ArrayList<Record> getRecords(){

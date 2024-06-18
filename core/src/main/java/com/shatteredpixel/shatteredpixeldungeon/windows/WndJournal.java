@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -45,7 +46,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Reflection;
@@ -124,6 +127,36 @@ public class WndJournal extends WndTabbed {
 						super.select( value );
 						notesTab.active = notesTab.visible = value;
 						if (value) last_index = 2;
+					}
+
+					@Override
+					protected boolean onLongClick() {
+						GameScene.show(new WndTextInput(Messages.get(WndJournal.NotesTab.class, "customs_title"),
+								null, "", 60, false,
+								Messages.get(WndJournal.NotesTab.class, "customs_add"),
+								Messages.get(WndJournal.NotesTab.class, "customs_cancel")){
+							@Override
+							public void onSelect(boolean positive, String text) {
+								if (positive && !text.isEmpty()){
+									if (text.startsWith("remove ")){
+										if (Notes.remove(text.substring(7))) {
+											GLog.w(Messages.get(WndJournal.NotesTab.class, "customs_removed", text.substring(7), Dungeon.depth));
+											WndJournal.this.hide();
+											GameScene.show(new WndJournal());
+										} else
+											GLog.n(Messages.get(WndJournal.NotesTab.class, "customs_no_note", text.substring(7), Dungeon.depth));
+									} else {
+										if (Notes.add(text)) {
+											GLog.h(Messages.get(WndJournal.NotesTab.class, "customs_added", text, Dungeon.depth));
+											WndJournal.this.hide();
+											GameScene.show(new WndJournal());
+										} else
+											GLog.n(Messages.get(WndJournal.NotesTab.class, "customs_already_exist", text, Dungeon.depth));
+									}
+								}
+							}
+						});
+						return true;
 					}
 				},
 				new IconTab( new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER, null) ) {
@@ -440,6 +473,21 @@ public class WndJournal extends WndTabbed {
 					ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(Icons.STAIRS),
 							Integer.toString(rec.depth()),
 							Messages.titleCase(rec.desc()));
+					if (Dungeon.depth == rec.depth()) item.hardlight(TITLE_COLOR);
+					list.addItem(item);
+				}
+
+			}
+
+			ArrayList<Notes.CustomRecord> customNotes = Notes.getRecords(Notes.CustomRecord.class);
+			if (!customNotes.isEmpty()){
+
+				list.addTitle(Messages.get(this, "customs"));
+
+				for (Notes.Record rec : customNotes) {
+					ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(Icons.STAIRS),
+							Integer.toString(rec.depth()),
+							rec.desc());
 					if (Dungeon.depth == rec.depth()) item.hardlight(TITLE_COLOR);
 					list.addItem(item);
 				}
