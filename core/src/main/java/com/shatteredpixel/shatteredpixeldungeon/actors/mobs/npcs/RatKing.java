@@ -28,11 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Holiday;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -121,6 +123,8 @@ public class RatKing extends NPC {
 		if (state == SLEEPING) {
 			notice();
 			yell( Messages.get(this, "not_sleeping") );
+			GLog.w( Messages.get(this, "cursed") );
+			Buff.affect(c, RatKingCurse.class);
 			state = WANDERING;
 		} else if (crown != null){
 			if (Dungeon.hero.belongings.armor() == null){
@@ -172,6 +176,15 @@ public class RatKing extends NPC {
 			return Messages.get(this, "desc_winter");
 		} else {
 			return super.description();
+		}
+	}
+
+	public static class RatKingCurse extends Buff implements Hero.Doom {
+		@Override
+		public void onDeath() {
+
+			Dungeon.fail( this );
+			GLog.n( Messages.get(RatKing.class, "ondeath") );
 		}
 	}
 }

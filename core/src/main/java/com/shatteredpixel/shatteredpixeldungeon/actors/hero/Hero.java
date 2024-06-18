@@ -73,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -1672,6 +1673,13 @@ public class Hero extends Char {
 
 			spend( delay );
 			justMoved = true;
+
+			if (buff(RatKing.RatKingCurse.class) != null){
+				if (Random.Int(2222) == 0){
+					damage(HT*2222, buff(RatKing.RatKingCurse.class));
+					Sample.INSTANCE.play(Assets.Sounds.FALLING);
+				}
+			}
 			
 			search(false);
 
@@ -1930,7 +1938,7 @@ public class Hero extends Char {
 			}
 		}
 
-		if (ankh != null) {
+		if (ankh != null && !(cause instanceof RatKing.RatKingCurse)) {
 			interrupt();
 
 			if (ankh.isBlessed()) {
@@ -2197,6 +2205,8 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isImmune(Class effect) {
+		if (effect == RatKing.RatKingCurse.class)
+			return false;
 		if (effect == Burning.class
 				&& belongings.armor() != null
 				&& belongings.armor().hasGlyph(Brimstone.class, this)){
@@ -2207,7 +2217,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isInvulnerable(Class effect) {
-		return super.isInvulnerable(effect) || buff(AnkhInvulnerability.class) != null;
+		return super.isInvulnerable(effect) || (buff(AnkhInvulnerability.class) != null && effect != RatKing.RatKingCurse.class);
 	}
 
 	public boolean search( boolean intentional ) {
