@@ -39,6 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -50,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
@@ -415,15 +418,37 @@ public class WandOfWarding extends Wand {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
+					final float refundAmount = tier > 3 ? tier * 0.25f : tier * 0.5f;
 					GameScene.show(new WndOptions( sprite(),
 							Messages.get(Ward.this, "dismiss_title"),
-							Messages.get(Ward.this, "dismiss_body"),
+							Messages.get(Ward.this, "dismiss_body", Messages.decimalFormat("#.##", refundAmount)),
 							Messages.get(Ward.this, "dismiss_confirm"),
 							Messages.get(Ward.this, "dismiss_cancel") ){
 						@Override
 						protected void onSelect(int index) {
 							if (index == 0){
 								die(null);
+								boolean refundSuccessful = false;
+								for (Item item: Dungeon.hero.belongings){
+									if (item instanceof MagesStaff && ((MagesStaff) item).wandClass() == WandOfWarding.class){
+										((MagesStaff) item).gainCharge(refundAmount);
+										refundSuccessful = true;
+										break;
+									} else if (item instanceof WandOfWarding){
+										((WandOfWarding) item).gainCharge(refundAmount);
+										refundSuccessful = true;
+										break;
+									}
+								}
+								if (refundSuccessful){
+									if (Dungeon.hero.sprite != null){
+										Emitter e = Dungeon.hero.sprite.centerEmitter();
+										if (e != null) {
+											e.burst(EnergyParticle.FACTORY, (int) (8 * refundAmount));
+											e.burst(MagicMissile.WardParticle.FACTORY, (int) (8 * refundAmount));
+										}
+									}
+								}
 							}
 						}
 					});
