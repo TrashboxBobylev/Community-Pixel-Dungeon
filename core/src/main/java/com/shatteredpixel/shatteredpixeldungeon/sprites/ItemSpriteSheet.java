@@ -265,6 +265,7 @@ public class ItemSpriteSheet {
 	public static final int ASSASSINS_BLADE = WEP_TIER4+4;
 	public static final int CROSSBOW        = WEP_TIER4+5;
 	public static final int KATANA          = WEP_TIER4+6;
+	public static final int ALCHEMICAL_SWORD= WEP_TIER4+7;
 	static{
 		assignItemRect(LONGSWORD,       15, 15);
 		assignItemRect(BATTLE_AXE,      16, 16);
@@ -273,6 +274,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ASSASSINS_BLADE, 14, 15);
 		assignItemRect(CROSSBOW,        15, 15);
 		assignItemRect(KATANA,          15, 16);
+		assignItemRect(ALCHEMICAL_SWORD,15, 16);
 	}
 
 	private static final int WEP_TIER5      =                               xy(1, 9);   //8 slots
@@ -946,7 +948,12 @@ public class ItemSpriteSheet {
 			assignIconRect( POTION_DIVINE,      7, 7 );
 		}
 
-		                                                                                //16 free slots
+		public static final int DART           = xy(1, 8);
+		static {
+			assignItemRect(DART, 8, 8);
+		}
+
+		                                                                                //15 free slots
 
 	}
 

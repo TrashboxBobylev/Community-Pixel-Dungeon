@@ -89,7 +89,7 @@ public class SandalsOfNature extends Artifact {
 	public ArrayList<Class> seeds = new ArrayList<>();
 	public Class curSeedEffect = null;
 
-	private static final HashMap<Class<? extends Plant.Seed>, Integer> seedColors = new HashMap<>();
+	public static final HashMap<Class<? extends Plant.Seed>, Integer> seedColors = new HashMap<>();
 	static {
 		seedColors.put(Rotberry.Seed.class,     0xCC0022);
 		seedColors.put(Firebloom.Seed.class,    0xFF7F00);
