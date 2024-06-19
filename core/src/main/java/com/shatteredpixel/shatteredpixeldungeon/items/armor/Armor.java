@@ -459,7 +459,7 @@ public class Armor extends EquipableItem {
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
 				identify();
-				GLog.p( Messages.get(Armor.class, "identify") );
+				GLog.p( Messages.get(Armor.class, "identify", title()) );
 				Badges.validateItemLevelAquired( this );
 			}
 		}

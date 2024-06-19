@@ -412,7 +412,7 @@ public abstract class Wand extends Item {
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0 || Dungeon.hero.pointsInTalent(Talent.SCHOLARS_INTUITION) == 2) {
 				identify();
-				GLog.p( Messages.get(Wand.class, "identify") );
+				GLog.p( Messages.get(Wand.class, "identify", title()) );
 				Badges.validateItemLevelAquired( this );
 			}
 		}

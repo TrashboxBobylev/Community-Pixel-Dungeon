@@ -124,7 +124,7 @@ abstract public class Weapon extends KindOfWeapon {
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
 				identify();
-				GLog.p( Messages.get(Weapon.class, "identify") );
+				GLog.p( Messages.get(Weapon.class, "identify", title()) );
 				Badges.validateItemLevelAquired( this );
 			}
 		}
