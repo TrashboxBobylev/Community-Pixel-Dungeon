@@ -179,7 +179,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (projecting
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
 				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.genericProcChanceMultiplier(user))){
-			if (curUser.buff(Vertigo.class) != null && Random.Int(3) == 0){
+			if (user.buff(Vertigo.class) != null && Random.Int(3) == 0){
 				ArrayList<Integer> potentialList = new ArrayList<>();
 				for (int i : PathFinder.NEIGHBOURS8){
 					if (dst + i < Dungeon.level.length() && Dungeon.level.passable[dst + i])

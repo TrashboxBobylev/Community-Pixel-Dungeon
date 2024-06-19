@@ -601,7 +601,7 @@ public class Item implements Bundlable {
 	}
 
 	public int throwPos( Hero user, int dst){
-		if (curUser.buff(Vertigo.class) != null && Random.Int(3) == 0){
+		if (user.buff(Vertigo.class) != null && Random.Int(3) == 0){
 			ArrayList<Integer> potentialList = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (dst + i < Dungeon.level.length() && Dungeon.level.passable[dst + i])
