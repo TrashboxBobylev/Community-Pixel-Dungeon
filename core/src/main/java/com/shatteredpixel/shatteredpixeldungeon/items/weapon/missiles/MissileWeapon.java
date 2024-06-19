@@ -27,11 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -47,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -182,6 +179,15 @@ abstract public class MissileWeapon extends Weapon {
 		if (projecting
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
 				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.genericProcChanceMultiplier(user))){
+			if (curUser.buff(Vertigo.class) != null && Random.Int(3) == 0){
+				ArrayList<Integer> potentialList = new ArrayList<>();
+				for (int i : PathFinder.NEIGHBOURS8){
+					if (dst + i < Dungeon.level.length() && Dungeon.level.passable[dst + i])
+						potentialList.add(dst+i);
+				}
+				if (!potentialList.isEmpty())
+					dst = Random.element(potentialList);
+			}
 			return dst;
 		} else {
 			return super.throwPos(user, dst);

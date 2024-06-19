@@ -31,24 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -59,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -84,10 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -992,6 +975,26 @@ public abstract class Mob extends Char {
 		GLog.n( "%s: \"%s\" ", Messages.titleCase(name()), str );
 	}
 
+	public Char selectVertigoedEnemy(){
+		if (buff(Vertigo.class) != null && Random.Int(2) == 0){
+			ArrayList<Char> potentialEnemyList = new ArrayList<>();
+			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 3 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+					Char ch = Char.findChar(i);
+					if (ch != null){
+						if (!isCharmedBy( ch ) && canAttack( ch )){
+							potentialEnemyList.add(ch);
+						}
+					}
+				}
+			}
+			if (!potentialEnemyList.isEmpty())
+				return Random.element(potentialEnemyList);
+		}
+		return enemy;
+	}
+
 	public interface AiState {
 		boolean act( boolean enemyInFOV, boolean justAlerted );
 	}
@@ -1134,6 +1137,9 @@ public abstract class Mob extends Char {
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
+
+			enemy = selectVertigoedEnemy();
+
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 
 				target = enemy.pos;

@@ -394,6 +394,9 @@ public class Tengu extends Mob {
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			
 			enemySeen = enemyInFOV;
+
+			enemy = selectVertigoedEnemy();
+
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 				
 				if (canUseAbility()){

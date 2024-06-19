@@ -273,6 +273,7 @@ public class Eye extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			//even if enemy isn't seen, attack them if the beam is charged
+			enemy = selectVertigoedEnemy();
 			if (beamCharged && enemy != null && canAttack(enemy)) {
 				enemySeen = enemyInFOV;
 				return doAttack(enemy);

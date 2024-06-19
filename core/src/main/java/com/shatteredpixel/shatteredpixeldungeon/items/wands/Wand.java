@@ -29,15 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -63,10 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 
@@ -586,6 +575,16 @@ public abstract class Wand extends Item {
 		public void onSelect( Integer target ) {
 			
 			if (target != null) {
+
+				if (curUser.buff(Vertigo.class) != null && Random.Int(3) == 0){
+					ArrayList<Integer> potentialList = new ArrayList<>();
+					for (int i : PathFinder.NEIGHBOURS8){
+						if (target + i < Dungeon.level.length() && Dungeon.level.passable[target + i])
+							potentialList.add(target+i);
+					}
+					if (!potentialList.isEmpty())
+						target = Random.element(potentialList);
+				}
 				
 				//FIXME this safety check shouldn't be necessary
 				//it would be better to eliminate the curItem static variable.
@@ -684,13 +683,14 @@ public abstract class Wand extends Item {
 									}
 								});
 					} else {
+						Integer finalTarget = target;
 						curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
 								if (Random.Float() < WondrousResin.extraCurseEffectChance()){
 									CursedWand.cursedZap(curWand,
 											curUser,
-											new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT), new Callback() {
+											new Ballistica(curUser.pos, finalTarget, Ballistica.MAGIC_BOLT), new Callback() {
 												@Override
 												public void call() {
 													curWand.wandUsed();

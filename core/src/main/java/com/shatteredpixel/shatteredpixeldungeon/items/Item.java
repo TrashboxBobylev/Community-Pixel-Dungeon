@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -49,10 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.Reflection;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -603,6 +601,15 @@ public class Item implements Bundlable {
 	}
 
 	public int throwPos( Hero user, int dst){
+		if (curUser.buff(Vertigo.class) != null && Random.Int(3) == 0){
+			ArrayList<Integer> potentialList = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (dst + i < Dungeon.level.length() && Dungeon.level.passable[dst + i])
+					potentialList.add(dst+i);
+			}
+			if (!potentialList.isEmpty())
+				dst = Random.element(potentialList);
+		}
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
 
