@@ -24,11 +24,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.HashSet;
@@ -143,8 +150,16 @@ public class Buff extends Actor {
 
 	//creates a fresh instance of the buff and attaches that, this allows duplication.
 	public static<T extends Buff> T append( Char target, Class<T> buffClass ) {
+		if (((target.buff(Chill.class) != null || target.buff(Frost.class) != null) && buffClass == Burning.class) ||
+				(target.buff(Burning.class) != null && (buffClass == Chill.class || buffClass == Frost.class))){
+			target.damage(Char.combatRoll(Math.round(3 + Dungeon.scalingDepth()*0.75f), Math.round(7 + Dungeon.scalingDepth()*1.5f)), new Bomb.ConjuredBomb());
+			CellEmitter.center(target.pos).burst(BlastParticle.FACTORY, 5);
+			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.85f * Random.Float(0.87f, 1.15f) );
+		}
+
 		T buff = Reflection.newInstance(buffClass);
 		buff.attachTo( target );
+
 		return buff;
 	}
 
