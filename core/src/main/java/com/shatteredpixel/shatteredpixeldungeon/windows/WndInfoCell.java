@@ -25,7 +25,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
+import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -151,6 +154,19 @@ public class WndInfoCell extends Window {
 						desc += "\n\n";
 					}
 					desc += blob.tileDesc();
+				}
+			}
+
+			if (Dungeon.level instanceof PrisonBossLevel && ((PrisonBossLevel) Dungeon.level).state() == PrisonBossLevel.State.FIGHT_ARENA){
+				for (Char mob: Dungeon.level.mobs){
+					if (mob instanceof Tengu){
+						for (Tengu.BombAbility b : mob.buffs(Tengu.BombAbility.class)){
+							if (Dungeon.level.distance(b.bombPos, cell) <= 2){
+								desc += Messages.get(Tengu.BombAbility.class, "nearby");
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
