@@ -100,9 +100,9 @@ public class Stylus extends Item {
 		
 		detach(curUser.belongings.backpack);
 
-		GLog.w( Messages.get(this, "inscribed"));
-
 		armor.inscribe();
+
+		GLog.w( Messages.get(this, "inscribed", armor.glyph.name()));
 		
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
@@ -117,9 +117,9 @@ public class Stylus extends Item {
 
 		detach(curUser.belongings.backpack);
 
-		GLog.w( Messages.get(this, "seal_inscribed"));
-
 		armor.inscribe();
+
+		GLog.w( Messages.get(this, "seal_inscribed", armor.getGlyph().name()));
 
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);

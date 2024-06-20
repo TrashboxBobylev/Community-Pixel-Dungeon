@@ -73,9 +73,11 @@ public class StoneOfEnchantment extends InventoryStone {
 		Enchanting.show( curUser, item );
 		
 		if (item instanceof Weapon) {
-			GLog.p(Messages.get(this, "weapon"));
+			GLog.p(Messages.get(this, "weapon", ((Weapon) item).enchantment.name()));
+		} else if (item instanceof BrokenSeal){
+			GLog.p(Messages.get(this, "broken_seal", ((BrokenSeal) item).getGlyph().name()));
 		} else {
-			GLog.p(Messages.get(this, "armor"));
+			GLog.p(Messages.get(this, "armor", ((Armor) item).glyph.name()));
 		}
 		
 		useAnimation();
