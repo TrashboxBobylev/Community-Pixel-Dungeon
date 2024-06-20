@@ -57,9 +57,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -217,6 +219,11 @@ public class Tengu extends Mob {
 		
 		if (Dungeon.hero.subClass == HeroSubClass.NONE) {
 			Dungeon.level.drop( new TengusMask(), pos ).sprite.drop();
+		}
+
+		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+		if (bag != null) {
+			Dungeon.level.drop( bag, pos ).sprite.drop();
 		}
 		
 		GameScene.bossSlain();

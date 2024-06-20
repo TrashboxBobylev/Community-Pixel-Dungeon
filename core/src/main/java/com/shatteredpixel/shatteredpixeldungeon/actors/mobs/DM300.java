@@ -51,11 +51,13 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -565,6 +567,11 @@ public class DM300 extends Mob {
 
 		GameScene.bossSlain();
 		Dungeon.level.unseal();
+
+		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+		if (bag != null) {
+			Dungeon.level.drop( bag, pos ).sprite.drop();
+		}
 
 		//60% chance of 2 shards, 30% chance of 3, 10% chance for 4. Average of 2.5
 		int shards = Random.chances(new float[]{0, 0, 6, 3, 1});

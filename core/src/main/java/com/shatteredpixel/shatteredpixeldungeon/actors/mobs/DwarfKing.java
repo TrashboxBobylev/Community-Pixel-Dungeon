@@ -51,12 +51,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -562,6 +564,15 @@ public class DwarfKing extends Mob {
 			Dungeon.level.drop(new KingsCrown(), pos + Dungeon.level.width()).sprite.drop(pos);
 		} else {
 			Dungeon.level.drop(new KingsCrown(), pos).sprite.drop();
+		}
+
+		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+		if (bag != null) {
+			if (Dungeon.level.solid[pos]){
+				Dungeon.level.drop(bag, pos + Dungeon.level.width()).sprite.drop(pos);
+			} else {
+				Dungeon.level.drop(bag, pos).sprite.drop();
+			}
 		}
 
 		Badges.validateBossSlain();
