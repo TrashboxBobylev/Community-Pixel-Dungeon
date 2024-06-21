@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.AlchemyPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -77,6 +78,7 @@ public class LaboratoryRoom extends SpecialRoom {
 		level.drop( new EnergyCrystal().quantity(5), pos );
 
 		int n = Random.NormalIntRange( 1, 2 );
+		n += RNGManipulator.LuckBoost.luckBoost() / 3750;
 		for (int i=0; i < n; i++) {
 			do {
 				pos = level.pointToCell(random());

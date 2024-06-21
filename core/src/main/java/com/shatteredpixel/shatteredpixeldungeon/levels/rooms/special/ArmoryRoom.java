@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -59,6 +60,8 @@ public class ArmoryRoom extends SpecialRoom {
 		}
 		
 		int n = Random.IntRange( 2, 3 );
+		n += RNGManipulator.LuckBoost.luckBoost() / 4750;
+
 		prizeCats = new float[]{1,1,1,1};
 		for (int i=0; i < n; i++) {
 			int pos;

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -49,6 +50,7 @@ public class TreasuryRoom extends SpecialRoom {
 		Heap.Type heapType = Random.Int( 2 ) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 		
 		int n = Random.IntRange( 2, 3 );
+		n += RNGManipulator.LuckBoost.luckBoost() / 2750;
 		float mimicChance = 1/5f * MimicTooth.mimicChanceMultiplier();
 		for (int i=0; i < n; i++) {
 			Item item = level.findPrizeItem(TrinketCatalyst.class);

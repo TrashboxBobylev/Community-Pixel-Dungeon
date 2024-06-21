@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -43,6 +44,7 @@ public class StorageRoom extends SpecialRoom {
 		boolean honeyPot = Random.Int( 2 ) == 0;
 		
 		int n = Random.IntRange( 3, 4 );
+		n += RNGManipulator.LuckBoost.luckBoost() / 3250;
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {

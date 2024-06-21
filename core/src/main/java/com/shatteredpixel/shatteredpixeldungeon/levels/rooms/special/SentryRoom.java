@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -195,7 +196,8 @@ public class SentryRoom extends SpecialRoom {
 
 		//33% chance for an extra update.
 		if (Random.Int(3) == 0){
-			prize.upgrade();
+			for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+				prize.upgrade();
 		}
 
 		return prize;

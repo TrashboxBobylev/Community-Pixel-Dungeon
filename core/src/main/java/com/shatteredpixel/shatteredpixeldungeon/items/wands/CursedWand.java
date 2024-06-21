@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -483,7 +484,9 @@ public class CursedWand {
 					result = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 							Generator.Category.RING, Generator.Category.ARTIFACT));
 				} while (result.cursed);
-				if (result.isUpgradable()) result.upgrade();
+				if (result.isUpgradable())
+					for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+						result.upgrade();
 				result.cursed = result.cursedKnown = true;
 				if (origin instanceof Wand){
 					GLog.w( Messages.get(CursedWand.class, "transmogrify_wand") );

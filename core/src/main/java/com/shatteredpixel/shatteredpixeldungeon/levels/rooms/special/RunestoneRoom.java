@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -55,6 +56,7 @@ public class RunestoneRoom extends SpecialRoom {
 		Painter.fill( level, this, 2, Terrain.EMPTY );
 		
 		int n = Random.NormalIntRange(2, 3);
+		n += RNGManipulator.LuckBoost.luckBoost() / 4000;
 		int dropPos;
 		for (int i = 0; i < n; i++) {
 			do {

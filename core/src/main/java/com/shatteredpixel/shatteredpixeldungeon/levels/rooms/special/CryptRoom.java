@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -85,7 +86,8 @@ public class CryptRoom extends SpecialRoom {
 
 		//if it isn't already cursed, give it a free upgrade
 		if (!prize.cursed){
-			prize.upgrade();
+			for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+				prize.upgrade();
 			//curse the armor, unless it has a glyph
 			if (!prize.hasGoodGlyph()){
 				prize.inscribe(Armor.Glyph.randomCurse());

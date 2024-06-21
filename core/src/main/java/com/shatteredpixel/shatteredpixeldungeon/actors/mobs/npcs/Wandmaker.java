@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -325,7 +326,8 @@ public class Wandmaker extends NPC {
 				given = false;
 				wand1 = (Wand) Generator.random(Generator.Category.WAND);
 				wand1.cursed = false;
-				wand1.upgrade();
+				for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+					wand1.upgrade();
 
 				wand2 = (Wand) Generator.random(Generator.Category.WAND);
 				ArrayList<Item> toUndo = new ArrayList<>();
@@ -337,7 +339,8 @@ public class Wandmaker extends NPC {
 					Generator.undoDrop(i);
 				}
 				wand2.cursed = false;
-				wand2.upgrade();
+				for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+					wand2.upgrade();
 				
 			}
 		}

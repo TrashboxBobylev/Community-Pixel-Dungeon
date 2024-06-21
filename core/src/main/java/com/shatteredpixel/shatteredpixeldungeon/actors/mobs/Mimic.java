@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -311,6 +312,8 @@ public class Mimic extends Mob {
 
 		//generate an extra reward for killing the mimic
 		m.generatePrize(useDecks);
+		for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 4000; i++)
+			m.generatePrize(useDecks);
 
 		return m;
 	}

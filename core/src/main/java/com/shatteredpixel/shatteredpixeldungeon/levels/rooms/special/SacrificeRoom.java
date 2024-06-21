@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -95,7 +96,8 @@ public class SacrificeRoom extends SpecialRoom {
 
 		//if it isn't already cursed, give it a free upgrade
 		if (!prize.cursed){
-			prize.upgrade();
+			for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+				prize.upgrade();
 			//curse the weapon, unless it has a glyph
 			if (!prize.hasGoodEnchant()){
 				prize.enchant(Weapon.Enchantment.randomCurse());

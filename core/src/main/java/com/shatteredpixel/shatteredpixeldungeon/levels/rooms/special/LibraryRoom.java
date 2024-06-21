@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -50,6 +51,7 @@ public class LibraryRoom extends SpecialRoom {
 		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY_SP );
 		
 		int n = Random.NormalIntRange( 1, 3 );
+		n += RNGManipulator.LuckBoost.luckBoost() / 3750;
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
