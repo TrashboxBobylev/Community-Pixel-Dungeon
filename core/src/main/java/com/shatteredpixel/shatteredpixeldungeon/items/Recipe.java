@@ -183,6 +183,7 @@ public abstract class Recipe {
 		new PhaseShift.Recipe(),
 		new Recycle.Recipe(),
 		new Silencing.Recipe(),
+		new RNGManipulator.Recipe(),
 		new TelekineticGrab.Recipe(),
 		new SummonElemental.Recipe(),
 		new StewedMeat.oneMeat(),

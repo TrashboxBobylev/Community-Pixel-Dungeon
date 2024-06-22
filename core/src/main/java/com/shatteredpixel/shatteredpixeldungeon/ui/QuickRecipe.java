@@ -374,7 +374,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new CurseInfusion.Recipe()));
 				result.add(new QuickRecipe(new MagicalInfusion.Recipe()));
 				result.add(new QuickRecipe(new Recycle.Recipe()));
-				if (!PixelScene.landscape()) result.add(null);
+				result.add(new QuickRecipe(new RNGManipulator.Recipe()));
 				result.add(null);
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));
 				result.add(new QuickRecipe(new SummonElemental.Recipe()));
