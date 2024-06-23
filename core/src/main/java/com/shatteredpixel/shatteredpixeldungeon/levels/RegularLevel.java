@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.journal.RegionLorePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenTreasureBox;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -150,6 +151,16 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			specials++;
 		}
+
+		float treasureBoxBoost = BrokenTreasureBox.extraSpecialRoomChance();
+		if (treasureBoxBoost >= 1f){
+			treasureBoxBoost -= 1f;
+			specials++;
+		}
+		if (Random.Float() < treasureBoxBoost){
+			specials++;
+		}
+
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
