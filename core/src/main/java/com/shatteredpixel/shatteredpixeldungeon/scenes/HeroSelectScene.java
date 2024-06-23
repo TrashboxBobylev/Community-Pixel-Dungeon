@@ -659,10 +659,11 @@ public class HeroSelectScene extends PixelScene {
 									Messages.get(HeroSelectScene.class, "daily_repeat") :
 									Messages.get(HeroSelectScene.class, "daily_desc"),
 								Messages.get(HeroSelectScene.class, "daily_yes"),
+								Messages.get(HeroSelectScene.class, "daily_yes_cool"),
 								Messages.get(HeroSelectScene.class, "daily_no")){
 							@Override
 							protected void onSelect(int index) {
-								if (index == 0){
+								if (index == 0 || index == 1){
 									if (diff <= 0) {
 										long time = Game.realTime - (Game.realTime % DAY);
 
@@ -678,6 +679,8 @@ public class HeroSelectScene extends PixelScene {
 
 									Dungeon.hero = null;
 									Dungeon.daily = true;
+									if (index == 1)
+										Dungeon.dailyChallenges = true;
 									ActionIndicator.clearAction();
 									InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 

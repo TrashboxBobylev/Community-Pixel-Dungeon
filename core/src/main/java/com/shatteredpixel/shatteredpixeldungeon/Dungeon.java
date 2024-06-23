@@ -210,6 +210,7 @@ public class Dungeon {
 
 	public static boolean daily;
 	public static boolean dailyReplay;
+	public static boolean dailyChallenges = false;
 	public static String customSeedText = "";
 	public static long seed;
 	
@@ -222,6 +223,16 @@ public class Dungeon {
 		if (daily) {
 			//Ensures that daily seeds are not in the range of user-enterable seeds
 			seed = SPDSettings.lastDaily() + DungeonSeed.TOTAL_SEEDS;
+			if (dailyChallenges){
+				dailyChallenges = false;
+				challenges = 0;
+				long[] primesToCheck = {2, 3, 5, 7, 11, 13, 17, 19, 23};
+				for (int i = 0; i < Challenges.NAME_IDS.length; i++){
+					if ((seed / 86400000L) % primesToCheck[i] == 0){
+						challenges |= Challenges.MASKS[i];
+					}
+				}
+			}
 			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 			format.setTimeZone(TimeZone.getTimeZone("UTC"));
 			customSeedText = format.format(new Date(SPDSettings.lastDaily()));
