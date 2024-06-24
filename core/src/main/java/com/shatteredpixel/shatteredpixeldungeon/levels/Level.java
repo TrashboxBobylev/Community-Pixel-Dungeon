@@ -792,6 +792,9 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
+	//used to check for items that you would not like to be in treasure room
+	public interface UndesiredItem {};
+
 	public Item findPrizeItem(){ return findPrizeItem(null); }
 
 	public Item findPrizeItem(Class<?extends Item> match){
@@ -807,7 +810,16 @@ public abstract class Level implements Bundlable {
 				}
 			}
 
-			Item item = Random.element(itemsToSpawn);
+			Item item = null;
+
+			for (int i = 0; i < 4; i++){
+				item = Random.element(itemsToSpawn);
+				if (!(item instanceof UndesiredItem))
+					break;
+			}
+			if (item instanceof UndesiredItem)
+				return null;
+
 			itemsToSpawn.remove(item);
 			return item;
 		}
