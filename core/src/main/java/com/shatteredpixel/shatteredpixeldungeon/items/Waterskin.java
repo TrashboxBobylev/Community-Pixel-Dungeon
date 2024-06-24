@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -42,6 +43,7 @@ public class Waterskin extends Item {
 	private static final int MAX_VOLUME	= 20;
 
 	private static final String AC_DRINK	= "DRINK";
+	private static final String AC_SIP	    = "SIP";
 
 	private static final float TIME_TO_DRINK = 1f;
 
@@ -76,6 +78,7 @@ public class Waterskin extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		if (volume > 0) {
 			actions.add( AC_DRINK );
+			actions.add( AC_SIP );
 		}
 		return actions;
 	}
@@ -85,7 +88,7 @@ public class Waterskin extends Item {
 
 		super.execute( hero, action );
 
-		if (action.equals( AC_DRINK )) {
+		if (action.equals( AC_DRINK ) || action.equals(AC_SIP)) {
 
 			if (volume > 0) {
 				
@@ -105,6 +108,7 @@ public class Waterskin extends Item {
 				//trimming off 0.01 drops helps with floating point errors
 				int dropsNeeded = (int)Math.ceil((missingHealthPercent / 0.05f) - 0.01f);
 				dropsNeeded = (int)GameMath.gate(1, dropsNeeded, volume);
+				if (action.equals(AC_SIP)) dropsNeeded = 1;
 
 				if (Dewdrop.consumeDew(dropsNeeded, hero, true)){
 					volume -= dropsNeeded;
@@ -133,7 +137,7 @@ public class Waterskin extends Item {
 		if (volume == 0){
 			info += "\n\n" + Messages.get(this, "desc_water");
 		} else {
-			info += "\n\n" + Messages.get(this, "desc_heal");
+			info += "\n\n" + Messages.get(this, "desc_heal", Math.round( Dungeon.hero.HT * 0.05f * quantity ));
 		}
 
 		if (isFull()){
