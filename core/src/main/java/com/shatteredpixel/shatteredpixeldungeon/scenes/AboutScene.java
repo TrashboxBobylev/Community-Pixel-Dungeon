@@ -24,6 +24,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -40,7 +42,44 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AboutScene extends PixelScene {
+
+	private static class AuthorInfo {
+		public String name;
+		public String nickname;
+
+		public AuthorInfo(String name, String nickname){
+			this.name = name;
+			this.nickname = nickname;
+		}
+	}
+
+	private static final AuthorInfo[] creditsList = {
+		new AuthorInfo("Mintzi", ".mint17"),
+		new AuthorInfo("Raynuva", "raynuva"),
+		new AuthorInfo("Sentient Orange Pile", "sentientorangepile"),
+		new AuthorInfo("ImanUserIus", "imanuserius"),
+		new AuthorInfo("emphysima gaming", "miutsuifa"),
+		new AuthorInfo("Serpens", "serpens2137"),
+		new AuthorInfo("watabou's uncle Dialga", "engio"),
+		new AuthorInfo("Sir Ayin", "uchufoxgd"),
+		new AuthorInfo("Benzedes-Merz", "benzedesmerz"),
+		new AuthorInfo("Yams", "xrider107"),
+		new AuthorInfo("MarioDied64", "merio64"),
+		new AuthorInfo("inverse-snake", "inverse.snake"),
+		new AuthorInfo("Nat", "nat9542"),
+		new AuthorInfo("Cilian", ".cilian"),
+		new AuthorInfo("Zackary (Prof. Wand Hater)", "zackary4536"),
+		new AuthorInfo("ifritdiezel","ifritdiezel"),
+		new AuthorInfo("NeoSlav","neoslav"),
+		new AuthorInfo("vexxjacobs","vexxjacobs"),
+		new AuthorInfo("goteryup","goteryup"),
+		new AuthorInfo("Luiz Felipe Sá","luizfelipesa"),
+		new AuthorInfo("The healing plant","fuwn."),
+	};
 
 	@Override
 	public void create() {
@@ -65,6 +104,67 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		//*** Community Pixel Dungeon Credits ***
+
+		CreditsBlock bobylev = new CreditsBlock(true, 0x25CA1F,
+				"Community Pixel Dungeon",
+				Icons.BOBYLEV.get(),
+				"Coded and debugged by: _TrashboxBobylev_\nBased on Shattered Pixel Dungeon's open source\nDesigned by Pixel Dungeon's community",
+				"reddit.com/u/TrashboxBobylev",
+				"https://reddit.com/u/TrashboxBobylev");
+
+		bobylev.setRect((Camera.main.width - colWidth)/2f, 6, 120, 0);
+
+		content.add(bobylev);
+
+		CreditsBlock authorsStart = new CreditsBlock(true,
+				Window.TITLE_COLOR,
+				null,
+				null,
+				"Community PD has been conceptualized as present for 10th-year anniversary of Pixel Dungeon becoming open-source game.\nThis wouldn't be possible without community's support!\n\nThank you, everyone, for playing all of Pixel Dungeons and making new ones.",
+				"Pixel Dungeon's discord link",
+				"https://discord.gg/KBfMN8X");
+		authorsStart.setRect((Camera.main.width - fullWidth)/2f, bobylev.bottom() + 12, fullWidth, 0);
+		content.add(authorsStart);
+
+		CreditsBlock authorsBigTitle = new CreditsBlock(true, Window.TITLE_COLOR,
+				"Authors of Ideas and Additions:",
+				null,
+				" ",
+				null,
+				null);
+
+		authorsBigTitle.setRect((Camera.main.width - colWidth)/2f, authorsStart.bottom() + 8, 120, 0);
+
+		content.add(authorsBigTitle);
+
+		float currentDepth = authorsBigTitle.bottom() + 8;
+
+		for (int i = 0; i < 21; i++){
+			if (i % 3 == 0 && i != 0)
+				currentDepth += 36;
+
+			Image icon = new Image( Assets.Interfaces.ICONS_AUTHORS );
+			icon.frame( icon.texture.uvRectBySize( (i % 9) * 64, (i / 9) * 64, 64, 64 ) );
+			icon.scale.set(PixelScene.align(0.25f));
+
+			CreditsBlock author = new CreditsBlock(false, Window.TITLE_COLOR,
+					creditsList[i].name,
+					icon,
+					"@" + creditsList[i].nickname,
+					null, null);
+
+			float baseX = landscape() ? w/4f : w/(4f + 3f*((SPDSettings.scale()-2)));
+			if (SPDSettings.scale() == PixelScene.maxDefaultZoom && SPDSettings.interfaceSize() != 2) baseX = 0;
+
+			author.setRect((baseX + ((i % 3) * colWidth/2f)), currentDepth, colWidth/2f, 0);
+			content.add(author);
+		}
+
+		currentDepth += 36;
+
+		addLine(currentDepth - 6, content);
+
 		//*** Shattered Pixel Dungeon Credits ***
 
 		String shpxLink = "https://ShatteredPixel.com";
@@ -80,9 +180,9 @@ public class AboutScene extends PixelScene {
 				"ShatteredPixel.com",
 				shpxLink);
 		if (landscape()){
-			shpx.setRect((w - fullWidth)/2f - 6, 10, 120, 0);
+			shpx.setRect((w - fullWidth)/2f - 6, currentDepth, 120, 0);
 		} else {
-			shpx.setRect((w - fullWidth)/2f, 6, 120, 0);
+			shpx.setRect((w - fullWidth)/2f, currentDepth, 120, 0);
 		}
 		content.add(shpx);
 
