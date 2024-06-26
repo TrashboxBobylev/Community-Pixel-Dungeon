@@ -42,7 +42,7 @@ public class ShatteredNews extends NewsService {
 	@Override
 	public void checkForArticles(boolean useMetered, boolean preferHTTPS, NewsResultCallback callback) {
 
-		if (!useMetered && !Game.platform.connectedToUnmeteredNetwork()){
+		if (true){
 			callback.onConnectionFailed();
 			return;
 		}
