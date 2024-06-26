@@ -76,24 +76,59 @@ public class SupporterScene extends PixelScene {
 		msg.setSize(elementWidth, 0);
 		add(msg);
 
-		StyledButton link = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "supporter_link")){
+		StyledButton link1 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "discord_link")){
 			@Override
 			protected void onClick() {
 				super.onClick();
-				String link = "https://www.patreon.com/ShatteredPixel";
-				//tracking codes, so that the website knows where this pageview came from
-				link += "?utm_source=shatteredpd";
-				link += "&utm_medium=supporter_page";
-				link += "&utm_campaign=ingame_link";
+				String link = "https://discord.gg/KBfMN8X";
 				ShatteredPixelDungeon.platform.openURI(link);
 			}
 		};
-		link.icon(Icons.get(Icons.GOLD));
-		link.textColor(Window.TITLE_COLOR);
-		link.setSize(elementWidth, BTN_HEIGHT);
-		add(link);
+		link1.icon(Icons.get(Icons.COMMUNITY));
+		link1.textColor(Window.WHITE);
+		link1.setSize(elementWidth, BTN_HEIGHT);
+		add(link1);
 
-		float elementHeight = msg.height() + BTN_HEIGHT + GAP;
+		StyledButton link2 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "lemmy_link")){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				String link = "https://lemmy.world/c/pixeldungeon";
+				ShatteredPixelDungeon.platform.openURI(link);
+			}
+		};
+		link2.icon(Icons.get(Icons.COMMUNITY));
+		link2.textColor(Window.WHITE);
+		link2.setSize(elementWidth, BTN_HEIGHT);
+		add(link2);
+
+		StyledButton link3 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "reddit_link")){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				String link = "https://reddit.com/r/PixelDungeon";
+				ShatteredPixelDungeon.platform.openURI(link);
+			}
+		};
+		link3.icon(Icons.get(Icons.COMMUNITY));
+		link3.textColor(Window.WHITE);
+		link3.setSize(elementWidth, BTN_HEIGHT);
+		add(link3);
+
+		StyledButton link4 = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "mods_link")){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				String link = "https://pixeldungeon.fandom.com/wiki/Category:Mods";
+				ShatteredPixelDungeon.platform.openURI(link);
+			}
+		};
+		link4.icon(Icons.get(Icons.NEWS));
+		link4.textColor(Window.WHITE);
+		link4.setSize(elementWidth, BTN_HEIGHT);
+		add(link4);
+
+		float elementHeight = msg.height() + BTN_HEIGHT*4 + GAP;
 
 		float top = 16 + (h - 16 - elementHeight)/2f;
 		float left = (w-elementWidth)/2f;
@@ -101,8 +136,14 @@ public class SupporterScene extends PixelScene {
 		msg.setPos(left, top);
 		align(msg);
 
-		link.setPos(left, msg.bottom()+GAP);
-		align(link);
+		link1.setPos(left, msg.bottom()+GAP);
+		align(link1);
+		link2.setPos(left, link1.bottom());
+		align(link2);
+		link3.setPos(left, link2.bottom());
+		align(link3);
+		link4.setPos(left, link3.bottom());
+		align(link4);
 
 	}
 
@@ -123,16 +164,12 @@ public class SupporterScene extends PixelScene {
 			add(bg);
 
 			String message = Messages.get(SupporterScene.class, "intro");
-			message += "\n\n" + Messages.get(SupporterScene.class, "patreon_msg");
-			if (Messages.lang() != Languages.ENGLISH) {
-				message += "\n" + Messages.get(SupporterScene.class, "patreon_english");
-			}
-			message += "\n\n- Evan";
+			message += "\n\n- TrashboxBobylev";
 
 			text = PixelScene.renderTextBlock(message, 6);
 			add(text);
 
-			icon = Icons.get(Icons.SHPX);
+			icon = Icons.get(Icons.BOBYLEV);
 			add(icon);
 
 		}
@@ -146,7 +183,7 @@ public class SupporterScene extends PixelScene {
 			text.setPos(x + bg.marginLeft(), y + bg.marginTop() + 1);
 
 			icon.y = text.bottom() - icon.height() + 4;
-			icon.x = x + 25;
+			icon.x = x + 65;
 
 			height = (text.bottom() + 3) - y;
 

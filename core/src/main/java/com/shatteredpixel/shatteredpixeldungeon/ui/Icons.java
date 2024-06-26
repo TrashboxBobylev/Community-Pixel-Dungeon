@@ -43,6 +43,7 @@ public enum Icons {
 	PREFS,
 	SHPX,
 	BOBYLEV,
+	COMMUNITY,
 
 	//rankings and hero select icons, spacing for 16x16
 	STAIRS,
@@ -160,6 +161,9 @@ public enum Icons {
 				break;
 			case BOBYLEV:
 				icon.frame( icon.texture.uvRectBySize( 137, 0, 14, 17 ) );
+				break;
+			case COMMUNITY:
+				icon.frame( icon.texture.uvRectBySize( 152, 0, 19, 18 ) );
 				break;
 
 			case STAIRS:
