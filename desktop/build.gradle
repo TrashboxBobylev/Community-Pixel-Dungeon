@@ -39,7 +39,7 @@ task release(type: Jar) {
         attributes 'Main-Class': appMainClass
         attributes 'Specification-Title': appName
         attributes 'Implementation-Title': appPackageName
-        attributes 'Specification-Version': appVersionName
+        attributes 'Specification-Version': appVersionName + "-INDEV"
         attributes 'Implementation-Version': appVersionCode
     }
 }
