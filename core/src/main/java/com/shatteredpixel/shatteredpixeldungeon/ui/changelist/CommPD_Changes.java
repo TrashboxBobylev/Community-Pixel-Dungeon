@@ -24,14 +24,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.*;
+import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 
@@ -159,6 +160,18 @@ public class CommPD_Changes {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WATERSKIN), "Sipping out of Waterskin",
                 "Idea's author: _The healing plant/@fuwn._\n\n" +
                         "_-_ Added ability to _sip_ out of waterskin, consuming only 1 dewdrop out of it."
+        ));
+
+        changes = new ChangeInfo("v0.1.1", false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Desktop builds are now always \"debug\", allowing Scroll of Debug and other testing QoL to appear."));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed the following bugs:\n" +
+                "_-_ The new glyph code crashing in certain conditions due to developer's carelessness."
         ));
 
     }
