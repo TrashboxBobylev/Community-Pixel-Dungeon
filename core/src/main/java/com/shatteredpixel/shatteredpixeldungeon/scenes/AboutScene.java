@@ -154,7 +154,7 @@ public class AboutScene extends PixelScene {
 					"@" + creditsList[i].nickname,
 					null, null);
 
-			float baseX = landscape() ? w/4f : w/(4f + 3f*((SPDSettings.scale()-2)));
+			float baseX = (Camera.main.width - colWidth/2f*3)/2f;
 			if (SPDSettings.scale() == PixelScene.maxDefaultZoom && SPDSettings.interfaceSize() != 2) baseX = 0;
 
 			author.setRect((baseX + ((i % 3) * colWidth/2f)), currentDepth, colWidth/2f, 0);
