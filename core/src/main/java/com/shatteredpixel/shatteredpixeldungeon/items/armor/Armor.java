@@ -664,10 +664,10 @@ public class Armor extends EquipableItem {
 	}
 
 	public Glyph getGlyph(Class<?extends Glyph> type){
-		if (glyph != null && glyph.getClass() == type)
+		if (glyph != null && (glyph.getClass() == type || type == null))
 			return glyph;
 		else if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
-				seal != null && seal.getGlyph() != null && seal.getGlyph().getClass() == type)
+				seal != null && seal.getGlyph() != null && (seal.getGlyph().getClass() == type || type == null))
 			return seal.getGlyph();
 		return null;
 	}
