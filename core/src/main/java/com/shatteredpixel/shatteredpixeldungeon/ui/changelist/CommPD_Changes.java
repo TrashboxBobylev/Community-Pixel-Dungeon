@@ -167,7 +167,8 @@ public class CommPD_Changes {
         changeInfos.add(changes);
 
         changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-                "_-_ Desktop builds are now always \"debug\", allowing Scroll of Debug and other testing QoL to appear."));
+                "_-_ Desktop builds are now always \"debug\", allowing Scroll of Debug and other testing QoL to appear.\n" +
+                        "_-_ Made list of idea authors in about screen layout correctly on any resolution."));
 
         changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed the following bugs:\n" +
