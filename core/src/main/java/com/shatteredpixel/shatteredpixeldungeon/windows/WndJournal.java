@@ -138,21 +138,13 @@ public class WndJournal extends WndTabbed {
 							@Override
 							public void onSelect(boolean positive, String text) {
 								if (positive && !text.isEmpty()){
-									if (text.startsWith("remove ")){
-										if (Notes.remove(text.substring(7))) {
-											GLog.w(Messages.get(WndJournal.NotesTab.class, "customs_removed", text.substring(7), Dungeon.depth));
-											WndJournal.this.hide();
-											GameScene.show(new WndJournal());
-										} else
-											GLog.n(Messages.get(WndJournal.NotesTab.class, "customs_no_note", text.substring(7), Dungeon.depth));
-									} else {
-										if (Notes.add(text)) {
-											GLog.h(Messages.get(WndJournal.NotesTab.class, "customs_added", text, Dungeon.depth));
-											WndJournal.this.hide();
-											GameScene.show(new WndJournal());
-										} else
-											GLog.n(Messages.get(WndJournal.NotesTab.class, "customs_already_exist", text, Dungeon.depth));
-									}
+									if (Notes.add(text)) {
+										GLog.h(Messages.get(WndJournal.NotesTab.class, "customs_added", text, Dungeon.depth));
+										WndJournal.this.hide();
+										WndJournal journal = (WndJournal) ShatteredPixelDungeon.scene().recycle(WndJournal.class);
+										journal.select(2);
+									} else
+										GLog.n(Messages.get(WndJournal.NotesTab.class, "customs_already_exist", text, Dungeon.depth));
 								}
 							}
 						});
@@ -487,7 +479,57 @@ public class WndJournal extends WndTabbed {
 				for (Notes.Record rec : customNotes) {
 					ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(Icons.STAIRS),
 							Integer.toString(rec.depth()),
-							rec.desc());
+							rec.desc()) {
+
+                        Image deleteIcon;
+
+						@Override
+						protected void createChildren() {
+							super.createChildren();
+
+							deleteIcon = Icons.get(Icons.CLOSE);
+							add(deleteIcon);
+						}
+
+						@Override
+                        protected void layout() {
+                            super.layout();
+                            label.maxWidth((int)(width - 32 - 3));
+							PixelScene.align(label);
+
+							deleteIcon.y = y + (height() - 1 - deleteIcon.height()) / 2f;
+							deleteIcon.x = width - deleteIcon.width() - 2;
+							PixelScene.align(icon);
+                        }
+
+						@Override
+						public boolean onClick(float x, float y) {
+							if (x >= deleteIcon.x && y >= deleteIcon.y && x < deleteIcon.x + deleteIcon.width && y < deleteIcon.y + deleteIcon.height){
+								ShatteredPixelDungeon.scene().addToFront( new WndOptions(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE),
+										Messages.get(WndJournal.NotesTab.class, "customs_removal_title"),
+										Messages.get(WndJournal.NotesTab.class, "customs_removal_desc", label.text()),
+										Messages.get(WndJournal.NotesTab.class, "customs_removal_yes"),
+										Messages.get(WndJournal.NotesTab.class, "customs_removal_no") ) {
+									@Override
+									protected void onSelect( int index ) {
+										switch (index) {
+											case 0:
+												if (Notes.remove(label.text())) {
+													GLog.w(Messages.get(WndJournal.NotesTab.class, "customs_removed", label.text(), Dungeon.depth));
+													NotesTab.this.list.clear();
+													NotesTab.this.updateList();
+													NotesTab.this.layout();
+												}
+												break;
+										}
+									}
+								} );
+								return true;
+							} else {
+								return false;
+							}
+						}
+					};
 					if (Dungeon.depth == rec.depth()) item.hardlight(TITLE_COLOR);
 					list.addItem(item);
 				}
