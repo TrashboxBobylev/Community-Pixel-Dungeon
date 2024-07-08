@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIc
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.*;
@@ -164,6 +165,7 @@ public abstract class Recipe {
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
 		new ArcaneResin.Recipe(),
+		new GemstoneDust.Recipe(),
 		new BlizzardBrew.Recipe(),
 		new InfernalBrew.Recipe(),
 		new AquaBrew.Recipe(),
@@ -247,7 +249,7 @@ public abstract class Recipe {
 	public static boolean usableInRecipe(Item item){
 		if (item instanceof EquipableItem){
 			//only thrown weapons and wands allowed among equipment items
-			return item.isIdentified() && !item.cursed && item instanceof MissileWeapon;
+			return item.isIdentified() && !item.cursed && (item instanceof MissileWeapon || item instanceof Ring);
 		} else if (item instanceof Wand) {
 			return item.isIdentified() && !item.cursed;
 		} else {

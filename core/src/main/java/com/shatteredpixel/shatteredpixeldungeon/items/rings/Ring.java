@@ -37,8 +37,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -75,6 +79,8 @@ public class Ring extends KindofMisc {
 	
 	//rings cannot be 'used' like other equipment, so they ID purely based on exp
 	private float levelsToID = 1;
+
+	public int dustBonus = 0;
 	
 	@SuppressWarnings("unchecked")
 	public static void initGems() {
@@ -169,6 +175,12 @@ public class Ring extends KindofMisc {
 	public String info(){
 		
 		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
+
+		if (dustBonus == 1){
+			desc += "\n\n" + Messages.get(Ring.class, "dust_one");
+		} else if (dustBonus > 1){
+			desc += "\n\n" + Messages.get(Ring.class, "dust_many", dustBonus);
+		}
 		
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
@@ -206,8 +218,19 @@ public class Ring extends KindofMisc {
 		if (Random.Int(3) == 0) {
 			cursed = false;
 		}
+
+		if (dustBonus > 0){
+			dustBonus--;
+		}
 		
 		return this;
+	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		if (dustBonus == 0) return null;
+
+		return new ItemSprite.Glowing(0xFFFFFF, 1f/(float)dustBonus);
 	}
 	
 	@Override
@@ -280,17 +303,20 @@ public class Ring extends KindofMisc {
 	}
 
 	private static final String LEVELS_TO_ID    = "levels_to_ID";
+	private static final String DUST_BONUS    = "dust_bonus";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEVELS_TO_ID, levelsToID );
+		bundle.put( DUST_BONUS, dustBonus );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		levelsToID = bundle.getFloat( LEVELS_TO_ID );
+		dustBonus = bundle.getInt( DUST_BONUS );
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
@@ -303,6 +329,13 @@ public class Ring extends KindofMisc {
 			GLog.p( Messages.get(Ring.class, "identify", title()) );
 			Badges.validateItemLevelAquired( this );
 		}
+	}
+
+	@Override
+	public int level() {
+		int level = super.level();
+		level += dustBonus;
+		return level;
 	}
 
 	@Override
@@ -402,5 +435,22 @@ public class Ring extends KindofMisc {
 			return Ring.this.soloBuffedBonus();
 		}
 
+	}
+
+	public static class PlaceHolder extends Ring {
+
+		{
+			image = ItemSpriteSheet.RING_HOLDER;
+		}
+
+		@Override
+		public boolean isSimilar(Item item) {
+			return item instanceof Ring;
+		}
+
+		@Override
+		public String info() {
+			return "";
+		}
 	}
 }

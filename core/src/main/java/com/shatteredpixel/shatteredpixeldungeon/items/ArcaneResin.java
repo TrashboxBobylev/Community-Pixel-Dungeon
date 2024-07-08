@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -92,6 +93,25 @@ public class ArcaneResin extends Item {
 		return 30*quantity();
 	}
 
+	public static void apply(Item boostItem, int usedBoost, Wand boostedWand){
+		if (usedBoost < boostItem.quantity()){
+			boostItem.quantity(boostItem.quantity()-usedBoost);
+		} else {
+			boostItem.detachAll(Dungeon.hero.belongings.backpack);
+		}
+
+		boostedWand.resinBonus++;
+		boostedWand.curCharges++;
+		boostedWand.updateLevel();
+		Item.updateQuickslot();
+
+		curUser.sprite.operate(curUser.pos);
+		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+		curUser.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+
+		curUser.spendAndNext(Actor.TICK);
+	}
+
 	private final WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
 
 		@Override
@@ -106,16 +126,16 @@ public class ArcaneResin extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item instanceof Wand && item.isIdentified();
+			return (item instanceof Wand || item instanceof Ring) && item.isIdentified();
 		}
 
 		@Override
 		public void onSelect( Item item ) {
-			if (item != null && item instanceof Wand) {
+			if (item instanceof Wand) {
 				Wand w = (Wand)item;
 
 				if (w.level() >= 3){
-					GLog.w(Messages.get(ArcaneResin.class, "level_too_high"));
+					GLog.w(Messages.get(ArcaneResin.class, "level_too_high_wand"));
 					return;
 				}
 
@@ -126,23 +146,26 @@ public class ArcaneResin extends Item {
 
 				} else {
 
-					if (resinToUse < quantity()){
-						quantity(quantity()-resinToUse);
-					} else {
-						detachAll(Dungeon.hero.belongings.backpack);
-					}
+					ArcaneResin.apply(ArcaneResin.this, resinToUse, w);
+					GLog.p(Messages.get(ArcaneResin.class, "apply_wand"));
+				}
+			} else if (item instanceof Ring) {
+				Ring r = (Ring)item;
 
-					w.resinBonus++;
-					w.curCharges++;
-					w.updateLevel();
-					Item.updateQuickslot();
+				if (r.level() >= 2){
+					GLog.w(Messages.get(ArcaneResin.class, "level_too_high_ring"));
+					return;
+				}
 
-					curUser.sprite.operate(curUser.pos);
-					Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
-					curUser.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+				int dustToUse = r.level()+2;
 
-					curUser.spendAndNext(Actor.TICK);
-					GLog.p(Messages.get(ArcaneResin.class, "apply"));
+				if (quantity() < dustToUse){
+					GLog.w(Messages.get(ArcaneResin.class, "not_enough"));
+
+				} else {
+
+					GemstoneDust.apply(ArcaneResin.this, dustToUse, r);
+					GLog.p(Messages.get(ArcaneResin.class, "apply_ring"));
 				}
 			}
 		}
