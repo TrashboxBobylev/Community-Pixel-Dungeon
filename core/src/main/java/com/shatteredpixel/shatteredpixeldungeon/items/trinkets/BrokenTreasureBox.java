@@ -35,8 +35,8 @@ public class BrokenTreasureBox extends Trinket {
 
     @Override
     protected int upgradeEnergyCost() {
-        //5 -> 25(30) -> 35(65) -> 45(110)
-        return 25+10*level();
+        //5 -> 25(30) -> 30(55) -> 35(90)
+        return 25+5*level();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BrokenTreasureBox extends Trinket {
         if (level == -1){
             return 0f;
         } else {
-            return 0.25f + 0.50f*level;
+            return 0.25f + 0.35f*level;
         }
     }
 }
