@@ -68,4 +68,24 @@ public class FlameParticle extends PixelParticle.Shrinking {
 		float p = left / lifespan;
 		am = p > 0.8f ? (1 - p) * 5 : 1;
 	}
+
+	public static class Frostburn extends FlameParticle {
+		public Frostburn() {
+			super();
+
+			color( 0xA1F1FF );
+			lifespan = 0.7f;
+		}
+
+		public static final Emitter.Factory FACTORY = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((Frostburn)emitter.recycle( Frostburn.class )).reset( x, y );
+			}
+			@Override
+			public boolean lightMode() {
+				return true;
+			}
+		};
+	}
 }

@@ -85,7 +85,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, FROSTBURNING
 	}
 	private int stunStates = 0;
 	
@@ -416,12 +416,20 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				hearts = emitter();
 				hearts.pour(Speck.factory(Speck.HEART), 0.5f);
 				break;
+			case FROSTBURNING:
+				burning = emitter();
+				burning.pour( FlameParticle.Frostburn.FACTORY, 0.06f );
+				if (visible) {
+					Sample.INSTANCE.play( Assets.Sounds.BURNING );
+					Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+				}
+				break;
 		}
 	}
 	
 	public void remove( State state ) {
 		switch (state) {
-			case BURNING:
+			case BURNING: case FROSTBURNING:
 				if (burning != null) {
 					burning.on = false;
 					burning = null;
