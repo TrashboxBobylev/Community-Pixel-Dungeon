@@ -24,7 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.NecklaceOfIce;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -47,6 +49,9 @@ public class Chill extends FlavourBuff {
 
 	//reduces speed by 10% for every turn remaining, capping at 50%
 	public float speedFactor(){
+		if (target.buff(NecklaceOfIce.necklaceRecharge.class) != null &&
+				!target.buff(NecklaceOfIce.necklaceRecharge.class).isCursed())
+			return 1f;
 		return Math.max(0.5f, 1 - cooldown()*0.1f);
 	}
 
@@ -66,8 +71,19 @@ public class Chill extends FlavourBuff {
 		else target.sprite.remove(CharSprite.State.CHILLED);
 	}
 
+	public static int necklaceBlocking() {
+		return (Dungeon.scalingDepth() + 5)/3;
+	}
+
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dispTurns(), Messages.decimalFormat("#.##", (1f-speedFactor())*100f));
+		String desc = Messages.get(this, "desc", dispTurns(), Messages.decimalFormat("#.##", (1f - speedFactor()) * 100f));
+
+		if (target.buff(NecklaceOfIce.necklaceRecharge.class) != null &&
+				!target.buff(NecklaceOfIce.necklaceRecharge.class).isCursed()) {
+			desc += "\n\n" + Messages.get(this, "boost", necklaceBlocking());
+		}
+
+		return desc;
 	}
 }
