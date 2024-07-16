@@ -52,7 +52,9 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.FileUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,7 +72,7 @@ public class InterlevelScene extends PixelScene {
 	private static float fadeTime;
 	
 	public enum Mode {
-		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
+		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, RESTART, NONE
 	}
 	public static Mode mode;
 
@@ -238,6 +240,9 @@ public class InterlevelScene extends PixelScene {
 								break;
 							case RESURRECT:
 								resurrect();
+								break;
+							case RESTART:
+								restart();
 								break;
 							case RETURN:
 								returnTo();
@@ -504,6 +509,18 @@ public class InterlevelScene extends PixelScene {
 			level.drop(new LostBackpack(), invPos);
 		}
 
+		Dungeon.switchLevel( level, Dungeon.hero.pos );
+	}
+
+	private void restart() throws IOException {
+		Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(-GamesInProgress.curSlot));
+		GamesInProgress.Info info = new GamesInProgress.Info();
+		info.slot = -GamesInProgress.curSlot;
+		Dungeon.preview(info, bundle);
+		Dungeon.wipeProgress(GamesInProgress.curSlot, info.depth, Statistics.deepestFloor);
+
+		Dungeon.loadGame(-GamesInProgress.curSlot);
+		Level level = Dungeon.loadLevel(-GamesInProgress.curSlot);
 		Dungeon.switchLevel( level, Dungeon.hero.pos );
 	}
 

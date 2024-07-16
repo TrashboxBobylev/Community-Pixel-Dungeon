@@ -24,9 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
@@ -34,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -57,6 +57,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Shopkeeper extends NPC {
@@ -227,11 +228,13 @@ public class Shopkeeper extends NPC {
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
-				String[] options = new String[2+ buybackItems.size()];
+				String[] options = new String[2+ buybackItems.size()+(Dungeon.explorer ? 1 : 0)];
 				int maxLen = PixelScene.landscape() ? 30 : 25;
 				int i = 0;
 				options[i++] = Messages.get(Shopkeeper.this, "sell");
 				options[i++] = Messages.get(Shopkeeper.this, "talk");
+				if (Dungeon.explorer)
+					options[i++] = Messages.get(Shopkeeper.this, "checkpoint");
 				for (Item item : buybackItems){
 					options[i] = Messages.get(Heap.class, "for_sale", item.value(), Messages.titleCase(item.title()));
 					if (options[i].length() > maxLen) options[i] = options[i].substring(0, maxLen-3) + "...";
@@ -245,7 +248,30 @@ public class Shopkeeper extends NPC {
 							sell();
 						} else if (index == 1){
 							GameScene.show(new WndTitledMessage(sprite(), Messages.titleCase(name()), chatText()));
-						} else if (index > 1){
+						} else if (Dungeon.explorer && index == 2) {
+							GameScene.show(new WndOptions(Icons.get(Icons.TALENT),
+									Messages.get(Shopkeeper.this, "checkpoint"),
+									Messages.get(Shopkeeper.this, "checkpoint_desc"),
+									Messages.get(Shopkeeper.this, "checkpoint_yes"),
+									Messages.get(Shopkeeper.this, "checkpoint_no")){
+								@Override
+								protected void onSelect(int index) {
+									if (index == 0){
+										try {
+											Dungeon.saveGame(-GamesInProgress.curSlot);
+											Dungeon.saveLevel(-GamesInProgress.curSlot);
+
+											SpellSprite.show(Dungeon.hero, SpellSprite.ANKH);
+
+											GLog.h(Messages.get(Shopkeeper.this, "checkpoint_done"));
+										} catch (IOException e) {
+											ShatteredPixelDungeon.reportException(e);
+											GLog.h(Messages.get(Shopkeeper.this, "checkpoint_failed"));
+										}
+									}
+								}
+							});
+						} else if (index > (Dungeon.explorer ? 2 : 1)){
 							GLog.i(Messages.get(Shopkeeper.this, "buyback"));
 							Item returned = buybackItems.remove(index-2);
 							Dungeon.gold -= returned.value();
@@ -258,7 +284,7 @@ public class Shopkeeper extends NPC {
 
 					@Override
 					protected boolean enabled(int index) {
-						if (index > 1){
+						if (index > (Dungeon.explorer ? 2 : 1)){
 							return Dungeon.gold >= buybackItems.get(index-2).value();
 						} else {
 							return super.enabled(index);
@@ -267,12 +293,12 @@ public class Shopkeeper extends NPC {
 
 					@Override
 					protected boolean hasIcon(int index) {
-						return index > 1;
+						return index > (Dungeon.explorer ? 2 : 1);
 					}
 
 					@Override
 					protected Image getIcon(int index) {
-						if (index > 1){
+						if (index > (Dungeon.explorer ? 2 : 1)){
 							return new ItemSprite(buybackItems.get(index-2));
 						}
 						return null;

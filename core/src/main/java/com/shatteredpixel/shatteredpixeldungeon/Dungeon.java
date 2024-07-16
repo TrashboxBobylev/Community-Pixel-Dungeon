@@ -80,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrectExplorer;
 import com.watabou.noosa.Game;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
@@ -213,6 +214,7 @@ public class Dungeon {
 	public static boolean dailyChallenges = false;
 	public static String customSeedText = "";
 	public static long seed;
+	public static boolean explorer;
 	
 	public static void init() {
 
@@ -614,6 +616,7 @@ public class Dungeon {
 	private static final String CUSTOM_SEED	= "custom_seed";
 	private static final String DAILY	    = "daily";
 	private static final String DAILY_REPLAY= "daily_replay";
+	private static final String EXPLORER    = "explorer";
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String HERO		= "hero";
@@ -641,6 +644,7 @@ public class Dungeon {
 			bundle.put( CUSTOM_SEED, customSeedText );
 			bundle.put( DAILY, daily );
 			bundle.put( DAILY_REPLAY, dailyReplay );
+			bundle.put( EXPLORER, explorer );
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
@@ -720,7 +724,7 @@ public class Dungeon {
 	}
 	
 	public static void saveAll() throws IOException {
-		if (hero != null && (hero.isAlive() || WndResurrect.instance != null)) {
+		if (hero != null && (hero.isAlive() || (WndResurrect.instance != null || WndResurrectExplorer.instance != null))) {
 			
 			Actor.fixTime();
 			updateLevelExplored();
@@ -753,6 +757,7 @@ public class Dungeon {
 		customSeedText = bundle.getString( CUSTOM_SEED );
 		daily = bundle.getBoolean( DAILY );
 		dailyReplay = bundle.getBoolean( DAILY_REPLAY );
+		explorer = bundle.getBoolean( EXPLORER );
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );
@@ -882,19 +887,37 @@ public class Dungeon {
 	}
 	
 	public static void deleteGame( int save, boolean deleteLevels ) {
+		int[] slots;
+		if (Dungeon.explorer)
+			slots = new int[]{save, -save};
+		else
+			slots = new int[]{save};
 
-		if (deleteLevels) {
-			String folder = GamesInProgress.gameFolder(save);
-			for (String file : FileUtils.filesInDir(folder)){
-				if (file.contains("depth")){
-					FileUtils.deleteFile(folder + "/" + file);
+		for (int slot: slots) {
+			if (deleteLevels) {
+				String folder = GamesInProgress.gameFolder(slot);
+				for (String file : FileUtils.filesInDir(folder)) {
+					if (file.contains("depth")) {
+						FileUtils.deleteFile(folder + "/" + file);
+					}
 				}
 			}
-		}
 
-		FileUtils.overwriteFile(GamesInProgress.gameFile(save), 1);
-		
-		GamesInProgress.delete( save );
+			FileUtils.overwriteFile(GamesInProgress.gameFile(slot), 1);
+
+			GamesInProgress.delete(save);
+		}
+	}
+
+	public static void wipeProgress(int save, int depth1, int depth2) {
+		String folder = GamesInProgress.gameFolder(save);
+		for (String file : FileUtils.filesInDir(folder)){
+			if (file.contains("depth")){
+				int depthID = Integer.parseInt(file.substring(5, 6));
+				if (depthID >= depth1 && depthID <= depth2)
+					FileUtils.deleteFile(folder + "/" + file);
+			}
+		}
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -905,13 +928,14 @@ public class Dungeon {
 		info.customSeed = bundle.getString( CUSTOM_SEED );
 		info.daily = bundle.getBoolean( DAILY );
 		info.dailyReplay = bundle.getBoolean( DAILY_REPLAY );
+		info.explorer = bundle.getBoolean( EXPLORER );
 
 		Hero.preview( info, bundle.getBundle( HERO ) );
 		Statistics.preview( info, bundle );
 	}
 	
 	public static void fail( Object cause ) {
-		if (WndResurrect.instance == null) {
+		if (WndResurrect.instance == null && WndResurrectExplorer.instance == null) {
 			updateLevelExplored();
 			Statistics.gameWon = false;
 			Rankings.INSTANCE.submit( false, cause );

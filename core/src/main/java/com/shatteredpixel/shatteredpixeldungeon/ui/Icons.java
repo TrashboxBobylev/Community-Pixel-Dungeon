@@ -402,7 +402,9 @@ public enum Icons {
 	}
 
 	private static int runTypeOfs(){
-		if (Dungeon.daily){
+		if (Dungeon.explorer){
+			return 64;
+		} else if (Dungeon.daily){
 			if (Dungeon.dailyReplay){
 				return 24;
 			} else {

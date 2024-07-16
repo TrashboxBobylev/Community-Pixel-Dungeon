@@ -218,6 +218,8 @@ public class StartScene extends PixelScene {
 					}
 				} else if (!info.customSeed.isEmpty()){
 					steps.hardlight(1f, 1.5f, 0.67f);
+				} else if (info.explorer){
+					steps.hardlight(0xFFFF99);
 				}
 				
 			}

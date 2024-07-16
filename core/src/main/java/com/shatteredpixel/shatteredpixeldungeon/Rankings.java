@@ -114,6 +114,7 @@ public enum Rankings {
 		rec.score       = calculateScore();
 		rec.customSeed  = Dungeon.customSeedText;
 		rec.daily       = Dungeon.daily;
+		rec.explorer    = Dungeon.explorer;
 
 		Badges.validateHighScore( rec.score );
 		
@@ -155,7 +156,7 @@ public enum Rankings {
 			size = records.size();
 		}
 
-		if (rec.customSeed.isEmpty()) {
+		if (rec.customSeed.isEmpty() && !rec.explorer) {
 			totalNumber++;
 			if (win) {
 				wonNumber++;
@@ -462,6 +463,7 @@ public enum Rankings {
 		private static final String ID      = "gameID";
 		private static final String SEED    = "custom_seed";
 		private static final String DAILY   = "daily";
+		private static final String EXPLORER= "explorer";
 
 		private static final String DATE    = "date";
 		private static final String VERSION = "version";
@@ -483,6 +485,7 @@ public enum Rankings {
 
 		public String customSeed;
 		public boolean daily;
+		public boolean explorer;
 
 		public String date;
 		public String version;
@@ -519,6 +522,7 @@ public enum Rankings {
 			score	    = bundle.getInt( SCORE );
 			customSeed  = bundle.getString( SEED );
 			daily       = bundle.getBoolean( DAILY );
+			explorer    = bundle.getBoolean( EXPLORER );
 
 			heroClass	= bundle.getEnum( CLASS, HeroClass.class );
 			armorTier	= bundle.getInt( TIER );
@@ -549,6 +553,7 @@ public enum Rankings {
 			bundle.put( SCORE, score );
 			bundle.put( SEED, customSeed );
 			bundle.put( DAILY, daily );
+			bundle.put( EXPLORER, explorer );
 
 			bundle.put( CLASS, heroClass );
 			bundle.put( TIER, armorTier );
@@ -568,6 +573,11 @@ public enum Rankings {
 		@Override
 		public int compare( Record lhs, Record rhs ) {
 			//this covers custom seeded runs and dailies
+			if (!rhs.explorer && lhs.explorer){
+				return +1;
+			} else if (!lhs.explorer && rhs.explorer){
+				return -1;
+			}
 			if (rhs.customSeed.isEmpty() && !lhs.customSeed.isEmpty()){
 				return +1;
 			} else if (lhs.customSeed.isEmpty() && !rhs.customSeed.isEmpty()){

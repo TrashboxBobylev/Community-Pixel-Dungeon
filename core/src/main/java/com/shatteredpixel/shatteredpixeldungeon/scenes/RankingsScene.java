@@ -256,6 +256,9 @@ public class RankingsScene extends PixelScene {
 			if (rec.daily){
 				shield.copy( Icons.get(Icons.CALENDAR) );
 				shield.hardlight(0.5f, 1f, 2f);
+			} else if (rec.explorer){
+				shield.copy( Icons.get(Icons.TALENT) );
+				shield.hardlight(0xFFF480);
 			} else if (!rec.customSeed.isEmpty()){
 				shield.copy( Icons.get(Icons.SEED) );
 				shield.hardlight(1f, 1.5f, 0.67f);

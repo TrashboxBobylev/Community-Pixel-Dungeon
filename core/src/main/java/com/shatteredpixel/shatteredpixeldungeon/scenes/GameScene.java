@@ -110,19 +110,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoCell;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.shatteredpixel.shatteredpixeldungeon.windows.*;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.KeyBindings;
@@ -442,7 +430,7 @@ public class GameScene extends PixelScene {
 		layoutTags();
 
 		switch (InterlevelScene.mode) {
-			case RESURRECT:
+			case RESURRECT: case RESTART:
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				ScrollOfTeleportation.appearVFX( Dungeon.hero );
 				SpellSprite.show(Dungeon.hero, SpellSprite.ANKH);
@@ -639,6 +627,8 @@ public class GameScene extends PixelScene {
 			}
 			if (ankh != null && GamesInProgress.gameExists(GamesInProgress.curSlot)) {
 				add(new WndResurrect(ankh));
+			} else if (Dungeon.explorer && GamesInProgress.gameExists(-GamesInProgress.curSlot)){
+				add(new WndResurrectExplorer(null));
 			} else {
 				gameOver();
 			}

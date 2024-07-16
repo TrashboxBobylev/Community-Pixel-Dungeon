@@ -742,6 +742,35 @@ public class HeroSelectScene extends PixelScene {
 				buttons.add(challengeButton);
 			}
 
+			StyledButton explorerButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "explorer"), 6){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.scene().addToFront(new WndOptions(
+							Icons.get(Icons.TALENT),
+							Messages.get(HeroSelectScene.class, "explorer"),
+							Messages.get(HeroSelectScene.class, "explorer_desc"),
+							Messages.get(HeroSelectScene.class, "explorer_yes"),
+							Messages.get(HeroSelectScene.class, "explorer_no")
+					) {
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								Dungeon.hero = null;
+								Dungeon.explorer = true;
+								ActionIndicator.clearAction();
+								InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+
+								Game.switchScene( InterlevelScene.class );
+							}
+						}
+					});
+				}
+			};
+			explorerButton.leftJustify = true;
+			explorerButton.icon(Icons.get(Icons.TALENT));
+			add(explorerButton);
+			buttons.add(explorerButton);
+
 			for (int i = 1; i < buttons.size(); i++){
 				ColorBlock spc = new ColorBlock(1, 1, 0xFF000000);
 				add(spc);
