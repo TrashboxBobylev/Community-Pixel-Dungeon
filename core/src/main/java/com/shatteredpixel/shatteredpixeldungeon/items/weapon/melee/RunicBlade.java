@@ -140,7 +140,7 @@ public class RunicBlade extends MeleeWeapon {
 		if (isIdentified()){
 			return Messages.get(this, "stats_desc", Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, buffedLvl()) - 1f)));
 		} else {
-			return Messages.get(this, "typical_stats_desc", Messages.decimalFormat("#.##", 17.5f));
+			return Messages.get(this, "typical_stats_desc", Messages.decimalFormat("#.##", 15f));
 		}
 	}
 
