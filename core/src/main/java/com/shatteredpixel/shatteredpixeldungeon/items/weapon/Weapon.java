@@ -288,7 +288,7 @@ abstract public class Weapon extends KindOfWeapon {
 				if (Random.Int(3) == 0) enchant(null);
 
 			//otherwise chance to lose enchant is 10/20/40/80/100% when upgrading from +4/5/6/7/8
-			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
+			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4) && !(this instanceof RunicBlade)){
 				enchant(null);
 			}
 		}
@@ -395,6 +395,11 @@ abstract public class Weapon extends KindOfWeapon {
 
 		public static float genericProcChanceMultiplier( Char attacker ){
 			float multi = RingOfArcana.enchantPowerMultiplier(attacker);
+
+			if (attacker.buff(RunicBlade.RunicBuff.class) != null){
+				multi += (float)Math.pow(1.15f, attacker.buff(RunicBlade.RunicBuff.class).buffedLvl());
+			}
+
 			Berserk rage = attacker.buff(Berserk.class);
 			if (rage != null) {
 				multi = rage.enchantFactor(multi);

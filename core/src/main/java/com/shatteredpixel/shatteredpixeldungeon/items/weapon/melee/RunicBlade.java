@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
@@ -49,13 +50,42 @@ public class RunicBlade extends MeleeWeapon {
 		tier = 4;
 	}
 
-	//Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5 scaling.
+	//Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 4 scaling.
 	//equal to tier 4 in damage at +5
 
 	@Override
 	public int max(int lvl) {
 		return  5*(tier) +                	//20 base, down from 25
-				Math.round(lvl*(tier+2));	//+6 per level, up from +5
+				Math.round(lvl*(tier+1));	//scaling unchanged
+	}
+
+	protected Buff buff;
+
+	public void activate( Char ch ) {
+		if (buff != null){
+			buff.detach();
+			buff = null;
+		}
+		buff = new RunicBuff();
+		buff.attachTo( ch );
+	}
+
+	@Override
+	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+		if (super.doUnequip( hero, collect, single )) {
+
+			if (buff != null) {
+				buff.detach();
+				buff = null;
+			}
+
+			return true;
+
+		} else {
+
+			return false;
+
+		}
 	}
 
 	@Override
@@ -106,6 +136,14 @@ public class RunicBlade extends MeleeWeapon {
 		});
 	}
 
+	public String statsInfo(){
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc", Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, buffedLvl()) - 1f)));
+		} else {
+			return Messages.get(this, "typical_stats_desc", Messages.decimalFormat("#.##", 17.5f));
+		}
+	}
+
 	@Override
 	public String abilityInfo() {
 		if (levelKnown){
@@ -121,5 +159,35 @@ public class RunicBlade extends MeleeWeapon {
 		public float boost = 2f;
 
 	};
+
+	public class RunicBuff extends Buff {
+
+		@Override
+		public boolean attachTo( Char target ) {
+			if (super.attachTo( target )) {
+				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
+				if (target instanceof Hero && Dungeon.hero == null && cooldown() == 0 && target.cooldown() > 0) {
+					spend(TICK);
+				}
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean act() {
+			spend( TICK );
+			return true;
+		}
+
+		public int level(){
+			return RunicBlade.this.level();
+		}
+
+		public int buffedLvl(){
+			return RunicBlade.this.buffedLvl();
+		}
+
+	}
 
 }
