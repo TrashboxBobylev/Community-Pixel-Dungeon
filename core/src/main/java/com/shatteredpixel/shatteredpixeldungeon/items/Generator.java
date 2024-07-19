@@ -392,9 +392,10 @@ public class Generator {
 					AssassinsBlade.class,
 					Crossbow.class,
 					Katana.class,
-					AlchemicalAkrafena.class
+					AlchemicalAkrafena.class,
+					Wakizashi.class
 			};
-			WEP_T4.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T4.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 			WEP_T4.probs = WEP_T4.defaultProbs.clone();
 			
 			WEP_T5.classes = new Class<?>[]{
