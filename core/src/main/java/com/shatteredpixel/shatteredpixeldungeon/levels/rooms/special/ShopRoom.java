@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.CrossBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -275,7 +276,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new SmallRation() );
 		itemsToSpawn.add( new SmallRation() );
 		
-		switch (Random.Int(4)){
+		switch (Random.Int(5)){
 			case 0:
 				itemsToSpawn.add( new Bomb() );
 				break;
@@ -285,6 +286,9 @@ public class ShopRoom extends SpecialRoom {
 				break;
 			case 3:
 				itemsToSpawn.add( new Honeypot() );
+				break;
+			case 4:
+				itemsToSpawn.add( new CrossBomb() );
 				break;
 		}
 
