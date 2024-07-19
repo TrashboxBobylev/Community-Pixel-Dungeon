@@ -666,6 +666,8 @@ public class ItemSpriteSheet {
 	public static final int RETURN_BEACON   = SPELLS+11;
 	public static final int SUMMON_ELE      = SPELLS+12;
 
+	public static final int FURY            = SPELLS+13;
+
 	static{
 		assignItemRect(WILD_ENERGY,     12, 11);
 		assignItemRect(PHASE_SHIFT,     12, 11);
@@ -682,6 +684,8 @@ public class ItemSpriteSheet {
 		assignItemRect(RECLAIM_TRAP,     8, 16);
 		assignItemRect(RETURN_BEACON,    8, 16);
 		assignItemRect(SUMMON_ELE,       8, 16);
+
+		assignItemRect(FURY,            12, 11);
 	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots

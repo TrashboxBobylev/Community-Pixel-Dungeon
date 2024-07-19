@@ -183,6 +183,7 @@ public abstract class Recipe {
 		new RNGManipulator.Recipe(),
 		new TelekineticGrab.Recipe(),
 		new SummonElemental.Recipe(),
+		new Fury.Recipe(),
 		new StewedMeat.oneMeat(),
 		new TrinketCatalyst.Recipe(),
 		new Trinket.UpgradeTrinket()
