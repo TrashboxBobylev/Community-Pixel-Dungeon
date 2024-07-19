@@ -43,7 +43,7 @@ public class Fury extends TargetedSpell {
 
         usesTargeting = true;
 
-
+        talentChance = 1/(float) Recipe.OUT_QUANTITY;
     }
 
     @Override
