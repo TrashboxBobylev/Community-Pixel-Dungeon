@@ -117,6 +117,11 @@ public enum Rankings {
 		rec.explorer    = Dungeon.explorer;
 
 		Badges.validateHighScore( rec.score );
+		Badges.validateAscensionDeath(rec.ascending, !win);
+
+		if (rec.ascending && rec.win){
+			Badges.validateAscensionPerfection();
+		}
 		
 		INSTANCE.saveGameData(rec);
 

@@ -146,6 +146,7 @@ public class Badges {
 		BOSS_CHALLENGE_2            ( 84 ),
 		GAMES_PLAYED_3              ( 85, true ),
 		HIGH_SCORE_3                ( 86 ),
+		THREE_SHOPKEEPERS_FLEE      ( 87 ),
 
 		//platinum
 		ITEM_LEVEL_5                ( 96 ),
@@ -179,13 +180,26 @@ public class Badges {
 		GAMES_PLAYED_4              ( 109, true ),
 		HIGH_SCORE_4                ( 110 ),
 		CHAMPION_1                  ( 111 ),
+		HAPPY_DEATH                 ( 112 ),
 
 		//diamond
 		BOSS_CHALLENGE_5            ( 120 ),
 		GAMES_PLAYED_5              ( 121, true ),
 		HIGH_SCORE_5                ( 122 ),
 		CHAMPION_2                  ( 123 ),
-		CHAMPION_3                  ( 124 );
+		CHAMPION_3                  ( 124 ),
+		PERFECT_ASCENT              ( 125 ),
+		VICTORY_NO_FOOD,
+		VICTORY_NO_ARMOR,
+		VICTORY_NO_HEALING,
+		VICTORY_NO_HERBALISM,
+		VICTORY_SWARM_INTELLIGENCE,
+		VICTORY_DARKNESS,
+		VICTORY_NO_SCROLLS,
+		VICTORY_CHAMPION_ENEMIES,
+		VICTORY_STRONGER_BOSSES,
+		VICTORY_EVERY_CHALLENGE     ( 126 ),
+		NO_UPGRADES                 ( 127 );
 
 		public boolean meta;
 
@@ -512,6 +526,17 @@ public class Badges {
 			local.add( badge );
 		}
 		
+		displayBadge( badge );
+	}
+
+	public static void validateShopkeepersFled(int kills) {
+		Badge badge = null;
+
+		if (!local.contains( Badge.THREE_SHOPKEEPERS_FLEE ) && kills >= 3) {
+			badge = Badge.THREE_SHOPKEEPERS_FLEE;
+			local.add( badge );
+		}
+
 		displayBadge( badge );
 	}
 	
@@ -929,6 +954,12 @@ public class Badges {
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );
 		}
+
+		if (Statistics.upgradesUsed == 0){
+			badge = Badge.NO_UPGRADES;
+			local.add( badge );
+			displayBadge( badge );
+		}
 	}
 
 	public static void validateNoKilling() {
@@ -1001,6 +1032,26 @@ public class Badges {
 
 		displayBadge( badge );
 	}
+
+	public static void validateAscensionDeath(boolean ascending, boolean isDead) {
+		if (isDead && ascending){
+			Badge badge = Badge.HAPPY_DEATH;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateAscensionPerfection() {
+		if (Statistics.progressScore >= 50_000 &&
+			Statistics.treasureScore >= 20_000 &&
+			Statistics.exploreScore >= 20_000 &&
+			Statistics.totalBossScore >= 15_000 &&
+			Statistics.totalQuestScore >= 10_000){
+			Badge badge = Badge.PERFECT_ASCENT;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
 	
 	public static void validateHappyEnd() {
 		displayBadge( Badge.HAPPY_END );
@@ -1027,6 +1078,50 @@ public class Badges {
 		local.add(badge);
 		displayBadge( badge );
 	}
+
+	public static void validateChampionRuns( int currentChallenges ){
+		Badge badge;
+
+		for (int ch: Challenges.MASKS) {
+			if ((currentChallenges & ch) != 0) {
+				badge = challengeWinBadges.get(ch);
+				if (badge == null) return;
+				local.add(badge);
+				unlock(badge);
+
+				boolean allUnlocked = true;
+				for (Badge b : challengeWinBadges.values()) {
+					if (!isUnlocked(b)) {
+						allUnlocked = false;
+						break;
+					}
+				}
+				if (allUnlocked) {
+
+					badge = Badge.VICTORY_EVERY_CHALLENGE;
+					if (!isUnlocked(badge)) {
+						displayBadge(badge);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	private static LinkedHashMap<Integer, Badge> challengeWinBadges = new LinkedHashMap<>();
+	static {
+		challengeWinBadges.put(Challenges.NO_FOOD,            Badge.VICTORY_NO_FOOD);
+		challengeWinBadges.put(Challenges.NO_ARMOR,           Badge.VICTORY_NO_ARMOR);
+		challengeWinBadges.put(Challenges.NO_HEALING,         Badge.VICTORY_NO_HEALING);
+		challengeWinBadges.put(Challenges.NO_HERBALISM,       Badge.VICTORY_NO_HERBALISM);
+		challengeWinBadges.put(Challenges.DARKNESS,           Badge.VICTORY_DARKNESS);
+		challengeWinBadges.put(Challenges.NO_SCROLLS,         Badge.VICTORY_NO_SCROLLS);
+		challengeWinBadges.put(Challenges.SWARM_INTELLIGENCE, Badge.VICTORY_SWARM_INTELLIGENCE);
+		challengeWinBadges.put(Challenges.CHAMPION_ENEMIES,   Badge.VICTORY_CHAMPION_ENEMIES);
+		challengeWinBadges.put(Challenges.STRONGER_BOSSES,    Badge.VICTORY_STRONGER_BOSSES);
+	}
+
+
 	
 	private static void displayBadge( Badge badge ) {
 		
@@ -1242,6 +1337,14 @@ public class Badges {
 				result += "\n";
 				if (isUnlocked(thirdBossSubclassBadges.get(cls)))   result += "_" + Messages.titleCase(cls.title()) + "_";
 				else                                                result += Messages.titleCase(cls.title()) ;
+			}
+
+			return result;
+		} else if (badge == Badge.VICTORY_EVERY_CHALLENGE){
+			for (int i=0; i < Challenges.NAME_IDS.length; i++){
+				result += "\n";
+				if (isUnlocked(challengeWinBadges.get(Challenges.MASKS[i])))   result += "_" + Messages.titleCase(Messages.get(Challenges.class, Challenges.NAME_IDS[i])) + "_";
+				else                                                result += Messages.titleCase(Messages.get(Challenges.class, Challenges.NAME_IDS[i])) ;
 			}
 
 			return result;

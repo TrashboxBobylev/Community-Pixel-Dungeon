@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -148,8 +149,12 @@ public class Shopkeeper extends NPC {
 			flee();
 		}
 	}
-	
+
 	public void flee() {
+		flee(true);
+	}
+	
+	public void flee(boolean intentional) {
 		destroy();
 
 		Notes.remove(Notes.Landmark.SHOP);
@@ -157,6 +162,12 @@ public class Shopkeeper extends NPC {
 		if (sprite != null) {
 			sprite.killAndErase();
 			CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
+		}
+
+		if (intentional){
+			ForcedToFleeCounter counter = Buff.affect(Dungeon.hero, ForcedToFleeCounter.class);
+			counter.countUp(1f);
+			Badges.validateShopkeepersFled((int) counter.count());
 		}
 	}
 	
@@ -347,4 +358,6 @@ public class Shopkeeper extends NPC {
 		}
 		turnsSinceHarmed = bundle.contains(TURNS_SINCE_HARMED) ? bundle.getInt(TURNS_SINCE_HARMED) : -1;
 	}
+
+	public static class ForcedToFleeCounter extends CounterBuff {{revivePersists = true;}};
 }
