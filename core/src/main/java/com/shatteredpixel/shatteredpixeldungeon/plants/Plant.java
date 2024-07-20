@@ -24,9 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -83,6 +81,9 @@ public abstract class Plant implements Bundlable {
 		if (Dungeon.level.heroFOV[pos]) {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
 		}
+
+		Statistics.plantsActivated++;
+		Badges.validatePlantsActivated();
 
 		float seedChance = 0f;
 		for (Char c : Actor.chars()){

@@ -84,6 +84,7 @@ public class Badges {
 		DEATH_FROM_FALLING          ( 20 ),
 		GAMES_PLAYED_1              ( 21, true ),
 		HIGH_SCORE_1                ( 22 ),
+		PLANTS_ACTIVATED_1          ( 23 ),
 
 		//silver
 		NO_MONSTERS_SLAIN           ( 32 ),
@@ -117,6 +118,8 @@ public class Badges {
 		BOSS_SLAIN_1_ALL_CLASSES    ( 55, true ),
 		GAMES_PLAYED_2              ( 56, true ),
 		HIGH_SCORE_2                ( 57 ),
+		PLANTS_ACTIVATED_2          ( 58 ),
+		PLANTS_ACTIVATED_3          ( 59 ),
 
 		//gold
 		PIRANHAS                    ( 64 ),
@@ -147,6 +150,8 @@ public class Badges {
 		GAMES_PLAYED_3              ( 85, true ),
 		HIGH_SCORE_3                ( 86 ),
 		THREE_SHOPKEEPERS_FLEE      ( 87 ),
+		PLANTS_ACTIVATED_4          ( 88 ),
+		PLANTS_ACTIVATED_5          ( 89 ),
 
 		//platinum
 		ITEM_LEVEL_5                ( 96 ),
@@ -515,6 +520,37 @@ public class Badges {
 			local.add( badge );
 		}
 		
+		displayBadge( badge );
+	}
+
+	public static void validatePlantsActivated() {
+		Badge badge = null;
+
+		if (!local.contains( Badge.PLANTS_ACTIVATED_1 ) && Statistics.plantsActivated >= 10) {
+			badge = Badge.PLANTS_ACTIVATED_1;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.PLANTS_ACTIVATED_2 ) && Statistics.plantsActivated >= 20) {
+			if (badge != null) unlock(badge);
+			badge = Badge.PLANTS_ACTIVATED_2;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.PLANTS_ACTIVATED_3 ) && Statistics.plantsActivated >= 30) {
+			if (badge != null) unlock(badge);
+			badge = Badge.PLANTS_ACTIVATED_3;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.PLANTS_ACTIVATED_4 ) && Statistics.plantsActivated >= 40) {
+			if (badge != null) unlock(badge);
+			badge = Badge.PLANTS_ACTIVATED_4;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.PLANTS_ACTIVATED_5 ) && Statistics.plantsActivated >= 50) {
+			if (badge != null) unlock(badge);
+			badge = Badge.PLANTS_ACTIVATED_5;
+			local.add( badge );
+		}
+
 		displayBadge( badge );
 	}
 	

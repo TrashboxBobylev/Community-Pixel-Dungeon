@@ -37,6 +37,7 @@ public class Statistics {
 	public static int itemsCrafted;
 	public static int piranhasKilled;
 	public static int ankhsUsed;
+	public static int plantsActivated;
 
 	//These are used for score calculation
 	// some are built incrementally, most are assigned when full score is calculated
@@ -81,6 +82,7 @@ public class Statistics {
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
 		ankhsUsed		= 0;
+		plantsActivated = 0;
 
 		progressScore   = 0;
 		heldItemValue   = 0;
@@ -121,6 +123,7 @@ public class Statistics {
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
 	private static final String ANKHS		= "ankhsUsed";
+	private static final String PLANTS		= "plantsActivated";
 
 	private static final String PROG_SCORE	    = "prog_score";
 	private static final String ITEM_VAL	    = "item_val";
@@ -160,6 +163,7 @@ public class Statistics {
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put( ANKHS,		ankhsUsed );
+		bundle.put( PLANTS,		plantsActivated );
 
 		bundle.put( PROG_SCORE,  progressScore );
 		bundle.put( ITEM_VAL,    heldItemValue );
@@ -204,6 +208,7 @@ public class Statistics {
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		ankhsUsed		= bundle.getInt( ANKHS );
+		if (bundle.contains(PLANTS)) plantsActivated = bundle.getInt(PLANTS);
 
 		progressScore   = bundle.getInt( PROG_SCORE );
 		heldItemValue   = bundle.getInt( ITEM_VAL );
