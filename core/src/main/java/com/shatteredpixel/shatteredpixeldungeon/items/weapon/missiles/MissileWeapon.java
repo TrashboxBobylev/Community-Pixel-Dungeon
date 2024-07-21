@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -179,7 +180,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (projecting
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
 				&& Dungeon.level.distance(user.pos, dst) <= Math.round(4 * Enchantment.genericProcChanceMultiplier(user))){
-			if (user.buff(Vertigo.class) != null && Random.Int(3) == 0){
+			if (user.buff(VertigoLike.class) != null && Random.Int(3) == 0){
 				ArrayList<Integer> potentialList = new ArrayList<>();
 				for (int i : PathFinder.NEIGHBOURS8){
 					if (dst + i < Dungeon.level.length() && Dungeon.level.passable[dst + i])

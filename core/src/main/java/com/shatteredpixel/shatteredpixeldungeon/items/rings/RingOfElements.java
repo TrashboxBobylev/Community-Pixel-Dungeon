@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -83,15 +84,20 @@ public class RingOfElements extends Ring {
 	}
 	
 	public static float resist( Char target, Class effect ){
-		if (getBuffedBonus(target, Resistance.class) == 0) return 1f;
+		float resist = 1f;
+
+		if (getBuffedBonus(target, Resistance.class) == 0) return resist;
 		
 		for (Class c : RESISTS){
-			if (c.isAssignableFrom(effect)){
-				return (float)Math.pow(0.825, getBuffedBonus(target, Resistance.class));
+			if (Char.areRelated(effect, c)){
+				if (target.buff(LeanyElixir.Lean.class) != null)
+					resist = 1/3f;
+
+				return (float)Math.pow(0.825, getBuffedBonus(target, Resistance.class))*resist;
 			}
 		}
 		
-		return 1f;
+		return resist;
 	}
 	
 	public class Resistance extends RingBuff {

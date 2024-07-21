@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -54,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.NecklaceOfIce;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
@@ -219,7 +221,7 @@ public abstract class Char extends Actor {
 		}
 
 		//can't swap places if one char has restricted movement
-		if (rooted || c.rooted || buff(Vertigo.class) != null || c.buff(Vertigo.class) != null){
+		if (rooted || c.rooted || buff(VertigoLike.class) != null || c.buff(VertigoLike.class) != null){
 			return true;
 		}
 
@@ -544,6 +546,7 @@ public abstract class Char extends Actor {
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff( LeanyElixir.Lean.class) != null) defRoll *= 1.5f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -618,6 +621,7 @@ public abstract class Char extends Actor {
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
+		if ( buff( LeanyElixir.Lean.class ) != null) speed *= 2f;
 		return speed;
 	}
 
@@ -939,11 +943,23 @@ public abstract class Char extends Actor {
 		return filtered;
 	}
 
+	public static boolean areRelated(Class effect, Class filter){
+		if (filter.isInterface()){
+			Class[] interfaces = effect.getInterfaces();
+			for (Class clazz : interfaces){
+				if (clazz.isAssignableFrom(filter)){
+					return true;
+				}
+			}
+		} else return filter.isAssignableFrom(effect);
+		return false;
+	}
+
 	@SuppressWarnings("unchecked")
 	//returns an instance of the specific buff class, if it exists. Not just assignable
-	public synchronized  <T extends Buff> T buff( Class<T> c ) {
+	public synchronized <T> T buff( Class<T> c ) {
 		for (Buff b : buffs) {
-			if (b.getClass() == c) {
+			if (areRelated(b.getClass(), c)) {
 				return (T)b;
 			}
 		}
@@ -1034,7 +1050,7 @@ public abstract class Char extends Actor {
 	//travelling may be false when a character is moving instantaneously, such as via teleportation
 	public void move( int step, boolean travelling ) {
 
-		if (travelling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
+		if (travelling && Dungeon.level.adjacent( step, pos ) && buff( VertigoLike.class ) != null) {
 			sprite.interruptMotion();
 			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
@@ -1098,7 +1114,7 @@ public abstract class Char extends Actor {
 		
 		float result = 1f;
 		for (Class c : resists){
-			if (c.isAssignableFrom(effect)){
+			if (areRelated(effect, c)){
 				result *= 0.5f;
 			}
 		}
@@ -1117,7 +1133,7 @@ public abstract class Char extends Actor {
 		}
 		
 		for (Class c : immunes){
-			if (c.isAssignableFrom(effect)){
+			if (areRelated(effect, c)){
 				return true;
 			}
 		}
@@ -1162,7 +1178,7 @@ public abstract class Char extends Actor {
 				new HashSet<Class>()),
 		LARGE,
 		IMMOVABLE ( new HashSet<Class>(),
-				new HashSet<Class>( Arrays.asList(Vertigo.class) )),
+				new HashSet<Class>( Arrays.asList(VertigoLike.class) )),
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,

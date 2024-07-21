@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -576,7 +577,7 @@ public abstract class Wand extends Item {
 			
 			if (target != null) {
 
-				if (curUser.buff(Vertigo.class) != null && Random.Int(3) == 0){
+				if (curUser.buff(VertigoLike.class) != null && Random.Int(3) == 0){
 					ArrayList<Integer> potentialList = new ArrayList<>();
 					for (int i : PathFinder.NEIGHBOURS8){
 						if (target + i < Dungeon.level.length() && Dungeon.level.passable[target + i])

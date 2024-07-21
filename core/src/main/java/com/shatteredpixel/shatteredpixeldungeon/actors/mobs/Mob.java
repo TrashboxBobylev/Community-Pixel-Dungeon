@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -979,7 +980,7 @@ public abstract class Mob extends Char {
 	}
 
 	public Char selectVertigoedEnemy(){
-		if (buff(Vertigo.class) != null && Random.Int(2) == 0){
+		if (buff(VertigoLike.class) != null && Random.Int(2) == 0){
 			ArrayList<Char> potentialEnemyList = new ArrayList<>();
 			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 3 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {

@@ -22,28 +22,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+package com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-
-public class Vertigo extends FlavourBuff implements VertigoLike {
-
-	public static final float DURATION	= 10f;
-
-	{
-		type = buffType.NEGATIVE;
-		announced = true;
-	}
-
-	@Override
-	public int icon() {
-		return BuffIndicator.VERTIGO;
-	}
-
-	@Override
-	public float iconFadePercent() {
-		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
-	}
-
+public interface VertigoLike {
 }

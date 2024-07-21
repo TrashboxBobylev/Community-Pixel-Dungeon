@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -601,7 +602,7 @@ public class Item implements Bundlable {
 	}
 
 	public int throwPos( Hero user, int dst){
-		if (user.buff(Vertigo.class) != null && Random.Int(3) == 0){
+		if (user.buff(VertigoLike.class) != null && Random.Int(3) == 0){
 			ArrayList<Integer> potentialList = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (dst + i < Dungeon.level.length() && Dungeon.level.passable[dst + i])

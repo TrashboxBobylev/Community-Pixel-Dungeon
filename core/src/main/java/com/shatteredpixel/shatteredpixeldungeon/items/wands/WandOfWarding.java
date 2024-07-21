@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -466,7 +467,7 @@ public class WandOfWarding extends Wand {
 			immunities.add( Sleep.class );
 			immunities.add( Terror.class );
 			immunities.add( Dread.class );
-			immunities.add( Vertigo.class );
+			immunities.add( VertigoLike.class );
 			immunities.add( AllyBuff.class );
 		}
 
