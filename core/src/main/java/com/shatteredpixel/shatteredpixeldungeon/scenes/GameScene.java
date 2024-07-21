@@ -127,12 +127,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.Tweener;
-import com.watabou.utils.DeviceCompat;
-import com.watabou.utils.GameMath;
-import com.watabou.utils.Point;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
-import com.watabou.utils.RectF;
+import com.watabou.utils.*;
 import com.zrp200.scrollofdebug.ScrollOfDebug;
 
 import java.io.IOException;
@@ -537,8 +532,18 @@ public class GameScene extends PixelScene {
 				//60%/90% chance, use level's seed so that we get the same result for the same level
 				//offset seed slightly to avoid output patterns
 				Random.pushGenerator(Dungeon.seedCurDepth()+1);
-					if (reqSecrets <= 0 && Random.Int(10) < 3+3*Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
+					if (reqSecrets <= 0 && Random.Int(10) < 2+2*Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
 						GLog.p(Messages.get(this, "secret_hint"));
+						for (Room r : ((RegularLevel) Dungeon.level).rooms()){
+							if (r instanceof SecretRoom) {
+								int entrance = Dungeon.level.pointToCell(((SecretRoom) r).entrance());
+								for (int i: PathFinder.NEIGHBOURS9){
+									if (Dungeon.level.discoverable[entrance+i] && !(Dungeon.level.mapped[entrance+i] || Dungeon.level.visited[entrance+i])){
+										Dungeon.level.mapped[entrance+i] = true;
+									}
+								}
+							}
+						}
 					}
 				Random.popGenerator();
 			}
