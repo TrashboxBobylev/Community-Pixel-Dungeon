@@ -99,7 +99,7 @@ public class CommPD_Changes {
                 "Idea's author: _Benzedes-Merz/@benzedesmerz_\n\n" +
                         "_-_ Custom notes can be written for each floor _by holding notes' tab button_ in journal's window.\n\n" +
                         "_-_ The length of each note is limited to _60 letters_.\n\n" +
-                        "_-_ Stating _\"remove\"_ as the first word, while writing a note, allows to _remove custom notes_."
+                        "_-_ You can remove notes by pressing a button next to note in list."
         ));
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_KAUNAN), "Revealing item's upgrades on identifying",
@@ -151,8 +151,8 @@ public class CommPD_Changes {
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BROKEN_TREASURE), "Broken Treasure Box trinket",
                 "Idea's author: _goteryup/@goteryup_\n\n" +
-                        "_-_ Added _Broken Treasure Box_ trinket, which increases amount of special rooms by _25%/75%/125%/175%_.\n\n" +
-                        "_-_ The amount of alchemical energy required to upgrade this trinket is _25/35/45_."
+                        "_-_ Added _Broken Treasure Box_ trinket, which increases amount of special rooms by _25%/60%/95%/130%_.\n\n" +
+                        "_-_ The amount of alchemical energy required to upgrade this trinket is _25/30/35_."
         ));
 
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GOLDEN_KEY), "No Torches and Keys as rewards",
@@ -284,6 +284,32 @@ public class CommPD_Changes {
         changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
                 "Fixed the following bugs:\n" +
                 "_-_ The new glyph code crashing in certain conditions due to developer's carelessness."
+        ));
+
+        changes = new ChangeInfo("v0.2.0", false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Added 17 more ideas, sourced from Reddit, Lemmy and older #ideas channel.\n" +
+                        "_-_ Turned Scroll of Debug into setting option in data tab."));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BROKEN_TREASURE), "Broken Treasure Box trinket",
+                "Changed:\n\n" +
+                        "_-_ Reduced the amount of special rooms from _25%/75%/125%/175%_ to _25%/60%/95%/130%_.\n\n" +
+                        "_-_ Reduced upgrade energy requirement from _25/35/45_ to _25/30/35_."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Custom notes",
+                "Improved:\n\n" +
+                        "_-_ - Adding a note switches journal to notes tab.\n\n" +
+                        "_-_ Reworked note removing: now is done through the button at note itself with approving window.\n\n" +
+                        "_-_ Improved note list refreshing."
+        ));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed the following bugs:\n" +
+                        "_-_ Scroll of Enchantment not properly showing enchantment/glyph names after being used."
         ));
 
     }
