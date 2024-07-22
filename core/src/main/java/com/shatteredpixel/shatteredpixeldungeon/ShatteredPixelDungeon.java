@@ -49,6 +49,7 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v2_4_0 = 780;
 
 	public static final int vComm_0_1_0 = 782;
+	public static final int vComm_0_2_0 = 784;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
