@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.GameMath;
 
 public class RingOfTenacity extends Ring {
 
@@ -56,7 +57,10 @@ public class RingOfTenacity extends Ring {
 	
 	public static float damageMultiplier( Char t ){
 		//(HT - HP)/HT = heroes current % missing health.
-		return (float)Math.pow(0.85, getBuffedBonus( t, Tenacity.class)*((float)(t.HT - t.HP)/t.HT));
+		//we skew it to fit (0 DR at 80% HP) -> (100 DR at 20%)
+		float hpRatio = GameMath.gate(0.2f, ((float) (t.HT - t.HP) / t.HT)*1.666f - 0.333f, 1f);
+
+		return (float)Math.pow(0.85, getBuffedBonus( t, Tenacity.class)* hpRatio);
 	}
 
 	public class Tenacity extends RingBuff {
