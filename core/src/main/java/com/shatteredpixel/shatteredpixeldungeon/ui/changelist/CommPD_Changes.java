@@ -217,7 +217,7 @@ public class CommPD_Changes {
                         "_-_ The bomb can either be made with bomb and shuriken, or be found as alternative to normal bomb."
         ));
 
-        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_INTUITION), "Colored runestones",
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_FEAR), "Colored runestones",
                 "Idea's author: _:soiled:/@tarzhel_\n\n" +
                         "_-_ Each runestone's sign is now colored like their respective scroll."
         ));
