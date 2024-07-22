@@ -79,6 +79,21 @@ public class AboutScene extends PixelScene {
 		new AuthorInfo("goteryup","goteryup"),
 		new AuthorInfo("Luiz Felipe Sá","luizfelipesa"),
 		new AuthorInfo("The healing plant","fuwn."),
+		new AuthorInfo("u/SmithyLK", ""),
+		new AuthorInfo("Drach", "u/InkDrach"),
+		new AuthorInfo("u/radiantchaos18", ""),
+		new AuthorInfo("u/AntManMax", ""),
+		new AuthorInfo("Pxl Pddng", "u/-pixelpudding-"),
+		new AuthorInfo("u/confusedpuppy", "lemmy.dbzer0.com"),
+		new AuthorInfo("u/diamocube", ""),
+		new AuthorInfo("u/Lancelot-Gaming", ""),
+		new AuthorInfo("u/Demonetizing-YT-GUY", ""),
+		new AuthorInfo("tpd0618", "tpd0618"),
+		new AuthorInfo(":soiled:", "tarzhel"),
+		new AuthorInfo("Hrohlu", "hrohlu"),
+		new AuthorInfo("Gamma", "gammalolman"),
+		new AuthorInfo("QKuroire", "qkuroire"),
+		new AuthorInfo("Lootbug", "thelootbug")
 	};
 
 	@Override
@@ -140,7 +155,9 @@ public class AboutScene extends PixelScene {
 
 		float currentDepth = authorsBigTitle.bottom() + 8;
 
-		for (int i = 0; i < 21; i++){
+		float creditWidth = Math.min(Camera.main.width / 3f, colWidth / 2f);
+
+		for (int i = 0; i < 36; i++){
 			if (i % 3 == 0 && i != 0)
 				currentDepth += 36;
 
@@ -151,13 +168,14 @@ public class AboutScene extends PixelScene {
 			CreditsBlock author = new CreditsBlock(false, Window.TITLE_COLOR,
 					creditsList[i].name,
 					icon,
-					"@" + creditsList[i].nickname,
+					((creditsList[i].nickname.startsWith("u/") || creditsList[i].nickname.isEmpty()) ? "" : "@")
+						+ creditsList[i].nickname,
 					null, null);
 
-			float baseX = (Camera.main.width - colWidth/2f*3)/2f;
+			float baseX = (Camera.main.width - creditWidth*3)/2f;
 			if (SPDSettings.scale() == PixelScene.maxDefaultZoom && SPDSettings.interfaceSize() != 2) baseX = 0;
 
-			author.setRect((baseX + ((i % 3) * colWidth/2f)), currentDepth, colWidth/2f, 0);
+			author.setRect((baseX + ((i % 3) * creditWidth)), currentDepth, creditWidth, 0);
 			content.add(author);
 		}
 
