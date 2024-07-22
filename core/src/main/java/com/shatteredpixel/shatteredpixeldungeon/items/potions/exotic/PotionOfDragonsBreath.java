@@ -36,7 +36,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -171,6 +173,13 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 											if (Dungeon.level.map[cell] == Terrain.DOOR){
 												Level.set(cell, Terrain.OPEN_DOOR);
 												GameScene.updateMap(cell);
+											}
+
+											//evaporate some water
+											if (Dungeon.level.map[cell] == Terrain.WATER && Random.Float() <= 0.6f){
+												Level.set( cell, Terrain.EMPTY);
+												GameScene.updateMap( cell );
+												CellEmitter.get( cell ).burst( Speck.factory( Speck.STEAM ), 10 );
 											}
 
 											//only ignite cells directly near caster if they are flammable
