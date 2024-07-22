@@ -25,9 +25,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DefenderSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
@@ -160,6 +163,114 @@ public class CommPD_Changes {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WATERSKIN), "Sipping out of Waterskin",
                 "Idea's author: _The healing plant/@fuwn._\n\n" +
                         "_-_ Added ability to _sip_ out of waterskin, consuming only 1 dewdrop out of it."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_FROSTFIRE), "Frostfire Brew return",
+                "Idea's author: _u/SmithyLK_\n\n" +
+                        "_-_ Reimplemented _Frostfire Brew_, with it being reworked to create _frost fire_ instead of normal fire and chill blobs.\n\n" +
+                        "_-_ Frost fire doesn't spread to other tiles, freezes and burns heaps at the same time, and inflicts _Frostburn debuff_.\n\n" +
+                        "_-_ Frostburn makes its targets be both slowed and damaged and freezes them when extinguished with water."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GEMSTONE_DUST), "Gemstone Dust",
+                "Idea's authors: _Drach/u/InkDrach, u/radiantchaos18 and u/AntManMax_\n\n" +
+                        "_-_ Added _Gemstone Dust_ as _ring counterpart_ to arcane resin.\n\n" +
+                        "_-_ Gemstone dust can be used to _upgrade rings up to +2_, this boost is reset with normal upgrades.\n\n" +
+                        "_-_ Arcane resin can also be used to upgrade rings and gemstone dust can be used to upgrade wands, but each level of boost _costs one more item than usual_."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACE_NECKLACE), "Necklace of Ice",
+                "Idea's author: _Pxl Pddng/u/-pixelpudding-_\n\n" +
+                        "_-_ Added _Necklace of Ice_, an ice-themed artifact that _turns cold into protection_, making player be immune to frost, not be slowed by chill and get additional armor while being chilled.\n\n" +
+                        "_-_ While worn, it will slowly charge (300 turns to full), with 100% charge necklace of ice can be used to _unleash a blizzard effect_, that damages and chills enemies and ground in 5x5 area.\n\n" +
+                        "_-_ Necklace of ice is upgraded by gathering experience."
+        ));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Explorer mode",
+                "Idea's author: _u/confusedpuppy@lemmy.dbzer0.com_\n\n" +
+                        "_-_ Added _Explorer mode_, inspired by Caves of Qud, that allows to _set checkpoints_ at shop rooms, and _reset the game back at them, when dying_.\n\n" +
+                        "_-_ The Explorer mode runs _cannot obtain badges_ and their runs will be at the bottom of rankings, like seeded runs."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNIC_BLADE), "Runic blade rework",
+                "Idea's author: _u/diamocube_\n\n" +
+                        "_-_ Changed Runic Blade to _never lose enchantments_ and _increase their power_ with upgrading, instead of getting more damage from them.\n\n" +
+                        "_-_ Each upgrade boosts enchantments by _15%_ in multiplicative fashion."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FURY), "Fury spell",
+                "Idea's author: _u/Lancelot-Gaming_\n\n" +
+                        "_-_ Added _Fury_ spell, that enrages enemies by inflicting Amok and Adrenaline on them.\n\n" +
+                        "_-_ The spell can be made with Scroll of Rage."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAKIZASHI), "Wakizashi",
+                "Idea's author: _u/Demonetizing-YT-GUY_\n\n" +
+                        "_-_ Added _Wakizashi_, the special T4 weapon, that has very low damage, but gets +33% accuracy and _attacks 3 times per turn_, with each hit ignoring _33% of enemy's armor_\n\n" +
+                        "_-_ Duelist's ability is combo effect that lasts for 3 turns, during which each hit will deal 1 more damage than previous one."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CROSS_BOMB), "Cross Bomb",
+                "Idea's author: _tpd0618/@tpd0618_\n\n" +
+                        "_-_ Added _cross bomb_, that deals 33% more damage, but _explodes in cross_ shape without corners, like Bomberman bomb.\n\n" +
+                        "_-_ Each line of cross is 2 tiles long.\n\n" +
+                        "_-_ The bomb can either be made with bomb and shuriken, or be found as alternative to normal bomb."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_INTUITION), "Colored runestones",
+                "Idea's author: _:soiled:/@tarzhel_\n\n" +
+                        "_-_ Each runestone's sign is now colored like their respective scroll."
+        ));
+
+        changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.PERFECT_ASCENT.image), "Hardcore badges",
+                "Idea's author: _:soiled:/@tarzhel_\n\n" +
+                        "_-_ Added few new badges, intended to be additional challenge for players.\n\n" +
+                        "" +
+                        "_-_ _UnHappy Ending_ - rewarded, when player dies during ascension.\n" +
+                        "_-_ _The Root of All Evil_ - rewarded, when at least three shopkeepers are forced to flee.\n" +
+                        "_-_ _Pristine Victory_ - rewarded, when ascension run is completed with every score category being maxed out.\n" +
+                        "_-_ _Champion of All Trades_ - rewarded, when player completes run with every challenge (not all at once, think of it as counterpart to badge for defeating DM-300 with all subclasses).\n" +
+                        "_-_ _Syphoned Enchanter_ - rewarded, when player completes run without using scroll of upgrade."
+        ));
+
+        changes.addButton( new ChangeButton(BadgeBanner.image( Badges.Badge.PLANTS_ACTIVATED_2.image), "Herbalist badges",
+                "Idea's author: _The healing plant/@fuwn._\n\n" +
+                        "_-_ Added a badge category for planting and using plants, with a badge for 10/20/30/40/50 triggered plants in a run."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_LEAN), "Leany Elixir",
+                "Idea's author: _Hrohlu/@hrohlu_\n\n" +
+                        "_-_ Added _Leany Elixir_, which makes player take _3x less_ elemental damage, move _2x_ faster, dodge _50% more_ frequently and do _2x more_ physical damage.\n\n" +
+                        "_-_ This elixir also makes player _vertigoed_, making them run in random directions and miss their melee and ranged attacks.\n" +
+                        "_-_ This elixir can be made with Potion of Levitation and Unstable Brew (given 2 at the craft)."
+        ));
+
+        changes.addButton( new ChangeButton(new DefenderSprite(), "Failed Defender",
+                "Idea's author: _Gamma/@gammalolman_\n\n" +
+                        "_-_ Added _failed defender_, the rare variant of prison guard, that combines traits of prison guard, succubus and gnoll brute.\n\n" +
+                        "_-_ Failed defender has 3 more armor and 2 more evasion points, than normal guard, and _can teleport to the player_, when they are out to reach.\n\n" +
+                        "_-_ His drop is _enchanted armor_ at 5x drop rate of normal guard."
+        ));
+
+        changes.addButton( new ChangeButton(new TalentIcon(Talent.ROGUES_FORESIGHT), "Rogue's Foresight rework",
+                "Idea's author: _QKuroire/@qkuroire_\n\n" +
+                        "_-_ Reduced the chance to detect a secret from _60%/90%_ to _40%/60%_, but successful procs show the secret room entrances on the map."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_SAPPHIRE), "Ring of Tenacity buff",
+                "Idea's author: _Raynuva/@raynuva_\n\n" +
+                        "_-_ Changed the 0% damage reduction threshold from _100% HP_ to _80% HP_.\n\n" +
+                        "_-_ Changed the 100% damage reduction threshold from _0%_ to _20% HP_."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_AMBER), "Dragon's Breath water interaction",
+                "Idea's author: _ImanUserIus/@imanuserius_\n\n" +
+                        "_-_ Changed _Potion of Dragon's Breath_ to _evaporate roughly 60% of water_ in effect's AoE, acting as reverse Aqua Brew."
+        ));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CROSSBOW), "Darts and Crossbow's augmentation",
+                "Idea's author: _Lootbug/@thelootbug_\n\n" +
+                        "_-_ Darts are now _affected by Crossbow's augmentation_, making them take more/less time to hit, but dealing more/less damage."
         ));
 
         changes = new ChangeInfo("v0.1.1", false, null);
