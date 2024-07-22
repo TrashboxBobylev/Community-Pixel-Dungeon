@@ -204,7 +204,7 @@ public class GameScene extends PixelScene {
 		// debug logic
 		ScrollOfDebug debug = Dungeon.hero.belongings.getItem(ScrollOfDebug.class);
 		// by default only added in "indev" builds.
-		boolean supported = DeviceCompat.isDebug();
+		boolean supported = SPDSettings.debug();
 		if(supported) {
 			if(debug == null) {
 				debug = new ScrollOfDebug();

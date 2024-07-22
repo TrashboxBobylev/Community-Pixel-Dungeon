@@ -231,6 +231,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_CUSTOM_SEED	= "custom_seed";
 	public static final String KEY_LAST_DAILY	= "last_daily";
 	public static final String KEY_INTRO		= "intro";
+	public static final String KEY_DEBUG		= "debug";
 
 	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
 	
@@ -240,6 +241,14 @@ public class SPDSettings extends GameSettings {
 	
 	public static boolean intro() {
 		return getBoolean( KEY_INTRO, true );
+	}
+
+	public static void debug( boolean value ) {
+		put( KEY_DEBUG, value );
+	}
+
+	public static boolean debug() {
+		return getBoolean( KEY_DEBUG, true );
 	}
 	
 	public static void lastClass( int value ) {

@@ -835,6 +835,7 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkUpdates;
 		CheckBox chkBetas;
 		CheckBox chkWifi;
+		CheckBox chkDebug;
 
 		@Override
 		protected void createChildren() {
@@ -893,6 +894,16 @@ public class WndSettings extends WndTabbed {
 				chkWifi.checked(SPDSettings.WiFi());
 				add(chkWifi);
 			}
+
+			chkDebug = new CheckBox(Messages.get(this, "debug")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.debug(checked());
+				}
+			};
+			chkDebug.checked(SPDSettings.debug());
+			add(chkDebug);
 		}
 
 		@Override
@@ -924,6 +935,9 @@ public class WndSettings extends WndTabbed {
 				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				pos = chkWifi.bottom();
 			}
+
+			chkDebug.setRect(0, pos + GAP, width, BTN_HEIGHT);
+			pos = chkDebug.bottom();
 
 			height = pos;
 
