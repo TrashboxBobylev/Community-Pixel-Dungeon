@@ -248,7 +248,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean debug() {
-		return getBoolean( KEY_DEBUG, true );
+		return getBoolean( KEY_DEBUG, false );
 	}
 	
 	public static void lastClass( int value ) {
