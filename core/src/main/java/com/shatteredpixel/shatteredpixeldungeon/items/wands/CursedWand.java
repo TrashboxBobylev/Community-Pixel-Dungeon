@@ -485,6 +485,7 @@ public class CursedWand {
 							Generator.Category.RING, Generator.Category.ARTIFACT));
 				} while (result.cursed);
 				if (result.isUpgradable())
+					result.upgrade();
 					for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
 						result.upgrade();
 				result.cursed = result.cursedKnown = true;

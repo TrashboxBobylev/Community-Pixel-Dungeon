@@ -125,6 +125,7 @@ public class PoolRoom extends SpecialRoom {
 		
 		//33% chance for an extra update.
 		if (Random.Int(3) == 0){
+			prize.upgrade();
 			for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
 				prize.upgrade();
 		}

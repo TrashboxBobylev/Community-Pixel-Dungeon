@@ -105,6 +105,7 @@ public class GoldenMimic extends Mimic {
 					((Armor) i).inscribe(null);
 				}
 				if (!(i instanceof MissileWeapon || i instanceof Artifact) && i.level() == 0 && Random.Int(2) == 0){
+					i.upgrade();
 					for (int i1 = 0; i1 < RNGManipulator.LuckBoost.luckBoost() / 5000; i1++)
 						i.upgrade();
 				}
