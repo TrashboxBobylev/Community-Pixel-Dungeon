@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -100,6 +101,7 @@ public class GemstoneDust extends Item {
         } else {
             boostItem.detachAll(Dungeon.hero.belongings.backpack);
         }
+        Catalog.countUses(boostItem.getClass(), usedBoost);
 
         boostedRing.dustBonus++;
         Item.updateQuickslot();

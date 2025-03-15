@@ -100,6 +100,7 @@ public class ArcaneResin extends Item {
 		} else {
 			boostItem.detachAll(Dungeon.hero.belongings.backpack);
 		}
+		Catalog.countUses(boostItem.getClass(), usedBoost);
 
 		boostedWand.resinBonus++;
 		boostedWand.curCharges++;
