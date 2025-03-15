@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
@@ -137,7 +138,7 @@ public class TalismanOfForesight extends Artifact {
 		return Math.min(5 + 2*level(), (charge-3)/1.08f);
 	}
 
-	private CellSelector.Listener scry = new CellSelector.Listener(){
+	public CellSelector.Listener scry = new CellSelector.Listener(){
 
 		@Override
 		public void onSelect(Integer target) {
@@ -192,6 +193,8 @@ public class TalismanOfForesight extends Artifact {
 					if (ch != null && ch.alignment != Char.Alignment.NEUTRAL && ch.alignment != curUser.alignment){
 						Buff.append(curUser, CharAwareness.class, 5 + 2*level()).charID = ch.id();
 
+						artifactProc(ch, visiblyUpgraded(), (int)(3 + dist*1.08f));
+
 						if (!curUser.fieldOfView[ch.pos]){
 							earnedExp += 10;
 						}
@@ -212,6 +215,7 @@ public class TalismanOfForesight extends Artifact {
 				if (exp >= 100 + 50*level() && level() < levelCap) {
 					exp -= 100 + 50*level();
 					upgrade();
+					Catalog.countUse(TalismanOfForesight.class);
 					GLog.p( Messages.get(TalismanOfForesight.class, "levelup") );
 				}
 				updateQuickslot();

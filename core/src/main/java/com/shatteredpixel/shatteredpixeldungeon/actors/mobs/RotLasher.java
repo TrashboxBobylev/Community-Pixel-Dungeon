@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotLasherSprite;
+import com.watabou.utils.Random;
 
 public class RotLasher extends Mob {
 
@@ -98,7 +99,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll(10, 20);
+		return Random.NormalIntRange(10, 20);
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 8);
+		return super.drRoll() + Random.NormalIntRange(0, 8);
 	}
 	
 	{

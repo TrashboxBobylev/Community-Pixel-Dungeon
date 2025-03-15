@@ -36,20 +36,24 @@ public class ThirteenLeafClover extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//5 -> 2(7) -> 3(10) -> 5(15)
-		return 2 + Math.round(level()*1.33f);
+		//6 -> 8(14) -> 10(24) -> 12(36)
+		return 6+2*level();
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc", (int)(100*combatDistributionInverseChance(buffedLvl())));
+	public String statsDesc() {
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc", Math.round(MAX_CHANCE * 100*alterHeroDamageChance(buffedLvl())), Math.round((1f-MAX_CHANCE) * 100*alterHeroDamageChance(buffedLvl())));
+		} else {
+			return Messages.get(this, "typical_stats_desc", Math.round(MAX_CHANCE * 100*alterHeroDamageChance(0)), Math.round((1f-MAX_CHANCE) * 100*alterHeroDamageChance(0)));
+		}
 	}
 
-	public static float combatDistributionInverseChance(){
-		return combatDistributionInverseChance(trinketLevel(ThirteenLeafClover.class));
+	public static float alterHeroDamageChance(){
+		return alterHeroDamageChance(trinketLevel(ThirteenLeafClover.class));
 	}
 
-	public static float combatDistributionInverseChance( int level ){
+	public static float alterHeroDamageChance(int level ){
 		if (level <= -1){
 			return 0;
 		} else {
@@ -57,8 +61,14 @@ public class ThirteenLeafClover extends Trinket {
 		}
 	}
 
-	public static int invCombatRoll( int min, int max){
-		return Random.InvNormalIntRange( min, max );
+	private static float MAX_CHANCE = 0.6f;
+
+	public static int alterDamageRoll(int min, int max){
+		if (Random.Float() < MAX_CHANCE){
+			return max;
+		} else {
+			return min;
+		}
 	}
 
 }

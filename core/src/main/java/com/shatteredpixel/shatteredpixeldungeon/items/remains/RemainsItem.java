@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,7 @@ public abstract class RemainsItem extends Item {
 		if (action.equals(AC_USE)){
 			hero.sprite.operate(hero.pos);
 
+			Catalog.countUse(getClass());
 			doEffect(hero);
 
 			hero.spendAndNext(Actor.TICK);
@@ -91,6 +93,8 @@ public abstract class RemainsItem extends Item {
 				return new BowFragment();
 			case DUELIST:
 				return new BrokenHilt();
+			case CLERIC:
+				return new TornPage();
 		}
 	}
 

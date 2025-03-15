@@ -59,7 +59,7 @@ public class Scorpio extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 30, 40 );
+		return Random.NormalIntRange( 30, 40 );
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class Scorpio extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 16);
+		return super.drRoll() + Random.NormalIntRange(0, 16);
 	}
 	
 	@Override
@@ -100,7 +100,9 @@ public class Scorpio extends Mob {
 	@Override
 	public void aggro(Char ch) {
 		//cannot be aggroed to something it can't see
-		if (ch == null || fieldOfView == null || fieldOfView[ch.pos]) {
+		//skip this check if FOV isn't initialized
+		if (ch == null || fieldOfView == null
+				|| fieldOfView.length != Dungeon.level.length() || fieldOfView[ch.pos]) {
 			super.aggro(ch);
 		}
 	}

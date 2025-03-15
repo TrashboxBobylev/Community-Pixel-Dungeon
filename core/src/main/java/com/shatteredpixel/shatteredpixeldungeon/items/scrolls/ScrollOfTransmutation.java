@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -82,15 +83,18 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Potion){
 			return !(item instanceof Elixir || item instanceof Brew);
 
-		//all regular or exotic scrolls, except itself
-		} else if (item instanceof Scroll){
-			return item != this || item.quantity() > 1;
+		//all regular or exotic scrolls, except itself (unless un-ided, in which case it was already consumed)
+		} else if (item instanceof Scroll) {
+			return item != this || item.quantity() > 1 || identifiedByUse;
 
-		//all rings, wands, artifacts, trinkets, seeds, and runestones
+		//all non-unique artifacts (no holy tome or cloak of shadows, basically)
+		} else if (item instanceof Artifact) {
+			return !item.unique;
+
+		//all rings, wands, trinkets, seeds, and runestones
 		} else {
-			return item instanceof Ring || item instanceof Wand || item instanceof Artifact
-					|| item instanceof Trinket || item instanceof Plant.Seed
-					|| item instanceof Runestone;
+			return item instanceof Ring || item instanceof Wand || item instanceof Trinket
+					|| item instanceof Plant.Seed || item instanceof Runestone;
 		}
 	}
 	
@@ -139,6 +143,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			}
 			if (result.isIdentified()){
 				Catalog.setSeen(result.getClass());
+				Statistics.itemTypesDiscovered.add(result.getClass());
 			}
 			Transmuting.show(curUser, item, result);
 			curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
@@ -169,12 +174,19 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Artifact) {
 			Artifact a = changeArtifact( (Artifact)item );
 			if (a == null){
-				//if no artifacts are left, generate a random +0 ring with shared ID/curse state
+				//if no artifacts are left, generate a random ring with shared ID/curse state
+				//artifact and ring levels are not exactly equivalent, give the ring up to +2
 				Item result = Generator.randomUsingDefaults(Generator.Category.RING);
 				result.levelKnown = item.levelKnown;
 				result.cursed = item.cursed;
 				result.cursedKnown = item.cursedKnown;
-				result.level(0);
+				if (item.visiblyUpgraded() == 10){
+					result.level(2);
+				} else if (item.visiblyUpgraded() >= 5){
+					result.level(1);
+				} else {
+					result.level(0);
+				}
 				return result;
 			} else {
 				return a;
@@ -306,6 +318,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 
 		n.level(t.trueLevel());
 		n.levelKnown = t.levelKnown;
+		n.cursedKnown = t.cursedKnown;
 		n.cursed = t.cursed;
 
 		return n;

@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -97,8 +98,6 @@ public class Tengu extends Mob {
 		
 		HUNTING = new Hunting();
 		
-		flying = true; //doesn't literally fly, but he is fleet-of-foot enough to avoid hazards
-		
 		properties.add(Property.BOSS);
 		
 		viewDistance = 12;
@@ -106,7 +105,7 @@ public class Tengu extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Char.combatRoll( 6, 12 );
+		return Random.NormalIntRange( 6, 12 );
 	}
 	
 	@Override
@@ -120,7 +119,7 @@ public class Tengu extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 5);
+		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 
 	boolean loading = false;
@@ -358,6 +357,7 @@ public class Tengu extends Mob {
 	}
 	
 	{
+		immunities.add( Roots.class );
 		immunities.add( Blindness.class );
 		immunities.add( Dread.class );
 		immunities.add( Terror.class );
@@ -409,7 +409,9 @@ public class Tengu extends Mob {
 				if (canUseAbility()){
 					return useAbility();
 				}
-				
+
+				recentlyAttackedBy.clear();
+				target = enemy.pos;
 				return doAttack( enemy );
 				
 			} else {
@@ -639,7 +641,7 @@ public class Tengu extends Mob {
 					if (PathFinder.distance[cell] < Integer.MAX_VALUE) {
 						Char ch = Actor.findChar(cell);
 						if (ch != null && !(ch instanceof Tengu)) {
-							int dmg = Char.combatRoll(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth() * 2);
+							int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth() * 2);
 							dmg -= ch.drRoll();
 
 							if (dmg > 0) {

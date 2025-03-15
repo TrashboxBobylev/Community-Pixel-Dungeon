@@ -64,7 +64,7 @@ public class Mace extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		//+(4+1.5*lvl) damage, roughly +55% base dmg, +60% scaling
+		//+(5+1.5*lvl) damage, roughly +55% base dmg, +60% scaling
 		int dmgBoost = augment.damageFactor(5 + Math.round(1.5f*buffedLvl()));
 		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
 	}
@@ -77,6 +77,11 @@ public class Mace extends MeleeWeapon {
 		} else {
 			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
 		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = 5 + Math.round(1.5f*level);
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
 	}
 
 	public static void heavyBlowAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep){

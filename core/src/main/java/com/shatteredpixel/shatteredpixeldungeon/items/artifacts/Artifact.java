@@ -26,9 +26,14 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.GuidingLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -87,7 +92,7 @@ public class Artifact extends KindofMisc {
 
 	public void activate( Char ch ) {
 		if (passiveBuff != null){
-			passiveBuff.detach();
+			if (passiveBuff.target != null) passiveBuff.detach();
 			passiveBuff = null;
 		}
 		passiveBuff = passiveBuff();
@@ -99,7 +104,7 @@ public class Artifact extends KindofMisc {
 		if (super.doUnequip( hero, collect, single )) {
 
 			if (passiveBuff != null) {
-				passiveBuff.detach();
+				if (passiveBuff.target != null) passiveBuff.detach();
 				passiveBuff = null;
 			}
 
@@ -138,16 +143,47 @@ public class Artifact extends KindofMisc {
 		upgrade(Math.round((transferLvl*levelCap)/10f));
 	}
 
+	public void resetForTrinity(int visibleLevel){
+		level(Math.round((visibleLevel*levelCap)/10f));
+		exp = Integer.MIN_VALUE; //ensures no levelling
+		charge = chargeCap;
+		cooldown = 0;
+	}
+
+	public static void artifactProc(Char target, int artifLevel, int chargesUsed){
+		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
+			target.buff(GuidingLight.Illuminated.class).detach();
+			target.damage(Dungeon.hero.lvl, GuidingLight.INSTANCE);
+		}
+
+		if (target.alignment != Char.Alignment.ALLY
+				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)
+				&& Dungeon.hero.buff(Talent.SearingLightCooldown.class) == null){
+			Buff.affect(target, GuidingLight.Illuminated.class);
+			Buff.affect(Dungeon.hero, Talent.SearingLightCooldown.class, 20f);
+		}
+
+		if (target.alignment != Char.Alignment.ALLY
+				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
+			// 15/25% chance
+			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){
+				Buff.prolong(target, Blindness.class, 4f);
+			}
+		}
+	}
+
 	@Override
 	public String info() {
 		if (cursed && cursedKnown && !isEquipped( Dungeon.hero )) {
-			return desc() + "\n\n" + Messages.get(Artifact.class, "curse_known");
+			return super.info() + "\n\n" + Messages.get(Artifact.class, "curse_known");
 			
 		} else if (!isIdentified() && cursedKnown && !isEquipped( Dungeon.hero)) {
-			return desc()+ "\n\n" + Messages.get(Artifact.class, "not_cursed");
+			return super.info() + "\n\n" + Messages.get(Artifact.class, "not_cursed");
 			
 		} else {
-			return desc();
+			return super.info();
 			
 		}
 	}

@@ -56,11 +56,11 @@ public class Burning extends Buff implements Hero.Doom {
 	private static final float DURATION = 8f;
 	
 	private float left;
-	
-	//for tracking burning of hero items
-	private int burnIncrement = 0;
+	private boolean acted = false; //whether the debuff has done any damage at all yet
+	private int burnIncrement = 0; //for tracking burning of hero items
 	
 	private static final String LEFT	= "left";
+	private static final String ACTED	= "acted";
 	private static final String BURN	= "burnIncrement";
 
 	{
@@ -72,6 +72,7 @@ public class Burning extends Buff implements Hero.Doom {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEFT, left );
+		bundle.put( ACTED, acted );
 		bundle.put( BURN, burnIncrement );
 	}
 	
@@ -79,6 +80,7 @@ public class Burning extends Buff implements Hero.Doom {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		left = bundle.getFloat( LEFT );
+		acted = bundle.getBoolean( ACTED );
 		burnIncrement = bundle.getInt( BURN );
 	}
 
@@ -91,13 +93,18 @@ public class Burning extends Buff implements Hero.Doom {
 
 	@Override
 	public boolean act() {
-		
-		if (target.isAlive() && !target.isImmune(getClass())) {
-			
-			int damage = Char.combatRoll( 1, 3 + Dungeon.scalingDepth()/4 );
+
+		if (acted && Dungeon.level.water[target.pos] && !target.flying){
+			detach();
+		} else if (target.isAlive() && !target.isImmune(getClass())) {
+
+			acted = true;
+			int damage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
 			Buff.detach( target, Chill.class);
 
-			if (target instanceof Hero && target.buff(TimekeepersHourglass.timeStasis.class) == null) {
+			if (target instanceof Hero
+					&& target.buff(TimekeepersHourglass.timeStasis.class) == null
+					&& target.buff(TimeStasis.class) == null) {
 				
 				Hero hero = (Hero)target;
 
@@ -176,11 +183,7 @@ public class Burning extends Buff implements Hero.Doom {
 	
 	public void reignite( Char ch, float duration ) {
 		if (ch.isImmune(Burning.class)){
-			//TODO this only works for the hero, not others who can have brimstone+arcana effect
-			// e.g. prismatic image, shadow clone
-			if (ch instanceof Hero
-					&& ((Hero) ch).belongings.armor() != null
-					&& ((Hero) ch).belongings.armor().hasGlyph(Brimstone.class, ch)){
+			if (ch.glyphLevel(Brimstone.class) >= 0){
 				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
 				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
 				int shieldCap = Math.round(shieldChance*4f);
@@ -194,7 +197,12 @@ public class Burning extends Buff implements Hero.Doom {
 				}
 			}
 		}
-		left = duration;
+		if (left < duration) left = duration;
+		acted = false;
+	}
+
+	public void extend( float duration ) {
+		left += duration;
 	}
 	
 	@Override

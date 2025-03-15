@@ -33,6 +33,7 @@ public class RingOfFuror extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_FUROR;
+		buffClass = Furor.class;
 	}
 
 	public String statsInfo() {
@@ -47,6 +48,11 @@ public class RingOfFuror extends Ring {
 		} else {
 			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 9.051f));
 		}
+	}
+
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.09051f, level+1)-1f)) + "%";
 	}
 
 	@Override

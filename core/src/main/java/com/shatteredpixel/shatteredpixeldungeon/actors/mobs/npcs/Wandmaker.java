@@ -69,15 +69,17 @@ public class Wandmaker extends NPC {
 
 		properties.add(Property.IMMOVABLE);
 	}
-	
+
+	@Override
+	public Notes.Landmark landmark() {
+		return Notes.Landmark.WANDMAKER;
+	}
+
 	@Override
 	protected boolean act() {
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
 			die(null);
 			return true;
-		}
-		if (Dungeon.level.visited[pos] && Quest.wand1 != null){
-			Notes.add( Notes.Landmark.WANDMAKER );
 		}
 		return super.act();
 	}
@@ -174,6 +176,9 @@ public class Wandmaker extends NPC {
 				case DUELIST:
 					msg1 += Messages.get(this, "intro_duelist");
 					break;
+				case CLERIC:
+					msg1 += Messages.get(this, "intro_cleric");
+					break;
 			}
 
 			msg1 += Messages.get(this, "intro_1");
@@ -208,7 +213,6 @@ public class Wandmaker extends NPC {
 			});
 
 			Quest.given = true;
-			Notes.add( Notes.Landmark.WANDMAKER );
 		}
 
 		return true;

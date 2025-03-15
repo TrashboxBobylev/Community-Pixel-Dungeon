@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -71,6 +72,7 @@ public class Honeypot extends Item {
 			hero.sprite.zap( hero.pos );
 			
 			detach( hero.belongings.backpack );
+			Catalog.countUse(getClass());
 
 			Item item = shatter( hero, hero.pos );
 			if (!item.collect()){
@@ -90,6 +92,7 @@ public class Honeypot extends Item {
 		if (Dungeon.level.pit[cell]) {
 			super.onThrow( cell );
 		} else {
+			Catalog.countUse(getClass());
 			Dungeon.level.drop(shatter( null, cell ), cell);
 		}
 	}

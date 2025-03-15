@@ -26,11 +26,15 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.VialOfBlood;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -52,6 +56,8 @@ public class Dewdrop extends Item {
 	public boolean doPickUp(Hero hero, int pos) {
 		
 		Waterskin flask = hero.belongings.getItem( Waterskin.class );
+		Catalog.setSeen(getClass());
+		Statistics.itemTypesDiscovered.add(getClass());
 		
 		if (flask != null && !flask.isFull()){
 
@@ -64,6 +70,8 @@ public class Dewdrop extends Item {
 			if (!consumeDew(1, hero, terr == Terrain.ENTRANCE || terr == Terrain.ENTRANCE_SP
 					|| terr == Terrain.EXIT || terr == Terrain.UNLOCKED_EXIT)){
 				return false;
+			} else {
+				Catalog.countUse(getClass());
 			}
 			
 		}
@@ -76,24 +84,42 @@ public class Dewdrop extends Item {
 
 	public static boolean consumeDew(int quantity, Hero hero, boolean force){
 		//20 drops for a full heal
-		int heal = Math.round( hero.HT * 0.05f * quantity );
+		int effect = Math.round( hero.HT * 0.05f * quantity );
 
-		int effect = Math.min( hero.HT - hero.HP, heal );
+		int heal = Math.min( hero.HT - hero.HP, effect );
+
 		int shield = 0;
 		if (hero.hasTalent(Talent.SHIELDING_DEW)){
-			shield = heal - effect;
+
+			//When vial is present, this allocates exactly as much of the effect as is needed
+			// to get to 100% HP, and the rest is then given as shielding (without the vial boost)
+			if (quantity > 1 && heal < effect && VialOfBlood.delayBurstHealing()){
+				heal = Math.round(heal/VialOfBlood.totalHealMultiplier());
+			}
+
+			shield = effect - heal;
+
 			int maxShield = Math.round(hero.HT *0.2f*hero.pointsInTalent(Talent.SHIELDING_DEW));
 			int curShield = 0;
 			if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
 			shield = Math.min(shield, maxShield-curShield);
 		}
-		if (effect > 0 || shield > 0) {
-			hero.HP += effect;
-			if (shield > 0) Buff.affect(hero, Barrier.class).incShield(shield);
-			if (effect > 0){
-				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(effect), FloatingText.HEALING);
+
+		if (heal > 0 || shield > 0) {
+
+			if (heal > 0 && quantity > 1 && VialOfBlood.delayBurstHealing()){
+				Healing healing = Buff.affect(hero, Healing.class);
+				healing.setHeal(heal, 0, VialOfBlood.maxHealPerTurn());
+				healing.applyVialEffect();
+			} else {
+				hero.HP += heal;
+				if (heal > 0){
+					hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
+				}
 			}
+
 			if (shield > 0) {
+				Buff.affect(hero, Barrier.class).incShield(shield);
 				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING );
 			}
 

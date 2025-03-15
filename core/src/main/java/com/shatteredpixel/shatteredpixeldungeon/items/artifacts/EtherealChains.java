@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -116,7 +117,13 @@ public class EtherealChains extends Artifact {
 		}
 	}
 
-	private CellSelector.Listener caster = new CellSelector.Listener(){
+	@Override
+	public void resetForTrinity(int visibleLevel) {
+		super.resetForTrinity(visibleLevel);
+		charge = 5+(level()*2); //sets charge to soft cap
+	}
+
+	public CellSelector.Listener caster = new CellSelector.Listener(){
 
 		@Override
 		public void onSelect(Integer target) {
@@ -200,6 +207,8 @@ public class EtherealChains extends Artifact {
 						Dungeon.observe();
 						GameScene.updateFog();
 						hero.spendAndNext(1f);
+
+						artifactProc(enemy, visiblyUpgraded(), chargeUse);
 					}
 				}));
 				hero.next();
@@ -349,6 +358,7 @@ public class EtherealChains extends Artifact {
 			if (exp > 100+level()*100 && level() < levelCap){
 				exp -= 100+level()*100;
 				GLog.p( Messages.get(this, "levelup") );
+				Catalog.countUses(EtherealChains.class, 2);
 				upgrade();
 			}
 

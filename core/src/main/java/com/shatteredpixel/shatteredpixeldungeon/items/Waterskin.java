@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.VialOfBlood;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -94,6 +96,15 @@ public class Waterskin extends Item {
 				
 				float missingHealthPercent = 1f - (hero.HP / (float)hero.HT);
 
+				//each drop is worth 5% of total health
+				float dropsNeeded = missingHealthPercent / 0.05f;
+
+				//we are getting extra heal value, scale back drops needed accordingly
+				if (dropsNeeded > 1.01f && VialOfBlood.delayBurstHealing()){
+					dropsNeeded /= VialOfBlood.totalHealMultiplier();
+				}
+
+				//add extra drops if we can gain shielding
 				int curShield = 0;
 				if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
 				int maxShield = Math.round(hero.HT *0.2f*hero.pointsInTalent(Talent.SHIELDING_DEW));
@@ -101,17 +112,18 @@ public class Waterskin extends Item {
 					float missingShieldPercent = 1f - (curShield / (float)maxShield);
 					missingShieldPercent *= 0.2f*hero.pointsInTalent(Talent.SHIELDING_DEW);
 					if (missingShieldPercent > 0){
-						missingHealthPercent += missingShieldPercent;
+						dropsNeeded += missingShieldPercent / 0.05f;
 					}
 				}
-				
+
 				//trimming off 0.01 drops helps with floating point errors
-				int dropsNeeded = (int)Math.ceil((missingHealthPercent / 0.05f) - 0.01f);
-				dropsNeeded = (int)GameMath.gate(1, dropsNeeded, volume);
+				int dropsToConsume = (int)Math.ceil(dropsNeeded - 0.01f);
+				dropsToConsume = (int)GameMath.gate(1, dropsToConsume, volume);
 				if (action.equals(AC_SIP)) dropsNeeded = 1;
 
-				if (Dewdrop.consumeDew(dropsNeeded, hero, true)){
-					volume -= dropsNeeded;
+				if (Dewdrop.consumeDew(dropsToConsume, hero, true)){
+					volume -= dropsToConsume;
+					Catalog.countUses(Dewdrop.class, dropsToConsume);
 
 					hero.spend(TIME_TO_DRINK);
 					hero.busy();
@@ -132,7 +144,7 @@ public class Waterskin extends Item {
 
 	@Override
 	public String info() {
-		String info = desc();
+		String info = super.info();
 
 		if (volume == 0){
 			info += "\n\n" + Messages.get(this, "desc_water");

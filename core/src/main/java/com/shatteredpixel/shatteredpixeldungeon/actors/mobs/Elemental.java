@@ -85,10 +85,10 @@ public abstract class Elemental extends Mob {
 	@Override
 	public int damageRoll() {
 		if (!summonedALly) {
-			return Char.combatRoll(20, 25);
+			return Random.NormalIntRange(20, 25);
 		} else {
 			int regionScale = Math.max(2, (1 + Dungeon.scalingDepth()/5));
-			return Char.combatRoll(5*regionScale, 5 + 5*regionScale);
+			return Random.NormalIntRange(5*regionScale, 5 + 5*regionScale);
 		}
 	}
 	
@@ -112,10 +112,10 @@ public abstract class Elemental extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Char.combatRoll(0, 5);
+		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 	
-	protected int rangedCooldown = Char.combatRoll( 3, 5 );
+	protected int rangedCooldown = Random.NormalIntRange( 3, 5 );
 	
 	@Override
 	protected boolean act() {
@@ -124,6 +124,12 @@ public abstract class Elemental extends Mob {
 		}
 		
 		return super.act();
+	}
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
 	}
 	
 	@Override
@@ -188,7 +194,7 @@ public abstract class Elemental extends Mob {
 	@Override
 	public boolean add( Buff buff ) {
 		if (harmfulBuffs.contains( buff.getClass() )) {
-			damage( Char.combatRoll( HT/2, HT * 3/5 ), buff );
+			damage( Random.NormalIntRange( HT/2, HT * 3/5 ), buff );
 			return false;
 		} else {
 			return super.add( buff );
@@ -227,7 +233,7 @@ public abstract class Elemental extends Mob {
 		{
 			spriteClass = ElementalSprite.Fire.class;
 			
-			loot = new PotionOfLiquidFlame();
+			loot = PotionOfLiquidFlame.class;
 			lootChance = 1/8f;
 			
 			properties.add( Property.FIERY );
@@ -389,7 +395,7 @@ public abstract class Elemental extends Mob {
 		@Override
 		public int damageRoll() {
 			if (!summonedALly) {
-				return combatRoll(10, 12);
+				return Random.NormalIntRange(10, 12);
 			} else {
 				return super.damageRoll();
 			}
@@ -474,7 +480,7 @@ public abstract class Elemental extends Mob {
 		{
 			spriteClass = ElementalSprite.Frost.class;
 			
-			loot = new PotionOfFrost();
+			loot = PotionOfFrost.class;
 			lootChance = 1/8f;
 			
 			properties.add( Property.ICY );
@@ -502,7 +508,7 @@ public abstract class Elemental extends Mob {
 		{
 			spriteClass = ElementalSprite.Shock.class;
 			
-			loot = new ScrollOfRecharging();
+			loot = ScrollOfRecharging.class;
 			lootChance = 1/4f;
 			
 			properties.add( Property.ELECTRIC );
@@ -551,18 +557,44 @@ public abstract class Elemental extends Mob {
 		{
 			spriteClass = ElementalSprite.Chaos.class;
 			
-			loot = new ScrollOfTransmutation();
+			loot = ScrollOfTransmutation.class;
 			lootChance = 1f;
 		}
 		
 		@Override
 		protected void meleeProc( Char enemy, int damage ) {
-			CursedWand.cursedEffect(null, this, enemy);
+			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
+			//TODO shortcutting the fx seems fine for now but may cause problems with new cursed effects
+			//of course, not shortcutting it means actor ordering issues =S
+			CursedWand.randomValidEffect(null, this, aim, false).effect(null, this, aim, false);
 		}
-		
+
+		@Override
+		protected void zap() {
+			spend( 1f );
+
+			Invisibility.dispel(this);
+			Char enemy = this.enemy;
+			//skips accuracy check, always hits
+			rangedProc( enemy );
+
+			rangedCooldown = Random.NormalIntRange( 3, 5 );
+		}
+
+		@Override
+		public void onZapComplete() {
+			zap();
+			//next(); triggers after wand effect
+		}
+
 		@Override
 		protected void rangedProc( Char enemy ) {
-			CursedWand.cursedEffect(null, this, enemy);
+			CursedWand.cursedZap(null, this, new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET), new Callback() {
+				@Override
+				public void call() {
+					next();
+				}
+			});
 		}
 	}
 	

@@ -2,11 +2,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
+        }
     }
     dependencies {
-        //the R8 version bundled with AGP 8.1.0+ causes crashes on very old Android versions
-        //This affects ICS and Lollipop at least, maybe also KitKat
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath 'com.android.tools.build:gradle:8.7.1'
     }
 }
 
@@ -16,12 +17,12 @@ allprojects {
         appName = 'Community Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.communitypixeldungeon'
 
-        appVersionCode = 785
-        appVersionName = 'CommPD-1.0.0'
+        appVersionCode = 832
+        appVersionName = 'CommPD-1.1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
-        appAndroidCompileSDK = 33 //compile SDK is still 33 atm as we're sticking with AGP 8.0.2
+        appAndroidCompileSDK = 34
         appAndroidMinSDK = 14
         appAndroidTargetSDK = 34
 

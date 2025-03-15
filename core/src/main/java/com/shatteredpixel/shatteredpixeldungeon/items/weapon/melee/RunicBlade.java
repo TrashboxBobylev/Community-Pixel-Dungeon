@@ -153,6 +153,11 @@ public class RunicBlade extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return "+" + (300+50*level) + "%";
+	}
+
 
 	public static class RunicSlashTracker extends FlavourBuff{
 

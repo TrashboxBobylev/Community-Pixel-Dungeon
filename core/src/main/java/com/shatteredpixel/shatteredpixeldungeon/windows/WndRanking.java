@@ -110,7 +110,7 @@ public class WndRanking extends WndTabbed {
 
 		if (Dungeon.hero != null) {
 			Icons[] icons =
-					{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_ON};
+					{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_COLOR};
 			Group[] pages =
 					{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), null};
 
@@ -193,7 +193,7 @@ public class WndRanking extends WndTabbed {
 
 			pos = date.bottom()+5;
 
-			NumberFormat num = NumberFormat.getInstance(Locale.US);
+			NumberFormat num = NumberFormat.getInstance(Messages.locale());
 
 			if (Dungeon.hero == null){
 				pos = statSlot( this, Messages.get(this, "score"), num.format( record.score ), pos );

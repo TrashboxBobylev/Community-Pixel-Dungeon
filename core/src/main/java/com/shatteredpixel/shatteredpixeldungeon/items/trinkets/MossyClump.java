@@ -41,13 +41,17 @@ public class MossyClump extends Trinket {
 
 	@Override
 	protected int upgradeEnergyCost() {
-		//5 -> 20(25) -> 25(50) -> 30(80)
-		return 20+5*level();
+		//6 -> 10(16) -> 15(31) -> 20(51)
+		return 10+5*level();
 	}
 
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc", (int)(100*overrideNormalLevelChance(buffedLvl())));
+	public String statsDesc() {
+		if (isIdentified()){
+			return Messages.get(this, "stats_desc", (int)(100*overrideNormalLevelChance(buffedLvl())));
+		} else {
+			return Messages.get(this, "typical_stats_desc", (int)(100*overrideNormalLevelChance(0)));
+		}
 	}
 
 	public static float overrideNormalLevelChance(){
@@ -76,7 +80,7 @@ public class MossyClump extends Trinket {
 			Random.pushGenerator(Dungeon.seed+1);
 				clump.levelFeels.add(true);
 				clump.levelFeels.add(true);
-				clump.levelFeels.add(true);
+				clump.levelFeels.add(false);
 				clump.levelFeels.add(false);
 				clump.levelFeels.add(false);
 				clump.levelFeels.add(false);
