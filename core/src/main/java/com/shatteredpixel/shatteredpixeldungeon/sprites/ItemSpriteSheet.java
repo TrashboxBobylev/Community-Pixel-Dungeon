@@ -983,14 +983,7 @@ public class ItemSpriteSheet {
 			assignIconRect( POTION_EARTHARMR,   6, 6 );
 			assignIconRect( POTION_CLEANSE,     7, 7 );
 			assignIconRect( POTION_DIVINE,      7, 7 );
-		}
-
-		public static final int DART           = xy(1, 8);
-		static {
-			assignItemRect(DART, 8, 8);
-		}
-
-		                                                                                //15 free slots
+		}//15 free slots
 
 	}
 
