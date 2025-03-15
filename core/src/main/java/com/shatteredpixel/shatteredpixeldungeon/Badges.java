@@ -98,7 +98,7 @@ public class Badges {
 		RESEARCHER_1                ( 22, BadgeType.JOURNAL ),
 		GAMES_PLAYED_1              ( 23, BadgeType.GLOBAL ),
 		HIGH_SCORE_1                ( 24 ),
-		PLANTS_ACTIVATED_1          ( 23 ),
+		PLANTS_ACTIVATED_1          ( 25 ),
 
 		//silver
 		NO_MONSTERS_SLAIN           ( 32 ),
@@ -209,7 +209,7 @@ public class Badges {
 		GAMES_PLAYED_4              ( 107, BadgeType.GLOBAL ),
 		HIGH_SCORE_4                ( 108 ),
 		CHAMPION_1                  ( 109 ),
-		HAPPY_DEATH                 ( 112 ),
+		HAPPY_DEATH                 ( 110 ),
 
 		//diamond
 		BOSS_CHALLENGE_5            ( 120 ),
@@ -218,7 +218,7 @@ public class Badges {
 		HIGH_SCORE_5                ( 123 ),
 		CHAMPION_2                  ( 124 ),
 		CHAMPION_3                  ( 125 ),
-		PERFECT_ASCENT              ( 125 ),
+		PERFECT_ASCENT              ( 126 ),
 		VICTORY_NO_FOOD,
 		VICTORY_NO_ARMOR,
 		VICTORY_NO_HEALING,
@@ -228,8 +228,8 @@ public class Badges {
 		VICTORY_NO_SCROLLS,
 		VICTORY_CHAMPION_ENEMIES,
 		VICTORY_STRONGER_BOSSES,
-		VICTORY_EVERY_CHALLENGE     ( 126 ),
-		NO_UPGRADES                 ( 127 );
+		VICTORY_EVERY_CHALLENGE     ( 127 ),
+		NO_UPGRADES                 ( 128 );
 
 		public boolean meta;
 

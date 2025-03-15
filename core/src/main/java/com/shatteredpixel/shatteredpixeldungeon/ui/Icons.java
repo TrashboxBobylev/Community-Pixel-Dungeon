@@ -173,10 +173,10 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
 				break;
 			case BOBYLEV:
-				icon.frame( icon.texture.uvRectBySize( 137, 0, 14, 17 ) );
+				icon.frame( icon.texture.uvRectBySize( 222, 110, 14, 17 ) );
 				break;
 			case COMMUNITY:
-				icon.frame( icon.texture.uvRectBySize( 152, 0, 19, 18 ) );
+				icon.frame( icon.texture.uvRectBySize( 237, 110, 19, 18 ) );
 				break;
 
 			case JOURNAL:
@@ -407,7 +407,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 216, 80, 10, 10 ) );
 				break;
 			case EXPLORED_ICON:
-				icon.frame( icon.texture.uvRectBySize( 118, 64, 9, 8 ) );
+				icon.frame( icon.texture.uvRectBySize( 159, 87, 9, 8 ) );
 				break;
 
 			case LIBGDX:
@@ -451,6 +451,9 @@ public enum Icons {
 	}
 
 	private static int runTypeOfsY(){
+		if (Dungeon.explorer){
+			return 40;
+		}
 		if ((Dungeon.daily && Dungeon.dailyReplay)
 				|| (!Dungeon.daily && !Dungeon.customSeedText.isEmpty())){
 			return 8;
