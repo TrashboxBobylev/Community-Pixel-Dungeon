@@ -799,6 +799,20 @@ public class Dungeon {
 				generatedLevels.add(i);
 			}
 
+			triedIntuitionThings = new HashMap<>();
+			Bundle intuitionBundle = bundle.getBundle(TRIED_INTUITION);
+			for (String entry: intuitionBundle.getKeys()){
+				Class<? extends Item> trueEntry = null;
+				String clName = entry.replace("class ", "");
+				if (!clName.equals("")){
+					trueEntry = Reflection.forName( clName );
+				}
+				Class<? extends Item>[] values = intuitionBundle.getClassArray(entry);
+				HashSet<Class<? extends Item>> trueValues = new HashSet<>();
+				Collections.addAll(trueValues, values);
+				triedIntuitionThings.put(trueEntry, trueValues);
+			}
+
 			droppedItems = new SparseArray<>();
 			for (int i=1; i <= 26; i++) {
 

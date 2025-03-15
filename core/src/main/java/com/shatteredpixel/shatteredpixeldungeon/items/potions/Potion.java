@@ -390,7 +390,18 @@ public class Potion extends Item {
 
 	@Override
 	public String desc() {
-		return isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
+		if (isKnown())
+			return super.desc();
+		else {
+			String desc = Messages.get(this, "unknown_desc");
+			if (Dungeon.triedIntuitionThings.containsKey(getClass())){
+				desc += "\n";
+				for (Class<?> thing: Dungeon.triedIntuitionThings.get(getClass())){
+					desc += "\n" + Messages.get(Scroll.class, "is_not", Messages.get(thing, "name"));
+				}
+			}
+			return desc;
+		}
 	}
 	
 	@Override

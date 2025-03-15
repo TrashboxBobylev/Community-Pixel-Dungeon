@@ -127,6 +127,13 @@ public class StoneOfIntuition extends InventoryStone {
 						GLog.p( Messages.get(WndGuess.class, "correct") );
 						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 					} else {
+						if (Dungeon.triedIntuitionThings.containsKey(item.getClass())){
+							Dungeon.triedIntuitionThings.get(item.getClass()).add(curGuess);
+						} else {
+							HashSet<Class<? extends Item>> trueValues = new HashSet<>();
+							Collections.addAll(trueValues, (Class<? extends Item>) curGuess);
+							Dungeon.triedIntuitionThings.put(item.getClass(), trueValues);
+						}
 						GLog.w( Messages.get(WndGuess.class, "incorrect") );
 					}
 					if (!anonymous) {
