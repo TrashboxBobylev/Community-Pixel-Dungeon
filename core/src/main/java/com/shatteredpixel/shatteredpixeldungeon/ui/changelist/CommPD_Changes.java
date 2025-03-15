@@ -95,13 +95,6 @@ public class CommPD_Changes {
                         "_-_ 0,5/1/1,5 charges is refunded for wards and 1/1,5/2 charges is refunded for sentries."
         ));
 
-        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Custom notes",
-                "Idea's author: _Benzedes-Merz/@benzedesmerz_\n\n" +
-                        "_-_ Custom notes can be written for each floor _by holding notes' tab button_ in journal's window.\n\n" +
-                        "_-_ The length of each note is limited to _60 letters_.\n\n" +
-                        "_-_ You can remove notes by pressing a button next to note in list."
-        ));
-
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_KAUNAN), "Revealing item's upgrades on identifying",
                 "Idea's author: _Yams/@xrider107_\n\n" +
                         "_-_ Identifying equipment by any means states its upgrade level and enchantments in game log's identify message."
