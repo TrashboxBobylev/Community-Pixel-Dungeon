@@ -55,7 +55,7 @@ public class FailedDefender extends Guard {
 
     @Override
     public int drRoll() {
-        return super.drRoll() + Char.combatRoll(0, 10);
+        return super.drRoll() + Random.NormalIntRange(0, 10);
     }
 
     @Override

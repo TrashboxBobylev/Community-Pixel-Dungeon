@@ -172,7 +172,7 @@ public class Buff extends Actor {
 	public static<T extends Buff> T append( Char target, Class<T> buffClass ) {
 		if (((target.buff(Chill.class) != null || target.buff(Frost.class) != null) && buffClass == Burning.class) ||
 				(target.buff(Burning.class) != null && (buffClass == Chill.class || buffClass == Frost.class))){
-			target.damage(Char.combatRoll(Math.round(3 + Dungeon.scalingDepth()*0.75f), Math.round(7 + Dungeon.scalingDepth()*1.5f)), new Bomb.ConjuredBomb());
+			target.damage(Random.NormalIntRange(Math.round(3 + Dungeon.scalingDepth()*0.75f), Math.round(7 + Dungeon.scalingDepth()*1.5f)), new Bomb.ConjuredBomb());
 			CellEmitter.center(target.pos).burst(BlastParticle.FACTORY, 5);
 			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.85f * Random.Float(0.87f, 1.15f) );
 		}

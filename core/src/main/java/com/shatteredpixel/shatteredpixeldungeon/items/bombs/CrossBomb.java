@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -98,7 +99,7 @@ public class CrossBomb extends Bomb {
                 continue;
             }
 
-            int dmg = Math.round(Char.combatRoll(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2)*1.33f);
+            int dmg = Math.round(Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth() * 2)*1.33f);
 
             //those not at the center of the blast take less damage
             if (ch.pos != cell){

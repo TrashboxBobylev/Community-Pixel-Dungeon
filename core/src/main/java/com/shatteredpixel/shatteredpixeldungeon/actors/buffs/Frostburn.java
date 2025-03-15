@@ -98,7 +98,7 @@ public class Frostburn extends Buff implements Hero.Doom {
 		
 		if (target.isAlive() && !target.isImmune(getClass())) {
 			
-			int damage = Char.combatRoll( 1, 3 + Dungeon.scalingDepth()/4 );
+			int damage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
 			Buff.detach( target, Burning.class);
 			Buff.detach( target, Chill.class);
 

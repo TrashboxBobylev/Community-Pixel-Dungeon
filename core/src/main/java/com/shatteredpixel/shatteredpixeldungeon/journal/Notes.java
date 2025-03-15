@@ -583,20 +583,6 @@ public class Notes {
 		}
 	}
 
-	public static boolean add( String note ) {
-		CustomRecord l = new CustomRecord( note, Dungeon.depth );
-		if (!records.contains(l)) {
-			boolean result = records.add(new CustomRecord(note, Dungeon.depth));
-			Collections.sort(records);
-			return result;
-		}
-		return false;
-	}
-
-	public static boolean remove( String note ) {
-		return records.remove( new CustomRecord(note, Dungeon.depth) );
-	}
-
 	public static boolean add( CustomRecord rec ){
 		rec.assignID();
 		if (!records.contains(rec)){

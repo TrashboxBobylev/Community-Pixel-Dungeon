@@ -40,15 +40,12 @@ public class BrokenTreasureBox extends Trinket {
     }
 
     @Override
-    public String desc() {
-        String desc = Messages.get(this, "desc");
-        if (extraSpecialRoomChance(buffedLvl()) > 1f)
-            desc += "\n\n" + Messages.get(this, "desc_extra", (int)(100*(extraSpecialRoomChance(buffedLvl())-1f)));
-        else
-            desc += "\n\n" + Messages.get(this, "desc_chance", (int)(100*extraSpecialRoomChance(buffedLvl())));
-        desc += "\n\n" + Messages.get(this, "desc_upgrade");
-
-        return desc;
+    public String statsDesc() {
+        if (isIdentified()){
+            return Messages.get(this, "stats_desc", Messages.decimalFormat("#.#", extraSpecialRoomChance(buffedLvl())));
+        } else {
+            return Messages.get(this, "typical_stats_desc", Messages.decimalFormat("#.#", extraSpecialRoomChance(0)));
+        }
     }
 
     public static float extraSpecialRoomChance(){

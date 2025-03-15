@@ -111,7 +111,7 @@ public class NecklaceOfIce extends Artifact {
                             Char ch = Actor.findChar(i);
                             if (ch != null && ch.alignment == Char.Alignment.ENEMY){
                                 ch.sprite.centerEmitter().burst(SnowParticle.FACTORY, 10);
-                                ch.damage(Char.combatRoll(0, 10) + level()*5, new Chill());
+                                ch.damage(Random.NormalIntRange(0, 10) + level()*5, new Chill());
                                 Buff.affect(ch, Chill.class, 4f);
                             }
                         }

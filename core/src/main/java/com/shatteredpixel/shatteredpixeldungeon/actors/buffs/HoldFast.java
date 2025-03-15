@@ -53,7 +53,7 @@ public class HoldFast extends Buff {
 
 	public int armorBonus(){
 		if (pos == target.pos && target instanceof Hero){
-			return Char.combatRoll(0, 3* ((Hero) target).pointsInTalent(Talent.HOLD_FAST)-1);
+			return Random.NormalIntRange(0, 3* ((Hero) target).pointsInTalent(Talent.HOLD_FAST)-1);
 		} else {
 			detach();
 			return 0;
