@@ -576,7 +576,7 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "hardened_no_glyph");
 		}
 
-		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+		if (Dungeon.hero != null && Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
 				seal != null && seal.getGlyph() != null  && (cursedKnown || !seal.getGlyph().curse())) {
 			info += "\n\n" +  Messages.capitalize(Messages.get(Armor.class, "bonus_inscribed", seal.getGlyph().name()));
 			if (glyphHardened && hasGlyph) info += " " + Messages.get(Armor.class, "glyph_hardened");
