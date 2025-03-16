@@ -465,6 +465,10 @@ public class Armor extends EquipableItem {
 				if (trinityGlyph != null){
 					damage = trinityGlyph.proc( this, attacker, defender, damage );
 				}
+				if (((Hero) defender).pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+						seal.getGlyph() != null){
+					damage = seal.getGlyph().proc( this, attacker, defender, damage );
+				}
 				int blocking = ((Hero) defender).subClass == HeroSubClass.PALADIN ? 3 : 1;
 				damage -= Math.round(blocking * Glyph.genericProcChanceMultiplier(defender));
 
@@ -474,6 +478,10 @@ public class Armor extends EquipableItem {
 				}
 				if (trinityGlyph != null){
 					damage = trinityGlyph.proc( this, attacker, defender, damage );
+				}
+				if (((Hero) defender).pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+						seal.getGlyph() != null){
+					damage = seal.getGlyph().proc( this, attacker, defender, damage );
 				}
 				//so that this effect procs for allies using this armor via aura of protection
 				if (defender.alignment == Dungeon.hero.alignment
@@ -485,10 +493,6 @@ public class Armor extends EquipableItem {
 				}
 			}
 			damage = Math.max(damage, 0);
-		}
-		if (defender instanceof Hero && ((Hero) defender).pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
-				seal.getGlyph() != null && defender.buff(MagicImmune.class) == null){
-			damage = seal.getGlyph().proc( this, attacker, defender, damage );
 		}
 
 		if (!levelKnown && defender == Dungeon.hero) {
@@ -523,13 +527,21 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public String name() {
+		String name;
 		if (isEquipped(Dungeon.hero) && !hasCurseGlyph() && Dungeon.hero.buff(HolyWard.HolyArmBuff.class) != null
 			&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || glyph == null)){
-				return Messages.get(HolyWard.class, "glyph_name", super.name());
+				name = Messages.get(HolyWard.class, "glyph_name", super.name());
 			} else {
-				return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
-
+				name = glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
 		}
+		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 && seal != null && seal.getGlyph() != null){
+			if (glyph == null){
+				return seal.getGlyph().name(super.name());
+			}
+			String anotherGlyphName = Messages.get(seal.getGlyph().getClass(), "name").substring(6);
+			name += "/" + Messages.capitalize(anotherGlyphName);
+		}
+		return name;
 	}
 	
 	@Override
@@ -712,6 +724,10 @@ public class Armor extends EquipableItem {
 	}
 
 	public boolean hasGlyph(Class<?extends Glyph> type, Char owner) {
+		if (owner instanceof Hero && ((Hero) owner).pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+				seal.getGlyph().getClass().isAssignableFrom(type)){
+			return true;
+		}
 		if (glyph == null){
 			return false;
 		} else if (owner.buff(MagicImmune.class) != null) {
