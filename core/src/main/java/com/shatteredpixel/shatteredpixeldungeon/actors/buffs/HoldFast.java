@@ -53,7 +53,7 @@ public class HoldFast extends Buff {
 
 	public int armorBonus(){
 		if (pos == target.pos && target instanceof Hero){
-			return Random.NormalIntRange(0, 3* ((Hero) target).pointsInTalent(Talent.HOLD_FAST)-1);
+			return Random.NormalIntRange(((Hero) target).pointsInTalent(Talent.HOLD_FAST), 3* ((Hero) target).pointsInTalent(Talent.HOLD_FAST)-1);
 		} else {
 			detach();
 			return 0;
@@ -72,7 +72,7 @@ public class HoldFast extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 3*Dungeon.hero.pointsInTalent(Talent.HOLD_FAST)-1);
+		return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.HOLD_FAST), 3*Dungeon.hero.pointsInTalent(Talent.HOLD_FAST)-1);
 	}
 
 	private static final String POS = "pos";
