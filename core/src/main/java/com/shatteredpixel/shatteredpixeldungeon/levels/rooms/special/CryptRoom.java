@@ -89,7 +89,7 @@ public class CryptRoom extends SpecialRoom {
 
 		//if it isn't already cursed, give it a free upgrade
 		if (!prize.cursed){
-			for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+			for (int i = 0; i <= Math.max(1, RNGManipulator.LuckBoost.luckBoost() / 5000); i++)
 				prize.upgrade();
 			//curse the armor, unless it has a glyph
 			if (!prize.hasGoodGlyph()){

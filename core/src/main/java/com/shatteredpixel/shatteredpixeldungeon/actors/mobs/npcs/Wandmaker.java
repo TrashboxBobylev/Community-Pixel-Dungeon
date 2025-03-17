@@ -330,7 +330,7 @@ public class Wandmaker extends NPC {
 				given = false;
 				wand1 = (Wand) Generator.random(Generator.Category.WAND);
 				wand1.cursed = false;
-				for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+				for (int i = 0; i <= Math.max(1, RNGManipulator.LuckBoost.luckBoost() / 5000); i++)
 					wand1.upgrade();
 
 				wand2 = (Wand) Generator.random(Generator.Category.WAND);
@@ -343,7 +343,7 @@ public class Wandmaker extends NPC {
 					Generator.undoDrop(i);
 				}
 				wand2.cursed = false;
-				for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+				for (int i = 0; i <= Math.max(1, RNGManipulator.LuckBoost.luckBoost() / 5000); i++)
 					wand2.upgrade();
 				
 			}

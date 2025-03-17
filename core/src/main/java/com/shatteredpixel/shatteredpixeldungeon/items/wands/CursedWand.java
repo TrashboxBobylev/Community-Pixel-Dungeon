@@ -1174,7 +1174,7 @@ public class CursedWand {
 						Generator.Category.RING, Generator.Category.ARTIFACT));
 			} while (result.cursed);
 			if (result.isUpgradable())
-					for (int i = 0; i < RNGManipulator.LuckBoost.luckBoost() / 5000; i++)
+					for (int i = 0; i <= Math.max(1, RNGManipulator.LuckBoost.luckBoost() / 5000); i++)
 						result.upgrade();
 			result.cursed = result.cursedKnown = true;
 			if (origin instanceof Wand){
