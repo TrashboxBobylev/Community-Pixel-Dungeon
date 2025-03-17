@@ -268,7 +268,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		n.level(0);
 		
-		int level = r.level();
+		int level = r.trueLevel();
 		if (level > 0) {
 			n.upgrade( level );
 		} else if (level < 0) {
