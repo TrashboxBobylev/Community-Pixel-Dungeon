@@ -85,7 +85,7 @@ public class CommPD_Changes {
         changes.addButton( new ChangeButton(new RatKingSprite(), "Rat King's tripping curse",
                 "Idea's author: _watabou's uncle Dialga/@engio_\n\n" +
                         "_-_ Awakening Rat King from his sleep will _apply a curse_ on player.\n\n" +
-                        "_-_ With curse active, there is 1/2222 chance on every step for player to trip and instantly die from breaking their neck.\n\n" +
+                        "_-_ With curse active, there is 1/2222 chance on every step for player to trip and drop their weapon.\n\n" +
                         "_-_ This effect cannot be countered with ankhs and invulnerability effects."
         ));
 

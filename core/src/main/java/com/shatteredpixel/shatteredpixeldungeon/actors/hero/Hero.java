@@ -134,6 +134,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
@@ -1826,9 +1828,19 @@ public class Hero extends Char {
 
 			if (buff(RatKing.RatKingCurse.class) != null){
 				if (Random.Int(2222) == 0){
-					damage(HT*2222, buff(RatKing.RatKingCurse.class));
+					Weapon weapon = (Weapon) Dungeon.hero.belongings.weapon;
+					if (weapon != null
+							&& !(weapon instanceof Gloves)
+							&& !(weapon instanceof Gauntlet)
+							&& !weapon.cursed) {
+							Dungeon.hero.belongings.weapon = null;
+							Dungeon.quickslot.convertToPlaceholder(weapon);
+							Item.updateQuickslot();
+							Dungeon.level.drop(weapon, Dungeon.hero.pos).sprite.drop();
+							GLog.w(Messages.get(RatKing.RatKingCurse.class, "disarm", weapon.name()));
+						}
+					}
 					Sample.INSTANCE.play(Assets.Sounds.FALLING);
-				}
 			}
 
 			search(false);
@@ -2095,7 +2107,7 @@ public class Hero extends Char {
 			}
 		}
 
-		if (ankh != null && !(cause instanceof RatKing.RatKingCurse)) {
+		if (ankh != null) {
 			interrupt();
 
 			if (ankh.isBlessed()) {
