@@ -156,7 +156,7 @@ public class TitleScene extends PixelScene {
 		};
 		btnRankings.icon(Icons.get(Icons.RANKINGS));
 		add(btnRankings);
-		Dungeon.daily = Dungeon.dailyReplay = false;
+		Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = false;
 
 		StyledButton btnBadges = new StyledButton(GREY_TR, Messages.get(this, "journal")){
 			@Override

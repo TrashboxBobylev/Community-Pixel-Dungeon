@@ -140,7 +140,7 @@ public class HeroSelectScene extends PixelScene {
 				if (GamesInProgress.selectedClass == null) return;
 
 				Dungeon.hero = null;
-				Dungeon.daily = Dungeon.dailyReplay = false;
+				Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = false;
 				Dungeon.initSeed();
 				ActionIndicator.clearAction();
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;

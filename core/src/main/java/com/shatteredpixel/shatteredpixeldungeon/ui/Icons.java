@@ -452,7 +452,7 @@ public enum Icons {
 
 	private static int runTypeOfsY(){
 		if (Dungeon.explorer){
-			return 40;
+			return 48;
 		}
 		if ((Dungeon.daily && Dungeon.dailyReplay)
 				|| (!Dungeon.daily && !Dungeon.customSeedText.isEmpty())){
