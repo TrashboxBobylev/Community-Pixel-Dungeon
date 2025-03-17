@@ -24,6 +24,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DefenderSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
@@ -33,17 +44,206 @@ import java.util.Arrays;
 
 public enum Feature {
 
-    NONE;
+    EXPLORATION_ICON("Indicator for full cleared floors", "Mintzi/@.mint17",
+            "_-_ Added a small icon, that indicates the current dungeon floor being fully explored (for purposes of rankings' exploration score)."){
+        @Override public Image icon() {return Icons.get(Icons.MAGNIFY);}
+    },
+    NEW_RUNIC_INTERFERENCE("Hold Fast/Runic Transference tier-swap", "Raynuva/@raynuva",
+            "_-_ _Hold Fast_ talent has been moved from Tier 3 to Tier 2, with reducing its max blocking from 2/4/6 to 2/5.\n\n" +
+                    "_-_ _Runic Transference_ talent has been moved from Tier 2 to Tier 3, with new effect for _+3_!\n\n" +
+                    "_-_ On _+3_, Runic Transference makes armor and broken seal independently store glyphs (with making seal be possible to inscribe with glyph) and _have them activate at the same time_!"){
+        @Override public Image icon() {return new TalentIcon(Talent.RUNIC_TRANSFERENCE);}
+    },
+    INTUITION_NOTES("Stone of Intuition notes", "Sentient Orange Pile/@sentientorangepile",
+            "_-_ Wrongly guessing item's type with _Stone of Intuition_ makes the guess _be saved as a note_ in item's description."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.STONE_INTUITION);}
+    },
+    ACCURACY_BUFF("Ring of Accuracy buff", "ImanUserIus/@imanuserius",
+            "_-_ _Ring of Accuracy_ provides _surprise attack damage boost_, in addition to accuracy boost.\n\n" +
+                    "_-_ Each upgrade adds _1.1x_ to surprise attack damage."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RING_RUBY);}
+    },
+    SILENCING_SPELL("Silencing spell", "emphysima gaming/@miutsuifa",
+            "_-_ Added _Silencing_ spell, which disables the magical abilities of targeted enemy for several turns.\n\n" +
+                    "_-_ Silenced enemies cannot do magic-based attacks or use magical abilities.\n\n" +
+                    "_-_ The spell can be made from Scroll of Anti-Magic."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SILENCE);}
+    },
+    ALCHEMICAL_SWORD("Alchemical Akrafena", "Serpens/@serpens2137",
+            "_-_ Added _Alchemical Akrafena_, the special T4 weapon, which can be _imbued with potions_ for on-hit effects.\n\n" +
+                    "_-_ The imbue lasts several hits and will apply effect of a dart, that corresponds to potion's seed, which was imbued.\n\n" +
+                    "_-_ Duelist's ability will attack enemies in 5x5 area around the player with current imbue, but costs 2 charges and uses up the weapon's imbue."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.ALCHEMICAL_SWORD);}
+    },
+    RAT_KING_CURSE("Rat King's tripping curse", "watabou's uncle Dialga/@engio",
+            "_-_ Awakening Rat King from his sleep will _apply a curse_ on player.\n\n" +
+                    "_-_ With curse active, there is 1/2222 chance on every step for player to trip and drop their weapon.\n\n" +
+                    "_-_ This effect cannot be countered with ankhs and invulnerability effects."){
+        @Override public Image icon() {return new RatKingSprite();}
+    },
+    WARDING_REFUNDING("Wand of Warding's sentry refunding", "Sir Ayin/@uchufoxgd",
+            "_-_ Removing wards and sentries by interacting with them also _refunds some of the charge spent_ on deploying that sentry.\n\n" +
+                    "_-_ 0,5/1/1,5 charges is refunded for wards and 1/1,5/2 charges is refunded for sentries."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.WAND_WARDING);}
+    },
+    UPGRADE_LOG_ON_IDENTIFY("Revealing item's upgrades on identifying", "Yams/@xrider107",
+            "_-_ Identifying equipment by any means states its upgrade level and enchantments in game log's identify message."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SCROLL_KAUNAN);}
+    },
+    VERTIGO_OVERHAUL("Missing attacks while being vertigoed", "MarioDied64/@merio64",
+            "_-_ Being inflicted with _Vertigo_ effect causes player to frequently miss the target of throwing or wand zaps.\n\n" +
+                    "_-_ Enemies, that are affected with _Vertigo_, will randomly attack the wrong target nearby instead of player, regardless of attacking in melee or at range."){
+        @Override public Image icon() {return new BuffIcon(BuffIndicator.VERTIGO, true);}
+    },
+    TENGU_BOMB_CHECK("Checking floor in range of Tengu's bomb", "inverse-snake/@inverse.snake",
+            "_-_ Checking empty floor, that is in range of Tengu's smoke bomb, will show, if this floor will be affected by smoke bomb's explosion."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.TENGU_BOMB);}
+    },
+    FIRE_FROST_REACTION("Fire and frost reactions", "Nat/@nat9542",
+            "_-_ Inflicting Burning on enemies with Chilling and vice versa _will damage the enemy_ equivalent to _75% of bomb's damage_.\n\n" +
+                    "_-_ This interaction can be triggered with potions and elemental wands."){
+        @Override public Image icon() {return new BuffIcon(BuffIndicator.FIRE, true);}
+    },
+    ENCHANTING_RESULTS("Enchanting results", "Cilian/@cilian._ and _Zackary (Prof. Wand Hater)/@zackary4536",
+            "_-_ _Arcane Stylus_ and _Stone of Enchantment_ state the enchantment/glyph they applied in their game log's message."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.STONE_ENCHANT);}
+    },
+    BOSS_BAGS("Inventory bags from bosses", "ifritdiezel/@ifritdiezel",
+            "_-_ Instead of being bought at the shops, storage bags will drop from the bosses."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.BANDOLIER);}
+    },
+    RNG_MANIPULATOR("Luck Manipulator spell", "NeoSlav/@neoslav",
+            "_-_ Added _Luck Manipulator_ spell, which allows to get luck boost for next floor _by either sacrificing money or health_.\n\n" +
+                    "_-_ Player can sacrifice 50% of their current gold or 75% of their total HP.\n\n" +
+                    "_-_ The amount of luck boost _will depend on amount of sacrificed resources_ and will be shown in game log after spell's usage.\n\n" +
+                    "_-_ The luck boost effect affects the amount and quality of puzzle room's drops and random enemy drops.\n\n" +
+                    "_-_ The spell can be made with Unstable Spell."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RNG_MANIPULATOR);}
+    },
+    DAILY_CHALLENGES("Daily challenges", "vexxjacobs/@vexxjacobs",
+            "_-_ The player can select to _get some challenges_, when doing the daily run.\n\n" +
+                    "_-_ The resulting challenges will depend on the seed generated for that daily."){
+        @Override public Image icon() {return Icons.get(Icons.CALENDAR);}
+    },
+    BROKEN_TREASURE_CHEST("Broken Treasure Box trinket", "goteryup/@goteryup",
+            "_-_ Added _Broken Treasure Box_ trinket, which increases amount of special rooms by _25%/60%/95%/130%_.\n\n" +
+                    "_-_ The amount of alchemical energy required to upgrade this trinket is _25/30/35_."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.BROKEN_TREASURE);}
+    },
+    NO_TORCH_KEY_REWARDS("No Torches and Keys as rewards", "Luiz Felipe Sá/@luizfelipesa",
+            "_-_ Torches and any variety of key will _no longer be rolled as a prize_ for special puzzle rooms."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.GOLDEN_KEY);}
+    },
+    WATERSKIN_SIP("Sipping out of Waterskin", "The healing plant/@fuwn.",
+            "_-_ Added ability to _sip_ out of waterskin, consuming only 1 dewdrop out of it."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.WATERSKIN);}
+    },
+    FROSTFIRE_BREW("Frostfire Brew return", "u/SmithyLK",
+            "_-_ Reimplemented _Frostfire Brew_, with it being reworked to create _frost fire_ instead of normal fire and chill blobs.\n\n" +
+                    "_-_ Frost fire doesn't spread to other tiles, freezes and burns heaps at the same time, and inflicts _Frostburn debuff_.\n\n" +
+                    "_-_ Frostburn makes its targets be both slowed and damaged and freezes them when extinguished with water."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.BREW_FROSTFIRE);}
+    },
+    GEMSTONE_DUST("Gemstone Dust", "Drach/u/InkDrach, u/radiantchaos18 and u/AntManMax",
+            "_-_ Added _Gemstone Dust_ as _ring counterpart_ to arcane resin.\n\n" +
+                    "_-_ Gemstone dust can be used to _upgrade rings up to +2_, this boost is reset with normal upgrades.\n\n" +
+                    "_-_ Arcane resin can also be used to upgrade rings and gemstone dust can be used to upgrade wands, but each level of boost _costs one more item than usual_."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.GEMSTONE_DUST);}
+    },
+    NECKLACE_OF_ICE("Necklace of Ice", "Pxl Pddng/u/-pixelpudding-",
+            "_-_ Added _Necklace of Ice_, an ice-themed artifact that _turns cold into protection_, making player be immune to frost, not be slowed by chill and get additional armor while being chilled.\n\n" +
+                    "_-_ While worn, it will slowly charge (300 turns to full), with 100% charge necklace of ice can be used to _unleash a blizzard effect_, that damages and chills enemies and ground in 5x5 area.\n\n" +
+                    "_-_ Necklace of ice is upgraded by gathering experience."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.ARTIFACE_NECKLACE);}
+    },
+    EXPLORER_MODE("Explorer mode", "u/confusedpuppy@lemmy.dbzer0.com",
+            "_-_ Added _Explorer mode_, inspired by Caves of Qud, that allows to _set checkpoints_ at shop rooms, and _reset the game back at them, when dying_.\n\n" +
+                    "_-_ The Explorer mode runs _cannot obtain badges_ and their runs will be at the bottom of rankings, like seeded runs."){
+        @Override public Image icon() {return Icons.get(Icons.TALENT);}
+    },
+    RUNIC_BLADE_REWORK("Runic blade rework", "u/diamocube",
+            "_-_ Changed Runic Blade to _never lose enchantments_ and _increase their power_ with upgrading, instead of getting more damage from them.\n\n" +
+                    "_-_ Each upgrade boosts enchantments by _15%_ in multiplicative fashion."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RUNIC_BLADE);}
+    },
+    FURY_SPELL("Fury spell", "u/Lancelot-Gaming",
+            "_-_ Added _Fury_ spell, that enrages enemies by inflicting Amok and Adrenaline on them.\n\n" +
+                    "_-_ The spell can be made with Scroll of Rage."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.FURY);}
+    },
+    WAKIZASHI("Wakizashi", "_u/Demonetizing-YT-GUY_",
+            "_-_ Added _Wakizashi_, the special T4 weapon, that has very low damage, but gets +33% accuracy and _attacks 3 times per turn_, with each hit ignoring _33% of enemy's armor_\n\n" +
+                    "_-_ Duelist's ability is combo effect that lasts for 3 turns, during which each hit will deal 1 more damage than previous one."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.WAKIZASHI);}
+    },
+    CROSS_BOMB("Cross Bomb", "tpd0618/@tpd0618",
+            "_-_ Added _cross bomb_, that deals 33% more damage, but _explodes in cross_ shape without corners, like Bomberman bomb.\n\n" +
+                    "_-_ Each line of cross is 2 tiles long.\n\n" +
+                    "_-_ The bomb can either be made with bomb and shuriken, or be found as alternative to normal bomb."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.CROSS_BOMB);}
+    },
+    COLORED_RUNESTONES("Colored runestones", ":soiled:/@tarzhel",
+            "_-_ Each runestone's sign is now colored like their respective scroll."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.STONE_FEAR);}
+    },
+    HARDCORE_BADGES("Hardcore badges", ":soiled:/@tarzhel",
+            "_-_ Added few new badges, intended to be additional challenge for players.\n\n" +
+                    "" +
+                    "_-_ _UnHappy Ending_ - rewarded, when player dies during ascension.\n" +
+                    "_-_ _The Root of All Evil_ - rewarded, when at least three shopkeepers are forced to flee.\n" +
+                    "_-_ _Pristine Victory_ - rewarded, when ascension run is completed with every score category being maxed out.\n" +
+                    "_-_ _Champion of All Trades_ - rewarded, when player completes run with every challenge (not all at once, think of it as counterpart to badge for defeating DM-300 with all subclasses).\n" +
+                    "_-_ _Syphoned Enchanter_ - rewarded, when player completes run without using scroll of upgrade."){
+        @Override public Image icon() {return BadgeBanner.image( Badges.Badge.PERFECT_ASCENT.image);}
+    },
+    HERBALIST_BADGES("Herbalist badges", "The healing plant/@fuwn.",
+            "_-_ Added a badge category for planting and using plants, with a badge for 10/20/30/40/50 triggered plants in a run."){
+        @Override public Image icon() {return BadgeBanner.image( Badges.Badge.PLANTS_ACTIVATED_2.image);}
+    },
+    LEAN("Leany Elixir", "Hrohlu/@hrohlu",
+            "_-_ Added _Leany Elixir_, which makes player take _3x less_ elemental damage, move _2x_ faster, dodge _50% more_ frequently and do _2x more_ physical damage.\n\n" +
+                    "_-_ This elixir also makes player _vertigoed_, making them run in random directions and miss their melee and ranged attacks.\n" +
+                    "_-_ This elixir can be made with Potion of Levitation and Unstable Brew (given 2 at the craft)."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.ELIXIR_LEAN);}
+    },
+    FAILED_DEFENDER("Failed Defender", "Gamma/@gammalolman",
+            "_-_ Added _failed defender_, the rare variant of prison guard, that combines traits of prison guard, succubus and gnoll brute.\n\n" +
+                    "_-_ Failed defender has 3 more armor and 2 more evasion points, than normal guard, and _can teleport to the player_, when they are out to reach.\n\n" +
+                    "_-_ His drop is _enchanted armor_ at 5x drop rate of normal guard."){
+        @Override public Image icon() {return new DefenderSprite();}
+    },
+    FORESIGHT_REWORK("Rogue's Foresight rework", "QKuroire/@qkuroire",
+            "_-_ Reduced the chance to detect a secret from _60%/90%_ to _40%/60%_, but successful procs show the secret room entrances on the map."){
+        @Override public Image icon() {return new TalentIcon(Talent.ROGUES_FORESIGHT);}
+    },
+    TENACITY_BUFF("Ring of Tenacity buff", "Raynuva/@raynuva",
+            "_-_ Changed the 0% damage reduction threshold from _100% HP_ to _80% HP_.\n\n" +
+                    "_-_ Changed the 100% damage reduction threshold from _0%_ to _20% HP_."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RING_SAPPHIRE);}
+    },
+    DRAGON_BREATH_EVAPORATE("Dragon's Breath water interaction", "ImanUserIus/@imanuserius",
+            "_-_ Changed _Potion of Dragon's Breath_ to _evaporate roughly 60% of water_ in effect's AoE, acting as reverse Aqua Brew."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.EXOTIC_AMBER);}
+    },
+    AUGMENTED_CROSSBOW_DARTS("Darts and Crossbow's augmentation", "Lootbug/@thelootbug",
+            "_-_ Darts are now _affected by Crossbow's augmentation_, making them take more/less time to hit, but dealing more/less damage."){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.CROSSBOW);}
+    }
+    ;
 
-    public String author;
-    public String description;
+    public final String author;
+    public final String name;
+    public final String description;
     boolean enabled = true;
 
-    Feature(){}
-
-    Feature(String author, String description){
+    Feature(String name, String author, String description){
+        this.name = name;
         this.author = author;
         this.description = description;
+    }
+
+    public Image icon(){
+        return new ItemSprite(ItemSpriteSheet.SOMETHING);
     }
 
     private static final String FEATURES_FILE = "features.dat";
