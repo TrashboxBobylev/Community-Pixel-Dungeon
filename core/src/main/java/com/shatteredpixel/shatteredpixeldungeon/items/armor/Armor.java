@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -507,7 +508,10 @@ public class Armor extends EquipableItem {
 					setIDReady();
 				} else {
 					identify();
-					GLog.p(Messages.get(Armor.class, "identify", title()));
+					String identifyMessage = Messages.get(Armor.class, "identify");
+					if (Feature.UPGRADE_LOG_ON_IDENTIFY.enabled)
+						identifyMessage += Messages.get(Item.class, "identify", title());
+					GLog.p(identifyMessage);
 					Badges.validateItemLevelAquired(this);
 				}
 			}

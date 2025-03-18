@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
@@ -183,7 +184,10 @@ abstract public class Weapon extends KindOfWeapon {
 					setIDReady();
 				} else {
 					identify();
-					GLog.p(Messages.get(Weapon.class, "identify", title()));
+					String identifyMessage = Messages.get(Weapon.class, "identify");
+					if (Feature.UPGRADE_LOG_ON_IDENTIFY.enabled)
+						identifyMessage += Messages.get(Item.class, "identify", title());
+					GLog.p(identifyMessage);
 					Badges.validateItemLevelAquired(this);
 				}
 			}
