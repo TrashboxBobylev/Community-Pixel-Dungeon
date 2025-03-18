@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -811,13 +812,17 @@ public abstract class Level implements Bundlable {
 
 			Item item = null;
 
-			for (int i = 0; i < 4; i++){
+			if (Feature.NO_TORCH_KEY_REWARDS.enabled) {
+				for (int i = 0; i < 4; i++) {
+					item = Random.element(itemsToSpawn);
+					if (!(item instanceof UndesiredItem))
+						break;
+				}
+				if (item instanceof UndesiredItem)
+					return null;
+			} else {
 				item = Random.element(itemsToSpawn);
-				if (!(item instanceof UndesiredItem))
-					break;
 			}
-			if (item instanceof UndesiredItem)
-				return null;
 
 			itemsToSpawn.remove(item);
 			return item;
