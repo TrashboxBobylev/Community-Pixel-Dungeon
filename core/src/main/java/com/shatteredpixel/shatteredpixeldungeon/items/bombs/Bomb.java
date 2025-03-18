@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -400,6 +401,9 @@ public class Bomb extends Item {
 					bomb = true;
 				} else if (validIngredients.containsKey(i.getClass())){
 					ingredient = true;
+					if (!Feature.CROSS_BOMB.enabled && i.getClass() == Shuriken.class){
+						ingredient = false;
+					}
 				}
 			}
 			
@@ -440,6 +444,8 @@ public class Bomb extends Item {
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (validIngredients.containsKey(i.getClass())){
+					if ((!Feature.CROSS_BOMB.enabled && i.getClass() == Shuriken.class))
+						return null;
 					return Reflection.newInstance(validIngredients.get(i.getClass()));
 				}
 			}

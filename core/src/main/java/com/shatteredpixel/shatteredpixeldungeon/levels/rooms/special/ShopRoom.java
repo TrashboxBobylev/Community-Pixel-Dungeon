@@ -290,7 +290,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new SmallRation() );
 		itemsToSpawn.add( new SmallRation() );
 		
-		switch (Random.Int(5)){
+		switch (Random.Int(Feature.CROSS_BOMB.enabled ? 5 : 4)){
 			case 0:
 				itemsToSpawn.add( new Bomb() );
 				break;
