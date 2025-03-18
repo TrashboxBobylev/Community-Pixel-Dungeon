@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -129,8 +130,10 @@ public class RatKing extends NPC {
 		if (state == SLEEPING) {
 			notice();
 			yell( Messages.get(this, "not_sleeping") );
-			GLog.w( Messages.get(this, "cursed") );
-			Buff.affect(c, RatKingCurse.class);
+			if (Feature.RAT_KING_CURSE.enabled) {
+				GLog.w(Messages.get(this, "cursed"));
+				Buff.affect(c, RatKingCurse.class);
+			}
 			state = WANDERING;
 		} else if (crown != null){
 			if (Dungeon.hero.belongings.armor() == null){
