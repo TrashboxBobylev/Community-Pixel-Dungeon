@@ -50,6 +50,7 @@ public class FeatureEnableButton extends RedButton {
     protected void onClick() {
         super.onClick();
         feature.enabled = !feature.enabled;
+        Feature.saveFeatures();
         updateButton();
         if (parent instanceof Window)
             ((Window) parent).hide();
