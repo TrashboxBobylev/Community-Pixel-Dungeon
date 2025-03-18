@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
 import com.watabou.utils.Random;
@@ -254,7 +255,7 @@ public class MobSpawner extends Actor {
 					cl = CausticSlime.class;
 				} else if (cl == Thief.class) {
 					cl = Bandit.class;
-				} else if (cl == Guard.class) {
+				} else if (cl == Guard.class && Feature.FAILED_DEFENDER.enabled) {
 					cl = FailedDefender.class;
 				} else if (cl == Necromancer.class) {
 					cl = SpectralNecromancer.class;
