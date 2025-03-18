@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -80,7 +81,8 @@ public class Waterskin extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		if (volume > 0) {
 			actions.add( AC_DRINK );
-			actions.add( AC_SIP );
+			if (Feature.WATERSKIN_SIP.enabled)
+				actions.add( AC_SIP );
 		}
 		return actions;
 	}
@@ -150,6 +152,9 @@ public class Waterskin extends Item {
 			info += "\n\n" + Messages.get(this, "desc_water");
 		} else {
 			info += "\n\n" + Messages.get(this, "desc_heal", Math.round( Dungeon.hero.HT * 0.05f * quantity ));
+			if (Feature.WATERSKIN_SIP.enabled){
+				info += "\n" + Messages.get(this, "desc_sip");
+			}
 		}
 
 		if (isFull()){
