@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -81,15 +82,16 @@ public class Dart extends MissileWeapon {
 	@Override
 	public int min(int lvl) {
 		if (bow != null){
+			int dmg;
 			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
 				//ability increases base dmg by 50%, scaling by 50%
-				return  8 +                     //8 base
+				dmg = 8 +                     //8 base
 						2*bow.buffedLvl() + lvl;//+2 per bow level, +1 per level
 			} else {
-				return  bow.augment.damageFactor
-					(4 +                     //4 base
-						bow.buffedLvl() + lvl);  //+1 per level or bow level
+				dmg = 4 +                     //4 base
+						bow.buffedLvl() + lvl;  //+1 per level or bow level
 			}
+			return Feature.AUGMENTED_CROSSBOW_DARTS.enabled ? bow.augment.damageFactor(dmg) : dmg;
 		} else {
 			return  1 +     //1 base, down from 2
 					lvl;    //scaling unchanged
@@ -99,15 +101,16 @@ public class Dart extends MissileWeapon {
 	@Override
 	public int max(int lvl) {
 		if (bow != null){
+			int dmg;
 			if (!(this instanceof TippedDart) && Dungeon.hero.buff(Crossbow.ChargedShot.class) != null){
 				//ability increases base dmg by 50%, scaling by 50%
-				return  16 +                       //16 base
+				dmg = 16 +                       //16 base
 						4*bow.buffedLvl() + 2*lvl; //+4 per bow level, +2 per level
 			} else {
-				return  bow.augment.damageFactor
-					(12 +                       //12 base
-						3*bow.buffedLvl() + 2*lvl); //+3 per bow level, +2 per level
+				dmg = 12 +                       //12 base
+						3*bow.buffedLvl() + 2*lvl; //+3 per bow level, +2 per level
 			}
+			return Feature.AUGMENTED_CROSSBOW_DARTS.enabled ? bow.augment.damageFactor(dmg) : dmg;
 		} else {
 			return  2 +     //2 base, down from 5
 					2*lvl;  //scaling unchanged
@@ -154,7 +157,7 @@ public class Dart extends MissileWeapon {
 
 	@Override
 	public float castDelay(Char user, int dst) {
-		return super.castDelay(user, dst) * (bow != null ? bow.augment.delayFactor(1f) : 1f);
+		return super.castDelay(user, dst) * (bow != null && Feature.AUGMENTED_CROSSBOW_DARTS.enabled ? bow.augment.delayFactor(1f) : 1f);
 	}
 
 	@Override
