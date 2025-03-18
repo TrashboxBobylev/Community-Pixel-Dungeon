@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
@@ -34,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Stasis;
@@ -446,31 +446,35 @@ public class WandOfWarding extends Wand {
 					final float refundAmount = tier > 3 ? tier * 0.25f : tier * 0.5f;
 					GameScene.show(new WndOptions( sprite(),
 							Messages.get(Ward.this, "dismiss_title"),
-							Messages.get(Ward.this, "dismiss_body", Messages.decimalFormat("#.##", refundAmount)),
+							Feature.WARDING_REFUNDING.enabled ?
+								Messages.get(Ward.this, "dismiss_body_refund", Messages.decimalFormat("#.##", refundAmount)) :
+									Messages.get(Ward.this, "dismiss_body"),
 							Messages.get(Ward.this, "dismiss_confirm"),
 							Messages.get(Ward.this, "dismiss_cancel") ){
 						@Override
 						protected void onSelect(int index) {
 							if (index == 0){
 								die(null);
-								boolean refundSuccessful = false;
-								for (Item item: Dungeon.hero.belongings){
-									if (item instanceof MagesStaff && ((MagesStaff) item).wandClass() == WandOfWarding.class){
-										((MagesStaff) item).gainCharge(refundAmount);
-										refundSuccessful = true;
-										break;
-									} else if (item instanceof WandOfWarding){
-										((WandOfWarding) item).gainCharge(refundAmount);
-										refundSuccessful = true;
-										break;
+								if (Feature.WARDING_REFUNDING.enabled) {
+									boolean refundSuccessful = false;
+									for (Item item : Dungeon.hero.belongings) {
+										if (item instanceof MagesStaff && ((MagesStaff) item).wandClass() == WandOfWarding.class) {
+											((MagesStaff) item).gainCharge(refundAmount);
+											refundSuccessful = true;
+											break;
+										} else if (item instanceof WandOfWarding) {
+											((WandOfWarding) item).gainCharge(refundAmount);
+											refundSuccessful = true;
+											break;
+										}
 									}
-								}
-								if (refundSuccessful){
-									if (Dungeon.hero.sprite != null){
-										Emitter e = Dungeon.hero.sprite.centerEmitter();
-										if (e != null) {
-											e.burst(EnergyParticle.FACTORY, (int) (8 * refundAmount));
-											e.burst(MagicMissile.WardParticle.FACTORY, (int) (8 * refundAmount));
+									if (refundSuccessful) {
+										if (Dungeon.hero.sprite != null) {
+											Emitter e = Dungeon.hero.sprite.centerEmitter();
+											if (e != null) {
+												e.burst(EnergyParticle.FACTORY, (int) (8 * refundAmount));
+												e.burst(MagicMissile.WardParticle.FACTORY, (int) (8 * refundAmount));
+											}
 										}
 									}
 								}
