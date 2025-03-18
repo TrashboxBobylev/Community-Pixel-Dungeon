@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
@@ -157,7 +158,7 @@ public class WndInfoCell extends Window {
 				}
 			}
 
-			if (Dungeon.level instanceof PrisonBossLevel && ((PrisonBossLevel) Dungeon.level).state() == PrisonBossLevel.State.FIGHT_ARENA){
+			if (Feature.TENGU_BOMB_CHECK.enabled && Dungeon.level instanceof PrisonBossLevel && ((PrisonBossLevel) Dungeon.level).state() == PrisonBossLevel.State.FIGHT_ARENA){
 				for (Char mob: Dungeon.level.mobs){
 					if (mob instanceof Tengu){
 						for (Tengu.BombAbility b : mob.buffs(Tengu.BombAbility.class)){
