@@ -73,6 +73,7 @@ public class ChangesScene extends PixelScene {
 	private ScrollPane rightScroll;
 	private IconTitle changeTitle;
 	private RenderedTextBlock changeBody;
+	private FeatureEnableButton featureButton;
 	
 	@Override
 	public void create() {
@@ -135,6 +136,10 @@ public class ChangesScene extends PixelScene {
 			changeBody.maxWidth(pw - panel.marginHor());
 			changeBody.setPos(0, changeTitle.bottom()+2);
 			rightScroll.content().add(changeBody);
+
+			featureButton = new FeatureEnableButton(null);
+			featureButton.setRect(0, changeBody.bottom() + 2, changeBody.width(), 18);
+			rightScroll.content().add(featureButton);
 
 		} else {
 			panel.size( pw, ph );
@@ -273,12 +278,10 @@ public class ChangesScene extends PixelScene {
 				}
 			}
 			changeBody.text(message);
-			if (feature == null)
-				rightScroll.content().setSize(rightScroll.width(), changeBody.bottom()+2);
-			else {
-				FeatureEnableButton featureButton = new FeatureEnableButton(feature);
-				featureButton.setRect(0, changeBody.bottom() + 2, changeBody.width(), 18);
-				rightScroll.content().add(featureButton);
+			rightScroll.content().setSize(rightScroll.width(), changeBody.bottom()+2);
+			if (feature != null){
+				featureButton.setFeature(feature);
+				featureButton.setPos(0, changeBody.bottom() + 2);
 				rightScroll.content().setSize(rightScroll.width(), featureButton.bottom()+2);
 			}
 			rightScroll.setSize(rightScroll.width(), rightScroll.height());

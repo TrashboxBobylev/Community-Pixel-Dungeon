@@ -35,10 +35,18 @@ public class FeatureEnableButton extends RedButton {
     protected Feature feature;
 
     public FeatureEnableButton(Feature feature) {
-        super(Messages.get(WndFeature.class, feature.enabled ? "disable" : "enable"));
-        this.feature = feature;
+        super(Messages.get(WndFeature.class, feature != null && feature.enabled ? "disable" : "enable"));
+        setFeature(feature);
+    }
 
-        updateButton();
+    public void setFeature(Feature feature){
+        if (feature != null) {
+            this.feature = feature;
+            updateButton();
+            visible = true;
+        } else {
+            visible = false;
+        }
     }
 
     private void updateButton(){
