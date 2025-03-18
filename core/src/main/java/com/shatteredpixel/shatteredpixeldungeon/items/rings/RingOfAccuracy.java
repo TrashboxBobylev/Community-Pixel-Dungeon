@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -39,22 +40,37 @@ public class RingOfAccuracy extends Ring {
 	public String statsInfo() {
 		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, soloBuffedBonus()) - 1f)),
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, soloBuffedBonus()) - 1f)));
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, soloBuffedBonus()) - 1f)));
+			if (Feature.ACCURACY_BUFF.enabled){
+				info += Messages.get(this, "sneak_stats", Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, soloBuffedBonus()) - 1f)));
+			}
 			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, combinedBuffedBonus(Dungeon.hero)) - 1f)),
-							Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
+				if (Feature.ACCURACY_BUFF.enabled){
+					info += Messages.get(this, "combined_sneak_stats", Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
+				}
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 30f), Messages.decimalFormat("#.##", 10f));
+			String info = Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 30f));
+			if (Feature.ACCURACY_BUFF.enabled){
+				info += Messages.get(this, "typical_sneak_stats", Messages.decimalFormat("#.##", 10f));
+			}
+			return info;
 		}
 	}
 
 	public String upgradeStat1(int level){
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.3f, level+1)-1f)) + "%";
+	}
+
+	public String upgradeStat2(int level){
+		if (!Feature.ACCURACY_BUFF.enabled)
+			return null;
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.1f, level+1)-1f)) + "%";
 	}
 	
 	@Override
@@ -67,6 +83,8 @@ public class RingOfAccuracy extends Ring {
 	}
 
 	public static float sneakAttackMultiplier( Char target ){
+		if (!Feature.ACCURACY_BUFF.enabled)
+			return 1.0f;
 		return (float)Math.pow(1.1f, getBuffedBonus(target, Accuracy.class));
 	}
 	
