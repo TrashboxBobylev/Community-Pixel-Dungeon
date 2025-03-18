@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -685,18 +686,23 @@ public class HeroSelectScene extends PixelScene {
 					Image icon = Icons.get(Icons.CALENDAR);
 					if (diff <= 0)  icon.hardlight(0.5f, 1f, 2f);
 					else            icon.hardlight(1f, 0.5f, 2f);
+					ArrayList<String> dailyOptions = new ArrayList<>();
+					dailyOptions.add(Messages.get(HeroSelectScene.class, "daily_yes"));
+					dailyOptions.add(Messages.get(HeroSelectScene.class, "daily_no"));
+					if (Feature.DAILY_CHALLENGES.enabled){
+						dailyOptions.add(1, Messages.get(HeroSelectScene.class, "daily_yes_cool"));
+					}
 					ShatteredPixelDungeon.scene().addToFront(new WndOptions(
 							icon,
 							Messages.get(HeroSelectScene.class, "daily"),
-							diff > 0 ?
+							(diff > 0 ?
 								Messages.get(HeroSelectScene.class, "daily_repeat") :
-								Messages.get(HeroSelectScene.class, "daily_desc"),
-							Messages.get(HeroSelectScene.class, "daily_yes"),
-							Messages.get(HeroSelectScene.class, "daily_yes_cool"),
-								Messages.get(HeroSelectScene.class, "daily_no")){
+								Messages.get(HeroSelectScene.class, "daily_desc"))
+							+ (Feature.DAILY_CHALLENGES.enabled ? "\n\n" + Messages.get(HeroSelectScene.class, "daily_challenges") : ""),
+							dailyOptions.toArray(new String[0])){
 						@Override
 						protected void onSelect(int index) {
-							if (index == 0 || index == 1){
+							if (index == 0 || (Feature.DAILY_CHALLENGES.enabled && index == 1)){
 								if (diff <= 0) {
 									long time = Game.realTime - (Game.realTime % DAY);
 
@@ -713,7 +719,7 @@ public class HeroSelectScene extends PixelScene {
 								Dungeon.hero = null;
 								Dungeon.daily = true;
 								Dungeon.initSeed();
-                                if (index == 1)
+                                if (Feature.DAILY_CHALLENGES.enabled && index == 1)
                                     Dungeon.dailyChallenges = true;
 								ActionIndicator.clearAction();
 								InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
