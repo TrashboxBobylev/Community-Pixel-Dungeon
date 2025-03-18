@@ -27,9 +27,9 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -47,7 +47,6 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
 
 public class MenuPane extends Component {
@@ -228,7 +227,7 @@ public class MenuPane extends Component {
 	}
 
 	public void updateExplored(){
-		if (Dungeon.level.isLevelExplored(Dungeon.depth) && members.contains(exploredIcon)){
+		if (Dungeon.level.isLevelExplored(Dungeon.depth) && members.contains(exploredIcon) && Feature.EXPLORATION_ICON.enabled){
 			exploredIcon = Icons.get(Icons.EXPLORED_ICON);
 			add(exploredIcon);
 			layout();
