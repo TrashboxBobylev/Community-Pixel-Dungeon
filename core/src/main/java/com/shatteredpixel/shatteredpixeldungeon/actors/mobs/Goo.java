@@ -27,6 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -294,9 +295,11 @@ public class Goo extends Mob {
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
 
-		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
-		if (bag != null) {
-			Dungeon.level.drop( bag, pos ).sprite.drop();
+		if (Feature.BOSS_BAGS.enabled) {
+			Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+			if (bag != null) {
+				Dungeon.level.drop(bag, pos).sprite.drop();
+			}
 		}
 		
 		//60% chance of 2 blobs, 30% chance of 3, 10% chance for 4. Average of 2.5

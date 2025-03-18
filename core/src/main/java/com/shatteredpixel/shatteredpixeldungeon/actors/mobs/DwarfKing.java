@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -565,12 +566,14 @@ public class DwarfKing extends Mob {
 			Dungeon.level.drop(new KingsCrown(), pos).sprite.drop();
 		}
 
-		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
-		if (bag != null) {
-			if (Dungeon.level.solid[pos]){
-				Dungeon.level.drop(bag, pos + Dungeon.level.width()).sprite.drop(pos);
-			} else {
-				Dungeon.level.drop(bag, pos).sprite.drop();
+		if (Feature.BOSS_BAGS.enabled) {
+			Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+			if (bag != null) {
+				if (Dungeon.level.solid[pos]) {
+					Dungeon.level.drop(bag, pos + Dungeon.level.width()).sprite.drop(pos);
+				} else {
+					Dungeon.level.drop(bag, pos).sprite.drop();
+				}
 			}
 		}
 

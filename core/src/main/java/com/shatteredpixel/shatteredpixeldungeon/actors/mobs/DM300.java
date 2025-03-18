@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -45,7 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.WallOfLight;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -577,9 +577,11 @@ public class DM300 extends Mob {
 		GameScene.bossSlain();
 		Dungeon.level.unseal();
 
-		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
-		if (bag != null) {
-			Dungeon.level.drop( bag, pos ).sprite.drop();
+		if (Feature.BOSS_BAGS.enabled) {
+			Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+			if (bag != null) {
+				Dungeon.level.drop(bag, pos).sprite.drop();
+			}
 		}
 
 		//60% chance of 2 shards, 30% chance of 3, 10% chance for 4. Average of 2.5

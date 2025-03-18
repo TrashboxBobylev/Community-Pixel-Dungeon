@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -220,9 +221,11 @@ public class Tengu extends Mob {
 			Dungeon.level.drop( new TengusMask(), pos ).sprite.drop();
 		}
 
-		Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
-		if (bag != null) {
-			Dungeon.level.drop( bag, pos ).sprite.drop();
+		if (Feature.BOSS_BAGS.enabled) {
+			Bag bag = ShopRoom.ChooseBag(Dungeon.hero.belongings);
+			if (bag != null) {
+				Dungeon.level.drop(bag, pos).sprite.drop();
+			}
 		}
 		
 		GameScene.bossSlain();
