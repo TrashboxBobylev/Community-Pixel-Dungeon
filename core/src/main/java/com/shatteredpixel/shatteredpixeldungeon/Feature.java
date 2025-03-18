@@ -234,7 +234,7 @@ public enum Feature {
     public final String author;
     public final String name;
     public final String description;
-    boolean enabled = true;
+    public boolean enabled = true;
 
     Feature(String name, String author, String description){
         this.name = name;

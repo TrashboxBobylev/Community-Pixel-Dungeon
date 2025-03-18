@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -36,7 +37,23 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.*;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.CommPD_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.FeatureEnableButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChanges;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndChangesTabbed;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.WndFeature;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_1_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_2_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_3_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_4_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_5_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_6_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_7_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_8_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_9_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v1_X_Changes;
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v2_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v3_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Camera;
@@ -242,7 +259,7 @@ public class ChangesScene extends PixelScene {
 		fadeIn();
 	}
 
-	private void updateChangesText(Image icon, String title, String... messages){
+	private void updateChangesText(Image icon, String title, Feature feature, String... messages){
 		if (changeTitle != null){
 			changeTitle.icon(icon);
 			changeTitle.label(title);
@@ -256,13 +273,23 @@ public class ChangesScene extends PixelScene {
 				}
 			}
 			changeBody.text(message);
-			rightScroll.content().setSize(rightScroll.width(), changeBody.bottom()+2);
+			if (feature == null)
+				rightScroll.content().setSize(rightScroll.width(), changeBody.bottom()+2);
+			else {
+				FeatureEnableButton featureButton = new FeatureEnableButton(feature);
+				featureButton.setRect(0, changeBody.bottom() + 2, changeBody.width(), 18);
+				rightScroll.content().add(featureButton);
+				rightScroll.content().setSize(rightScroll.width(), featureButton.bottom()+2);
+			}
 			rightScroll.setSize(rightScroll.width(), rightScroll.height());
 			rightScroll.scrollTo(0, 0);
 
 		} else {
 			if (messages.length == 1) {
-				addToFront(new WndChanges(icon, title, messages[0]));
+				if (feature != null)
+					addToFront(new WndFeature(feature));
+				else
+					addToFront(new WndChanges(icon, title, messages[0]));
 			} else {
 				addToFront(new WndChangesTabbed(icon, title, messages));
 			}
@@ -272,7 +299,7 @@ public class ChangesScene extends PixelScene {
 	public static void showChangeInfo(Image icon, String title, String... messages){
 		Scene s = ShatteredPixelDungeon.scene();
 		if (s instanceof ChangesScene){
-			((ChangesScene) s).updateChangesText(icon, title, messages);
+			((ChangesScene) s).updateChangesText(icon, title, null, messages);
 			return;
 		}
 		if (messages.length == 1) {
@@ -280,6 +307,16 @@ public class ChangesScene extends PixelScene {
 		} else {
 			s.addToFront(new WndChangesTabbed(icon, title, messages));
 		}
+	}
+
+	public static void showFeature(Feature feature){
+		Scene s = ShatteredPixelDungeon.scene();
+		String featureDesc = Messages.get(Feature.class, "desc", feature.author, feature.description);
+		if (s instanceof ChangesScene){
+			((ChangesScene) s).updateChangesText(feature.icon(), feature.name, feature, featureDesc);
+			return;
+		}
+		s.addToFront(new WndFeature(feature));
 	}
 	
 	@Override
