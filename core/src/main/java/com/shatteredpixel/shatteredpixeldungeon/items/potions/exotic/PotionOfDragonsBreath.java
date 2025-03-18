@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -38,8 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -176,8 +177,8 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 												GameScene.updateMap(cell);
 											}
 
-											//evaporate some water
-											if (Dungeon.level.map[cell] == Terrain.WATER && Random.Float() <= 0.6f){
+											//evaporate some water, if it is enabled
+											if (Feature.DRAGON_BREATH_EVAPORATE.enabled && Dungeon.level.map[cell] == Terrain.WATER && Random.Float() <= 0.6f){
 												Level.set( cell, Terrain.EMPTY);
 												GameScene.updateMap( cell );
 												CellEmitter.get( cell ).burst( Speck.factory( Speck.STEAM ), 10 );
