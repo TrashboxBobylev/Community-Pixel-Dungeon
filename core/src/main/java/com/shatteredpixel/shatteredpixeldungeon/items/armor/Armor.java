@@ -538,7 +538,7 @@ public class Armor extends EquipableItem {
 			} else {
 				name = glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
 		}
-		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 && seal != null && seal.getGlyph() != null){
+		if (Dungeon.hero != null && Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 && seal != null && seal.getGlyph() != null){
 			if (glyph == null){
 				return seal.getGlyph().name(super.name());
 			}
