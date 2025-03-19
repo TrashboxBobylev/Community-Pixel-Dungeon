@@ -26,6 +26,17 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.CrossBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Fury;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenTreasureBox;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemicalAkrafena;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wakizashi;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DefenderSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -68,12 +79,22 @@ public enum Feature {
                     "_-_ Silenced enemies cannot do magic-based attacks or use magical abilities.\n\n" +
                     "_-_ The spell can be made from Scroll of Anti-Magic."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SILENCE);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{Silencing.class};
+        }
     },
     ALCHEMICAL_SWORD("Alchemical Akrafena", "Serpens/@serpens2137",
             "_-_ Added _Alchemical Akrafena_, the special T4 weapon, which can be _imbued with potions_ for on-hit effects.\n\n" +
                     "_-_ The imbue lasts several hits and will apply effect of a dart, that corresponds to potion's seed, which was imbued.\n\n" +
                     "_-_ Duelist's ability will attack enemies in 5x5 area around the player with current imbue, but costs 2 charges and uses up the weapon's imbue."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.ALCHEMICAL_SWORD);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{AlchemicalAkrafena.class};
+        }
     },
     RAT_KING_CURSE("Rat King's tripping curse", "watabou's uncle Dialga/@engio",
             "_-_ Awakening Rat King from his sleep will _apply a curse_ on player.\n\n" +
@@ -119,6 +140,11 @@ public enum Feature {
                     "_-_ The luck boost effect affects the amount and quality of puzzle room's drops and random enemy drops.\n\n" +
                     "_-_ The spell can be made with Unstable Spell."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RNG_MANIPULATOR);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{RNGManipulator.class};
+        }
     },
     DAILY_CHALLENGES("Daily challenges", "vexxjacobs/@vexxjacobs",
             "_-_ The player can select to _get some challenges_, when doing the daily run.\n\n" +
@@ -129,6 +155,11 @@ public enum Feature {
             "_-_ Added _Broken Treasure Box_ trinket, which increases amount of special rooms by _25%/60%/95%/130%_.\n\n" +
                     "_-_ The amount of alchemical energy required to upgrade this trinket is _25/30/35_."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.BROKEN_TREASURE);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{BrokenTreasureBox.class};
+        }
     },
     NO_TORCH_KEY_REWARDS("No Torches and Keys as rewards", "Luiz Felipe Sá/@luizfelipesa",
             "_-_ Torches and any variety of key will _no longer be rolled as a prize_ for special puzzle rooms."){
@@ -143,18 +174,33 @@ public enum Feature {
                     "_-_ Frost fire doesn't spread to other tiles, freezes and burns heaps at the same time, and inflicts _Frostburn debuff_.\n\n" +
                     "_-_ Frostburn makes its targets be both slowed and damaged and freezes them when extinguished with water."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.BREW_FROSTFIRE);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{FrostfireBrew.class};
+        }
     },
     GEMSTONE_DUST("Gemstone Dust", "Drach/u/InkDrach, u/radiantchaos18 and u/AntManMax",
             "_-_ Added _Gemstone Dust_ as _ring counterpart_ to arcane resin.\n\n" +
                     "_-_ Gemstone dust can be used to _upgrade rings up to +2_, this boost is reset with normal upgrades.\n\n" +
                     "_-_ Arcane resin can also be used to upgrade rings and gemstone dust can be used to upgrade wands, but each level of boost _costs one more item than usual_."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.GEMSTONE_DUST);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{GemstoneDust.class};
+        }
     },
     NECKLACE_OF_ICE("Necklace of Ice", "Pxl Pddng/u/-pixelpudding-",
             "_-_ Added _Necklace of Ice_, an ice-themed artifact that _turns cold into protection_, making player be immune to frost, not be slowed by chill and get additional armor while being chilled.\n\n" +
                     "_-_ While worn, it will slowly charge (300 turns to full), with 100% charge necklace of ice can be used to _unleash a blizzard effect_, that damages and chills enemies and ground in 5x5 area.\n\n" +
                     "_-_ Necklace of ice is upgraded by gathering experience."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.ARTIFACE_NECKLACE);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{GemstoneDust.class};
+        }
     },
     EXPLORER_MODE("Explorer mode", "u/confusedpuppy@lemmy.dbzer0.com",
             "_-_ Added _Explorer mode_, inspired by Caves of Qud, that allows to _set checkpoints_ at shop rooms, and _reset the game back at them, when dying_.\n\n" +
@@ -170,17 +216,32 @@ public enum Feature {
             "_-_ Added _Fury_ spell, that enrages enemies by inflicting Amok and Adrenaline on them.\n\n" +
                     "_-_ The spell can be made with Scroll of Rage."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.FURY);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{Fury.class};
+        }
     },
     WAKIZASHI("Wakizashi", "_u/Demonetizing-YT-GUY_",
             "_-_ Added _Wakizashi_, the special T4 weapon, that has very low damage, but gets +33% accuracy and _attacks 3 times per turn_, with each hit ignoring _33% of enemy's armor_\n\n" +
                     "_-_ Duelist's ability is combo effect that lasts for 3 turns, during which each hit will deal 1 more damage than previous one."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.WAKIZASHI);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{Wakizashi.class};
+        }
     },
     CROSS_BOMB("Cross Bomb", "tpd0618/@tpd0618",
             "_-_ Added _cross bomb_, that deals 33% more damage, but _explodes in cross_ shape without corners, like Bomberman bomb.\n\n" +
                     "_-_ Each line of cross is 2 tiles long.\n\n" +
                     "_-_ The bomb can either be made with bomb and shuriken, or be found as alternative to normal bomb."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.CROSS_BOMB);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{CrossBomb.class};
+        }
     },
     COLORED_RUNESTONES("Colored runestones", ":soiled:/@tarzhel",
             "_-_ Each runestone's sign is now colored like their respective scroll."){
@@ -205,6 +266,11 @@ public enum Feature {
                     "_-_ This elixir also makes player _vertigoed_, making them run in random directions and miss their melee and ranged attacks.\n" +
                     "_-_ This elixir can be made with Potion of Levitation and Unstable Brew (given 2 at the craft)."){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.ELIXIR_LEAN);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{LeanyElixir.class};
+        }
     },
     FAILED_DEFENDER("Failed Defender", "Gamma/@gammalolman",
             "_-_ Added _failed defender_, the rare variant of prison guard, that combines traits of prison guard, succubus and gnoll brute.\n\n" +
@@ -244,6 +310,10 @@ public enum Feature {
 
     public Image icon(){
         return new ItemSprite(ItemSpriteSheet.SOMETHING);
+    }
+
+    public Class<? extends Item>[] associatedItems(){
+        return new Class[]{};
     }
 
     private static final String FEATURES_FILE = "features.dat";

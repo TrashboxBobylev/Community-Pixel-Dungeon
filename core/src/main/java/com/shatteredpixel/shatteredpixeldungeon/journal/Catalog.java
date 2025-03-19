@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
@@ -122,6 +124,7 @@ import com.watabou.utils.Bundle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 //For items, but includes a few item-like effects, such as enchantments
@@ -157,9 +160,37 @@ public enum Catalog {
 	private final LinkedHashMap<Class<?>, Boolean> seen = new LinkedHashMap<>();
 	//tracks upgrades spent for equipment, uses for consumables
 	private final LinkedHashMap<Class<?>, Integer> useCount = new LinkedHashMap<>();
+
+	// a view of seen, that filters out disabled items
+	private LinkedHashMap<Class<?>, Boolean> filteredSeen(){
+		LinkedHashMap<Class<?>, Boolean> initialSeen = seen;
+
+		ArrayList<Feature> disabledFeatures = new ArrayList<>();
+		for (Feature feature: Feature.values()){
+			if (!feature.enabled)
+				disabledFeatures.add(feature);
+		}
+
+		HashSet<Class> disabledClasses = new HashSet<>();
+
+		for (Class clazz: initialSeen.keySet()) {
+			for (Feature feature : disabledFeatures) {
+				for (Class<? extends Item> item : feature.associatedItems()) {
+					if (clazz == item)
+						disabledClasses.add(clazz);
+				}
+			}
+		}
+
+		for (Class clazz: disabledClasses){
+			initialSeen.remove(clazz);
+		}
+
+		return initialSeen;
+	}
 	
 	public Collection<Class<?>> items(){
-		return seen.keySet();
+		return filteredSeen().keySet();
 	}
 
 	//should only be used when initializing
@@ -175,12 +206,12 @@ public enum Catalog {
 	}
 
 	public int totalItems(){
-		return seen.size();
+		return filteredSeen().size();
 	}
 
 	public int totalSeen(){
 		int seenTotal = 0;
-		for (boolean itemSeen : seen.values()){
+		for (boolean itemSeen : filteredSeen().values()){
 			if (itemSeen) seenTotal++;
 		}
 		return seenTotal;
@@ -309,7 +340,7 @@ public enum Catalog {
 	
 	public static boolean isSeen(Class<?> cls){
 		for (Catalog cat : values()) {
-			if (cat.seen.containsKey(cls)) {
+			if (cat.filteredSeen().containsKey(cls)) {
 				return cat.seen.get(cls);
 			}
 		}
