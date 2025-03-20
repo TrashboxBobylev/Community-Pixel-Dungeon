@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -53,7 +54,8 @@ public class HoldFast extends Buff {
 
 	public int armorBonus(){
 		if (pos == target.pos && target instanceof Hero){
-			return Random.NormalIntRange(((Hero) target).pointsInTalent(Talent.HOLD_FAST), 3* ((Hero) target).pointsInTalent(Talent.HOLD_FAST)-1);
+			return Random.NormalIntRange(((Hero) target).pointsInTalent(Talent.HOLD_FAST),
+                    !Feature.NEW_RUNIC_TRANSFERENCE.enabled ? (3 * ((Hero) target).pointsInTalent(Talent.HOLD_FAST) - 1) : 2 * ((Hero) target).pointsInTalent(Talent.HOLD_FAST));
 		} else {
 			detach();
 			return 0;

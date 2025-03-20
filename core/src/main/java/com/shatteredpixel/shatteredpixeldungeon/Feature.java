@@ -59,7 +59,7 @@ public enum Feature {
             "_-_ Added a small icon, that indicates the current dungeon floor being fully explored (for purposes of rankings' exploration score)."){
         @Override public Image icon() {return Icons.get(Icons.MAGNIFY);}
     },
-    NEW_RUNIC_INTERFERENCE("Hold Fast/Runic Transference tier-swap", "Raynuva/@raynuva",
+    NEW_RUNIC_TRANSFERENCE("Hold Fast/Runic Transference tier-swap", "Raynuva/@raynuva",
             "_-_ _Hold Fast_ talent has been moved from Tier 3 to Tier 2, with reducing its max blocking from 2/4/6 to 2/5.\n\n" +
                     "_-_ _Runic Transference_ talent has been moved from Tier 2 to Tier 3, with new effect for _+3_!\n\n" +
                     "_-_ On _+3_, Runic Transference makes armor and broken seal independently store glyphs (with making seal be possible to inscribe with glyph) and _have them activate at the same time_!"){
