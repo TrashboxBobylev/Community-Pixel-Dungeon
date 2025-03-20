@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -104,7 +105,8 @@ public class Stylus extends Item {
 
 		armor.inscribe();
 
-		GLog.w( Messages.get(this, "inscribed", armor.glyph.name()));
+		String enchAnnounceSuffix = Feature.ENCHANTING_RESULTS.enabled ? "_ench_name" : "";
+		GLog.w( Messages.get(this, "inscribed" + enchAnnounceSuffix, armor.glyph.name()));
 		
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
@@ -121,7 +123,8 @@ public class Stylus extends Item {
 
 		armor.inscribe();
 
-		GLog.w( Messages.get(this, "seal_inscribed", armor.getGlyph().name()));
+		String enchAnnounceSuffix = Feature.ENCHANTING_RESULTS.enabled ? "_ench_name" : "";
+		GLog.w( Messages.get(this, "seal_inscribed" + enchAnnounceSuffix, armor.getGlyph().name()));
 
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);

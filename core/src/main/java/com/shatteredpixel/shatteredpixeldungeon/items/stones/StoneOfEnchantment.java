@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
@@ -76,13 +77,15 @@ public class StoneOfEnchantment extends InventoryStone {
 		
 		curUser.sprite.emitter().start( Speck.factory( Speck.LIGHT ), 0.1f, 5 );
 		Enchanting.show( curUser, item );
+
+		String enchAnnounceSuffix = Feature.ENCHANTING_RESULTS.enabled ? "_ench_name" : "";
 		
 		if (item instanceof Weapon) {
-			GLog.p(Messages.get(this, "weapon", ((Weapon) item).enchantment.name()));
+			GLog.p(Messages.get(this, "weapon" + enchAnnounceSuffix, ((Weapon) item).enchantment.name()));
 		} else if (item instanceof BrokenSeal){
-			GLog.p(Messages.get(this, "broken_seal", ((BrokenSeal) item).getGlyph().name()));
+			GLog.p(Messages.get(this, "broken_seal" + enchAnnounceSuffix, ((BrokenSeal) item).getGlyph().name()));
 		} else {
-			GLog.p(Messages.get(this, "armor", ((Armor) item).glyph.name()));
+			GLog.p(Messages.get(this, "armor" + enchAnnounceSuffix, ((Armor) item).glyph.name()));
 		}
 		
 		useAnimation();
