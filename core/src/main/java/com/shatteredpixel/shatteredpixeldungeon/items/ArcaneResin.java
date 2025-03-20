@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -94,6 +95,11 @@ public class ArcaneResin extends Item {
 		return 30*quantity();
 	}
 
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc" + (Feature.GEMSTONE_DUST.enabled ? "_gemstone" : ""));
+	}
+
 	public static void apply(Item boostItem, int usedBoost, Wand boostedWand){
 		if (usedBoost < boostItem.quantity()){
 			boostItem.quantity(boostItem.quantity()-usedBoost);
@@ -128,7 +134,7 @@ public class ArcaneResin extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return (item instanceof Wand || item instanceof Ring) && item.isIdentified();
+			return (item instanceof Wand || (item instanceof Ring && Feature.GEMSTONE_DUST.enabled)) && item.isIdentified();
 		}
 
 		@Override
