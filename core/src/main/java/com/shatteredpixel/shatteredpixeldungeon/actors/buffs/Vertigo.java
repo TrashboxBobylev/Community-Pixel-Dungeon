@@ -24,7 +24,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.generic.VertigoLike;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Vertigo extends FlavourBuff implements VertigoLike {
@@ -46,4 +48,11 @@ public class Vertigo extends FlavourBuff implements VertigoLike {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 
+	@Override
+	public String desc() {
+		String desc = super.desc();
+		if (Feature.VERTIGO_OVERHAUL.enabled)
+			desc += "\n\n" + Messages.get(this, "overhaul");
+		return desc;
+	}
 }

@@ -405,7 +405,8 @@ public class Tengu extends Mob {
 			
 			enemySeen = enemyInFOV;
 
-			enemy = selectVertigoedEnemy();
+			if (Feature.VERTIGO_OVERHAUL.enabled)
+				enemy = selectVertigoedEnemy();
 
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 				

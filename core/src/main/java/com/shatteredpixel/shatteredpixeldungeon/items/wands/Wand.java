@@ -673,7 +673,7 @@ public abstract class Wand extends Item {
 			
 			if (target != null) {
 
-				if (curUser.buff(VertigoLike.class) != null && Random.Int(3) == 0){
+				if (Feature.VERTIGO_OVERHAUL.enabled && curUser.buff(VertigoLike.class) != null && Random.Int(3) == 0){
 					ArrayList<Integer> potentialList = new ArrayList<>();
 					for (int i : PathFinder.NEIGHBOURS8){
 						if (target + i < Dungeon.level.length() && Dungeon.level.passable[target + i])

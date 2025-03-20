@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
@@ -220,7 +221,8 @@ public class RipperDemon extends Mob {
 
 			enemySeen = enemyInFOV;
 
-			enemy = selectVertigoedEnemy();
+			if (Feature.VERTIGO_OVERHAUL.enabled)
+				enemy = selectVertigoedEnemy();
 
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 
