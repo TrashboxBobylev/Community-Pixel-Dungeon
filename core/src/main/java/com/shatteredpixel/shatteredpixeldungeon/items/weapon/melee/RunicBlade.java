@@ -26,13 +26,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
@@ -56,18 +56,20 @@ public class RunicBlade extends MeleeWeapon {
 	@Override
 	public int max(int lvl) {
 		return  5*(tier) +                	//20 base, down from 25
-				Math.round(lvl*(tier+1));	//scaling unchanged
+				Math.round(lvl*(tier+ (2 - (Feature.RUNIC_BLADE_REWORK.enabled ? 1 : 0))));	//scaling unchanged
 	}
 
 	protected Buff buff;
 
 	public void activate( Char ch ) {
-		if (buff != null){
-			buff.detach();
-			buff = null;
+		if (Feature.RUNIC_BLADE_REWORK.enabled) {
+			if (buff != null) {
+				buff.detach();
+				buff = null;
+			}
+			buff = new RunicBuff();
+			buff.attachTo(ch);
 		}
-		buff = new RunicBuff();
-		buff.attachTo( ch );
 	}
 
 	@Override
@@ -137,10 +139,11 @@ public class RunicBlade extends MeleeWeapon {
 	}
 
 	public String statsInfo(){
+		String suffix = Feature.RUNIC_BLADE_REWORK.enabled ? "_rework" : "";
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, buffedLvl()) - 1f)));
+			return Messages.get(this, "stats_desc" + suffix, Messages.decimalFormat("#.##", 100f * (Math.pow(1.15f, buffedLvl()) - 1f)));
 		} else {
-			return Messages.get(this, "typical_stats_desc", Messages.decimalFormat("#.##", 15f));
+			return Messages.get(this, "typical_stats_desc" + suffix, Messages.decimalFormat("#.##", 15f));
 		}
 	}
 
