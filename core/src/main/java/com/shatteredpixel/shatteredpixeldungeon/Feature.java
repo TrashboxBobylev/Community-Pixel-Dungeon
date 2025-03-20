@@ -290,7 +290,7 @@ public enum Feature {
         @Override public Image icon() {return new DefenderSprite();}
     },
     FORESIGHT_REWORK("Rogue's Foresight rework", "QKuroire/@qkuroire",
-            "_-_ Reduced the chance to detect a secret from _60%/90%_ to _40%/60%_, but successful procs show the secret room entrances on the map."){
+            "_-_ Reduced the chance to detect a secret from _75%/100%_ to _50%/75%_, but successful procs show the secret room entrances on the map."){
         @Override public Image icon() {return new TalentIcon(Talent.ROGUES_FORESIGHT);}
     },
     TENACITY_BUFF("Ring of Tenacity buff", "Raynuva/@raynuva",

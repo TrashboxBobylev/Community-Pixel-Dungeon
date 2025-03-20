@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
@@ -112,7 +113,19 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.*;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoCell;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrectExplorer;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.KeyBindings;
@@ -130,7 +143,13 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
-import com.watabou.utils.*;
+import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.GameMath;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
+import com.watabou.utils.RectF;
 import com.zrp200.scrollofdebug.ScrollOfDebug;
 
 import java.io.IOException;
@@ -524,14 +543,16 @@ public class GameScene extends PixelScene {
 				//75%/100% chance, use level's seed so that we get the same result for the same level
 				//offset seed slightly to avoid output patterns
 				Random.pushGenerator(Dungeon.seedCurDepth()+1);
-					if (reqSecrets <= 0 && Random.Int(10) < 2+2*Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
+					if (reqSecrets <= 0 && Random.Int(4) < (Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT) + (Feature.FORESIGHT_REWORK.enabled ? 1 : 2))){
 						GLog.p(Messages.get(this, "secret_hint"));
-						for (Room r : ((RegularLevel) Dungeon.level).rooms()){
-							if (r instanceof SecretRoom) {
-								int entrance = Dungeon.level.pointToCell(((SecretRoom) r).entrance());
-								for (int i: PathFinder.NEIGHBOURS9){
-									if (Dungeon.level.discoverable[entrance+i] && !(Dungeon.level.mapped[entrance+i] || Dungeon.level.visited[entrance+i])){
-										Dungeon.level.mapped[entrance+i] = true;
+						if (Feature.FORESIGHT_REWORK.enabled) {
+							for (Room r : ((RegularLevel) Dungeon.level).rooms()) {
+								if (r instanceof SecretRoom) {
+									int entrance = Dungeon.level.pointToCell(((SecretRoom) r).entrance());
+									for (int i : PathFinder.NEIGHBOURS9) {
+										if (Dungeon.level.discoverable[entrance + i] && !(Dungeon.level.mapped[entrance + i] || Dungeon.level.visited[entrance + i])) {
+											Dungeon.level.mapped[entrance + i] = true;
+										}
 									}
 								}
 							}
