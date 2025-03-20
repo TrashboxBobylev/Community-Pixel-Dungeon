@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -246,6 +247,11 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public void frame( int image ){
+		if (Feature.COLORED_RUNESTONES.enabled &&
+				image >= ItemSpriteSheet.STONE_AGGRESSION && image <= ItemSpriteSheet.STONE_SHOCK){
+			image += ItemSpriteSheet.COLORED_STONE_OFFSET;
+		}
+
 		frame( ItemSpriteSheet.film.get( image ));
 
 		float height = ItemSpriteSheet.film.height( image );

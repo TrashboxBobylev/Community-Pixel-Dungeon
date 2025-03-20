@@ -571,6 +571,7 @@ public class ItemSpriteSheet {
 	}
 	
 	private static final int STONES             =                           xy(1, 21);  //16 slots
+	public static final int COLORED_STONE_OFFSET = 81;
 	public static final int STONE_AGGRESSION    = STONES+0;
 	public static final int STONE_AUGMENTATION  = STONES+1;
 	public static final int STONE_FEAR          = STONES+2;
@@ -585,6 +586,8 @@ public class ItemSpriteSheet {
 	public static final int STONE_SHOCK         = STONES+11;
 	static {
 		for (int i = STONES; i < STONES+16; i++)
+			assignItemRect(i, 14, 12);
+		for (int i = STONES + COLORED_STONE_OFFSET; i < STONES+11 + COLORED_STONE_OFFSET; i++)
 			assignItemRect(i, 14, 12);
 	}
 
