@@ -47,6 +47,7 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1261,6 +1262,18 @@ public class Badges {
 		if (badge == null || (badge.type != BadgeType.JOURNAL && !Dungeon.customSeedText.isEmpty())) {
 			return;
 		}
+
+		ArrayList<Badge> disabledBadges = new ArrayList<>();
+		for (Feature feature: Feature.values()){
+			if (!feature.enabled){
+				disabledBadges.addAll(Arrays.asList(feature.associatedBadges()));
+			}
+		}
+
+		if (disabledBadges.contains(badge)) {
+			local.remove(badge);
+			return;
+		}
 		
 		if (isUnlocked( badge )) {
 			
@@ -1295,6 +1308,15 @@ public class Badges {
 	}
 	
 	public static void unlock( Badge badge ){
+		ArrayList<Badge> disabledBadges = new ArrayList<>();
+		for (Feature feature: Feature.values()){
+			if (!feature.enabled){
+				disabledBadges.addAll(Arrays.asList(feature.associatedBadges()));
+			}
+		}
+
+		if (disabledBadges.contains(badge))
+			return;
 		if (!isUnlocked(badge) && (badge.type == BadgeType.JOURNAL || Dungeon.customSeedText.isEmpty() && !Dungeon.explorer)){
 			global.add( badge );
 			saveNeeded = true;

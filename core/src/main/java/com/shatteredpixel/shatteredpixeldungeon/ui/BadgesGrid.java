@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
@@ -36,6 +37,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BadgesGrid extends Component {
 
@@ -45,9 +47,19 @@ public class BadgesGrid extends Component {
 		super();
 		badgeButtons = new ArrayList<>();
 
+		ArrayList<Badges.Badge> disabledBadges = new ArrayList<>();
+		for (Feature feature: Feature.values()){
+			if (!feature.enabled){
+				disabledBadges.addAll(Arrays.asList(feature.associatedBadges()));
+			}
+		}
+
 		for (Badges.Badge badge : Badges.filterReplacedBadges( global )) {
 
 			if (badge.type == Badges.BadgeType.HIDDEN) {
+				continue;
+			}
+			if (disabledBadges.contains(badge)){
 				continue;
 			}
 
@@ -60,6 +72,9 @@ public class BadgesGrid extends Component {
 
 			ArrayList<Badges.Badge> lockedBadges = new ArrayList<>();
 			for (Badges.Badge badge : Badges.Badge.values()) {
+				if (disabledBadges.contains(badge)){
+					continue;
+				}
 				if (badge.type != Badges.BadgeType.HIDDEN && !Badges.isUnlocked(badge)) {
 					lockedBadges.add(badge);
 				}

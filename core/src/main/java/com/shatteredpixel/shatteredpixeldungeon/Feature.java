@@ -256,10 +256,21 @@ public enum Feature {
                     "_-_ _Champion of All Trades_ - rewarded, when player completes run with every challenge (not all at once, think of it as counterpart to badge for defeating DM-300 with all subclasses).\n" +
                     "_-_ _Syphoned Enchanter_ - rewarded, when player completes run without using scroll of upgrade."){
         @Override public Image icon() {return BadgeBanner.image( Badges.Badge.PERFECT_ASCENT.image);}
+
+        @Override
+        public Badges.Badge[] associatedBadges() {
+            return new Badges.Badge[]{Badges.Badge.HAPPY_DEATH, Badges.Badge.THREE_SHOPKEEPERS_FLEE, Badges.Badge.PERFECT_ASCENT, Badges.Badge.VICTORY_EVERY_CHALLENGE, Badges.Badge.NO_UPGRADES,
+            Badges.Badge.VICTORY_NO_ARMOR, Badges.Badge.VICTORY_NO_FOOD, Badges.Badge.VICTORY_DARKNESS, Badges.Badge.VICTORY_NO_HEALING, Badges.Badge.VICTORY_CHAMPION_ENEMIES, Badges.Badge.VICTORY_STRONGER_BOSSES, Badges.Badge.VICTORY_SWARM_INTELLIGENCE, Badges.Badge.VICTORY_NO_SCROLLS, Badges.Badge.VICTORY_NO_HERBALISM};
+        }
     },
     HERBALIST_BADGES("Herbalist badges", "The healing plant/@fuwn.",
             "_-_ Added a badge category for planting and using plants, with a badge for 10/20/30/40/50 triggered plants in a run."){
         @Override public Image icon() {return BadgeBanner.image( Badges.Badge.PLANTS_ACTIVATED_2.image);}
+
+        @Override
+        public Badges.Badge[] associatedBadges() {
+            return new Badges.Badge[]{Badges.Badge.PLANTS_ACTIVATED_1, Badges.Badge.PLANTS_ACTIVATED_2, Badges.Badge.PLANTS_ACTIVATED_3, Badges.Badge.PLANTS_ACTIVATED_4, Badges.Badge.PLANTS_ACTIVATED_5};
+        }
     },
     LEAN("Leany Elixir", "Hrohlu/@hrohlu",
             "_-_ Added _Leany Elixir_, which makes player take _3x less_ elemental damage, move _2x_ faster, dodge _50% more_ frequently and do _2x more_ physical damage.\n\n" +
@@ -314,6 +325,10 @@ public enum Feature {
 
     public Class<? extends Item>[] associatedItems(){
         return new Class[]{};
+    }
+
+    public Badges.Badge[] associatedBadges(){
+        return new Badges.Badge[]{};
     }
 
     private static final String FEATURES_FILE = "features.dat";
