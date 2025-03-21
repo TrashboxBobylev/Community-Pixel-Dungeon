@@ -43,8 +43,15 @@ public class CommPD_Changes {
         changes.hardlight(0x25CA1F);
         changeInfos.add(changes);
 
-        for (Feature feature: Feature.values()) {
-            changes.addButton(new FeatureButton(feature));
+        for (Feature.Category featureCategory: Feature.Category.values()){
+            changes = new ChangeInfo(Messages.get(Feature.class, "category_" + featureCategory.name()), false, null);
+            changes.hardlight(featureCategory.color);
+            changeInfos.add(changes);
+            for (Feature feature: Feature.values()){
+                if (feature.category == featureCategory){
+                    changes.addButton(new FeatureButton(feature));
+                }
+            }
         }
 
         changes = new ChangeInfo("v0.1.1", false, null);
