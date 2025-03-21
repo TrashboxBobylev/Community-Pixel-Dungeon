@@ -305,6 +305,13 @@ public enum Feature {
     AUGMENTED_CROSSBOW_DARTS("Darts and Crossbow's augmentation", "Lootbug/@thelootbug",
             "_-_ Darts are now _affected by Crossbow's augmentation_, making them take more/less time to hit, but dealing more/less damage.", Category.TWEAKS){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.CROSSBOW);}
+    },
+    ALCHEMIST_MODE("Prime of Alchemist mode", "下水道螃蟹",
+            "_-_ Added _Prime of Alchemist_ mode, that hyper-focuses on alchemical side of gameplay.\n\n" +
+                    "_-_ In this mode, consumables become much more common, with traditional equipment being powerless and much rarer to find.\n\n" +
+                    "_-_ The player also starts with Alchemist's Toolkit +10, letting them to do any alchemy on the go, and with all common consumables identified.\n\n" +
+                    "_-_ The Prime of Alchemist mode runs _cannot obtain badges_ and their runs will be at the bottom of rankings, like seeded runs.", Category.MECHANICS){
+        @Override public Image icon() {return Icons.get(Icons.ALCHEMY);}
     }
     ;
 

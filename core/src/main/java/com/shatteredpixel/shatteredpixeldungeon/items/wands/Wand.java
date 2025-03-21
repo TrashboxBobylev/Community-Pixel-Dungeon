@@ -597,6 +597,13 @@ public abstract class Wand extends Item {
 		}
 		return price;
 	}
+
+	@Override
+	public int energyVal() {
+		if (Dungeon.alchemist)
+			return 9;
+		return super.energyVal();
+	}
 	
 	private static final String USES_LEFT_TO_ID     = "uses_left_to_id";
 	private static final String AVAILABLE_USES      = "available_uses";

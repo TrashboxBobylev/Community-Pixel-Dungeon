@@ -294,7 +294,7 @@ public class WelcomeScene extends PixelScene {
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
 				Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 			}
-			Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = false;
+			Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = Dungeon.alchemist = false;
 
 			if (previousVersion <= ShatteredPixelDungeon.v2_3_2){
 				Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_ALCHEMY);

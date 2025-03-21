@@ -382,6 +382,9 @@ public abstract class RegularLevel extends Level {
 		}
 
 		nItems += RNGManipulator.LuckBoost.luckBoost() / 1500;
+
+		if (Dungeon.alchemist)
+			nItems *= 5;
 		
 		for (int i=0; i < nItems; i++) {
 

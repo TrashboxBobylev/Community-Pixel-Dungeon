@@ -703,6 +703,12 @@ public class Generator {
 			generalReset();
 			cat = Random.chances( categoryProbs );
 		}
+
+		// if in alchemist mode, roll until we get consumable item
+		if (Dungeon.alchemist && !(cat == Category.POTION || cat == Category.SCROLL || cat == Category.STONE ||
+				cat == Category.GOLD || cat == Category.FOOD || cat == Category.SEED || cat == Category.TRINKET))
+			return random();
+
 		categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
 
 		if (cat == Category.SEED) {
@@ -716,7 +722,12 @@ public class Generator {
 	}
 
 	public static Item randomUsingDefaults(){
-		return randomUsingDefaults(Random.chances( defaultCatProbs ));
+		Category cat = Random.chances(defaultCatProbs);
+		// if in alchemist mode, roll until we get consumable item
+		if (Dungeon.alchemist && !(cat == Category.POTION || cat == Category.SCROLL || cat == Category.STONE ||
+				cat == Category.GOLD || cat == Category.FOOD || cat == Category.SEED || cat == Category.TRINKET))
+			return randomUsingDefaults();
+		return randomUsingDefaults(cat);
 	}
 	
 	public static Item random( Category cat ) {

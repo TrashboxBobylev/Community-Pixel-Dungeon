@@ -134,12 +134,14 @@ public class Ring extends KindofMisc {
 	}
 	
 	public void activate( Char ch ) {
-		if (buff != null){
-			buff.detach();
-			buff = null;
+		if (!Dungeon.alchemist) {
+			if (buff != null) {
+				buff.detach();
+				buff = null;
+			}
+			buff = buff();
+			buff.attachTo(ch);
 		}
-		buff = buff();
-		buff.attachTo( ch );
 	}
 
 	@Override
@@ -348,6 +350,13 @@ public class Ring extends KindofMisc {
 			price = 1;
 		}
 		return price;
+	}
+
+	@Override
+	public int energyVal() {
+		if (Dungeon.alchemist)
+			return 12;
+		return super.energyVal();
 	}
 	
 	protected RingBuff buff() {

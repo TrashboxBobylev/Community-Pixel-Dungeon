@@ -83,6 +83,8 @@ public class PitRoom extends SpecialRoom {
 							Generator.Category.ARMOR));
 					break;
 			}
+			if (Dungeon.alchemist)
+				mainLoot = Generator.random();
 		} while ( mainLoot == null || Challenges.isItemBlocked(mainLoot));
 		level.drop(mainLoot, remains).setHauntedIfCursed().type = Heap.Type.SKELETON;
 		

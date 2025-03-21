@@ -133,7 +133,7 @@ public class RingOfWealth extends Ring {
 
 		triesToDrop.countDown(tries);
 		while ( triesToDrop.count() <= 0 ){
-			if (dropsToEquip.count() <= 0){
+			if (dropsToEquip.count() <= 0 && !Dungeon.alchemist){
 				int equipBonus = 0;
 
 				//A second ring of wealth can be at most +1 when calculating wealth bonus for equips

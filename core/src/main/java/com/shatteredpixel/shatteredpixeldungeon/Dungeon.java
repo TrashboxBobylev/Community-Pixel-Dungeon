@@ -83,13 +83,25 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrectExplorer;
 import com.watabou.noosa.Game;
-import com.watabou.utils.*;
+import com.watabou.utils.BArray;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
+import com.watabou.utils.SparseArray;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Dungeon {
 
@@ -208,6 +220,7 @@ public class Dungeon {
 	public static String customSeedText = "";
 	public static long seed;
 	public static boolean explorer;
+	public static boolean alchemist;
 
 	public static long lastPlayed;
 
@@ -294,6 +307,19 @@ public class Dungeon {
 		Badges.reset();
 		
 		GamesInProgress.selectedClass.initHero( hero );
+
+		if (Dungeon.alchemist){
+			for (Class itemCls: Generator.Category.POTION.classes){
+				Potion potion = (Potion) Reflection.newInstance(itemCls);
+				if (potion != null)
+					potion.identify();
+			}
+			for (Class itemCls: Generator.Category.SCROLL.classes){
+				Scroll scroll = (Scroll) Reflection.newInstance(itemCls);
+				if (scroll != null)
+					scroll.identify();
+			}
+		}
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -609,6 +635,7 @@ public class Dungeon {
 	private static final String DAILY	    = "daily";
 	private static final String DAILY_REPLAY= "daily_replay";
 	private static final String EXPLORER    = "explorer";
+	private static final String ALCHEMIST   = "alchemist";
 	private static final String LAST_PLAYED = "last_played";
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
@@ -638,6 +665,7 @@ public class Dungeon {
 			bundle.put( DAILY, daily );
 			bundle.put( DAILY_REPLAY, dailyReplay );
 			bundle.put( EXPLORER, explorer );
+			bundle.put( ALCHEMIST, alchemist );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
@@ -746,6 +774,7 @@ public class Dungeon {
 		daily = bundle.getBoolean( DAILY );
 		dailyReplay = bundle.getBoolean( DAILY_REPLAY );
 		explorer = bundle.getBoolean( EXPLORER );
+		alchemist = bundle.getBoolean( ALCHEMIST );
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );
@@ -911,6 +940,7 @@ public class Dungeon {
 		info.daily = bundle.getBoolean( DAILY );
 		info.dailyReplay = bundle.getBoolean( DAILY_REPLAY );
 		info.explorer = bundle.getBoolean( EXPLORER );
+		info.alchemist = bundle.getBoolean( ALCHEMIST );
 		info.lastPlayed = bundle.getLong( LAST_PLAYED );
 
 		Hero.preview( info, bundle.getBundle( HERO ) );

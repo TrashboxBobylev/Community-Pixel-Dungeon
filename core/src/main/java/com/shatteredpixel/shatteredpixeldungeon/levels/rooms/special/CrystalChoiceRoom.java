@@ -127,6 +127,8 @@ public class CrystalChoiceRoom extends SpecialRoom {
 				Generator.Category.RING,
 				Generator.Category.ARTIFACT
 		));
+		if (Dungeon.alchemist)
+			hidden = Generator.random();
 		Heap chest = level.drop(hidden, level.pointToCell(room2.center()));
 		chest.type = Heap.Type.CHEST;
 		//opening the chest is optional, so it doesn't count for exploration bonus

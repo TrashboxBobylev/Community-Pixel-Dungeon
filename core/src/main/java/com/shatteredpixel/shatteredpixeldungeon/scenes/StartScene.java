@@ -281,6 +281,8 @@ public class StartScene extends PixelScene {
 					steps.hardlight(1f, 1.5f, 0.67f);
 				} else if (info.explorer){
 					steps.hardlight(0xFFFF99);
+				} else if (info.alchemist){
+					steps.hardlight(0xFF5A68);
 				}
 				
 			}

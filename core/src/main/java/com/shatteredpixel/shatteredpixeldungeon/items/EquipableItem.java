@@ -115,7 +115,14 @@ public abstract class EquipableItem extends Item {
 		super.cast( user, dst );
 	}
 
-	public static void equipCursed( Hero hero ) {
+	@Override
+	public int energyVal() {
+		if (Dungeon.alchemist)
+			return 6;
+		return super.energyVal();
+	}
+
+	public static void equipCursed(Hero hero ) {
 		hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
 		Sample.INSTANCE.play( Assets.Sounds.CURSED );
 	}

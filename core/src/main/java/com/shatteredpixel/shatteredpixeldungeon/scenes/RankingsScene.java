@@ -182,7 +182,7 @@ public class RankingsScene extends PixelScene {
 	public void destroy() {
 		super.destroy();
 		//so that opening daily records does not trigger WndDailies opening on future visits
-		Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = false;
+		Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = Dungeon.alchemist = false;
 	}
 
 	@Override
@@ -269,6 +269,9 @@ public class RankingsScene extends PixelScene {
 			} else if (!rec.customSeed.isEmpty()){
 				shield.copy( Icons.get(Icons.SEED) );
 				shield.hardlight(1f, 1.5f, 0.67f);
+			} else if (rec.alchemist){
+				shield.copy( Icons.get(Icons.ALCHEMY) );
+				shield.hardlight(0xFF5A68);
 			}
 
 			if (rec.herolevel != 0){

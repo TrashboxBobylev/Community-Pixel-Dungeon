@@ -1317,7 +1317,7 @@ public class Badges {
 
 		if (disabledBadges.contains(badge))
 			return;
-		if (!isUnlocked(badge) && (badge.type == BadgeType.JOURNAL || Dungeon.customSeedText.isEmpty() && !Dungeon.explorer)){
+		if (!isUnlocked(badge) && (badge.type == BadgeType.JOURNAL || (Dungeon.customSeedText.isEmpty() && !Dungeon.explorer && !Dungeon.alchemist))){
 			global.add( badge );
 			saveNeeded = true;
 		}

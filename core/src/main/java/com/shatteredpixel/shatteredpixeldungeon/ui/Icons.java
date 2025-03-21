@@ -451,6 +451,9 @@ public enum Icons {
 	}
 
 	private static int runTypeOfsY(){
+		if (Dungeon.alchemist){
+			return 56;
+		}
 		if (Dungeon.explorer){
 			return 48;
 		}

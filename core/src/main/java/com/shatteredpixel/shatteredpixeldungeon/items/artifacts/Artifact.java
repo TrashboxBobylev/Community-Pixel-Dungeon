@@ -242,6 +242,13 @@ public class Artifact extends KindofMisc {
 		return price;
 	}
 
+	@Override
+	public int energyVal() {
+		if (Dungeon.alchemist)
+			return 12;
+		return super.energyVal();
+	}
+
 
 	protected ArtifactBuff passiveBuff() {
 		return null;

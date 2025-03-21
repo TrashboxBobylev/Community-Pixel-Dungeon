@@ -141,7 +141,7 @@ public class HeroSelectScene extends PixelScene {
 				if (GamesInProgress.selectedClass == null) return;
 
 				Dungeon.hero = null;
-				Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = false;
+				Dungeon.daily = Dungeon.dailyReplay = Dungeon.explorer = Dungeon.alchemist = false;
 				Dungeon.initSeed();
 				ActionIndicator.clearAction();
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
@@ -818,6 +818,37 @@ public class HeroSelectScene extends PixelScene {
 			explorerButton.icon(Icons.get(Icons.TALENT));
 			add(explorerButton);
 			buttons.add(explorerButton);
+
+			if (Dungeon.alchemist) {
+				StyledButton alchemistButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "alchemist"), 6) {
+					@Override
+					protected void onClick() {
+						ShatteredPixelDungeon.scene().addToFront(new WndOptions(
+								Icons.get(Icons.ALCHEMY),
+								Messages.get(HeroSelectScene.class, "alchemist"),
+								Messages.get(HeroSelectScene.class, "alchemist_desc"),
+								Messages.get(HeroSelectScene.class, "explorer_yes"),
+								Messages.get(HeroSelectScene.class, "explorer_no")
+						) {
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0) {
+									Dungeon.hero = null;
+									Dungeon.alchemist = true;
+									ActionIndicator.clearAction();
+									InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+
+									Game.switchScene(InterlevelScene.class);
+								}
+							}
+						});
+					}
+				};
+				alchemistButton.leftJustify = true;
+				alchemistButton.icon(Icons.get(Icons.ALCHEMY));
+				add(alchemistButton);
+				buttons.add(alchemistButton);
+			}
 
 			for (int i = 1; i < buttons.size(); i++){
 				ColorBlock spc = new ColorBlock(1, 1, 0xFF000000);

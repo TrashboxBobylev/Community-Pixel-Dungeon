@@ -295,6 +295,8 @@ public class HolyTome extends Artifact {
 					if (!isEquipped(Dungeon.hero)){
 						chargeToGain *= 0.75f*Dungeon.hero.pointsInTalent(Talent.LIGHT_READING)/3f;
 					}
+					if (Dungeon.alchemist)
+						chargeToGain /= 4;
 					partialCharge += chargeToGain;
 				}
 

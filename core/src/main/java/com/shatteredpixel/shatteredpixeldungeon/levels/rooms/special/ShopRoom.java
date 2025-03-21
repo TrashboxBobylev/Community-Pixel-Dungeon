@@ -281,7 +281,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new ScrollOfRemoveCurse() );
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
 
-		for (int i=0; i < 2; i++)
+		for (int i=0; i < (Dungeon.alchemist ? 6 : 2); i++)
 			itemsToSpawn.add( Random.Int(2) == 0 ?
 					Generator.randomUsingDefaults( Generator.Category.POTION ) :
 					Generator.randomUsingDefaults( Generator.Category.SCROLL ) );
@@ -347,6 +347,8 @@ public class ShopRoom extends SpecialRoom {
 			default:
 				rare = new Stylus();
 		}
+		if (Dungeon.alchemist)
+			rare = new Stylus();
 		rare.cursed = false;
 		rare.cursedKnown = true;
 		itemsToSpawn.add( rare );

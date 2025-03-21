@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
@@ -83,7 +84,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSp
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.utils.DeviceCompat;
 
 public enum HeroClass {
 
@@ -145,11 +145,26 @@ public enum HeroClass {
 				break;
 		}
 
+		if (Dungeon.alchemist){
+			AlchemistsToolkit toolkit = new AlchemistsToolkit();
+			toolkit.upgrade(10);
+			(hero.belongings.misc = toolkit).identify();
+			hero.belongings.misc.activate( hero );
+		}
+
 		if (SPDSettings.quickslotWaterskin()) {
 			for (int s = 0; s < QuickSlot.SIZE; s++) {
 				if (Dungeon.quickslot.getItem(s) == null) {
 					Dungeon.quickslot.setSlot(s, waterskin);
 					break;
+				}
+			}
+			if (Dungeon.alchemist){
+				for (int s = 0; s < QuickSlot.SIZE; s++) {
+					if (Dungeon.quickslot.getItem(s) == null) {
+						Dungeon.quickslot.setSlot(s, hero.belongings.misc);
+						break;
+					}
 				}
 			}
 		}

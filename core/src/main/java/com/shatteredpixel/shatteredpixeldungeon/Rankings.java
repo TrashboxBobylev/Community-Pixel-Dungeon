@@ -115,6 +115,7 @@ public enum Rankings {
 		rec.customSeed  = Dungeon.customSeedText;
 		rec.daily       = Dungeon.daily;
 		rec.explorer    = Dungeon.explorer;
+		rec.alchemist   = Dungeon.alchemist;
 
 		Badges.validateHighScore( rec.score );
 		Badges.validateAscensionDeath(rec.ascending, !win);
@@ -161,7 +162,7 @@ public enum Rankings {
 			size = records.size();
 		}
 
-		if (rec.customSeed.isEmpty() && !rec.explorer) {
+		if (rec.customSeed.isEmpty() && !rec.explorer && !rec.alchemist) {
 			totalNumber++;
 			if (win) {
 				wonNumber++;
@@ -469,6 +470,7 @@ public enum Rankings {
 		private static final String SEED    = "custom_seed";
 		private static final String DAILY   = "daily";
 		private static final String EXPLORER= "explorer";
+		private static final String ALCHEMIST= "alchemist";
 
 		private static final String DATE    = "date";
 		private static final String VERSION = "version";
@@ -491,6 +493,7 @@ public enum Rankings {
 		public String customSeed;
 		public boolean daily;
 		public boolean explorer;
+		public boolean alchemist;
 
 		public String date;
 		public String version;
@@ -528,6 +531,7 @@ public enum Rankings {
 			customSeed  = bundle.getString( SEED );
 			daily       = bundle.getBoolean( DAILY );
 			explorer    = bundle.getBoolean( EXPLORER );
+			alchemist    = bundle.getBoolean( ALCHEMIST );
 
 			heroClass	= bundle.getEnum( CLASS, HeroClass.class );
 			armorTier	= bundle.getInt( TIER );
@@ -559,6 +563,7 @@ public enum Rankings {
 			bundle.put( SEED, customSeed );
 			bundle.put( DAILY, daily );
 			bundle.put( EXPLORER, explorer );
+			bundle.put( ALCHEMIST, alchemist );
 
 			bundle.put( CLASS, heroClass );
 			bundle.put( TIER, armorTier );
@@ -581,6 +586,11 @@ public enum Rankings {
 			if (!rhs.explorer && lhs.explorer){
 				return +1;
 			} else if (!lhs.explorer && rhs.explorer){
+				return -1;
+			}
+			if (!rhs.alchemist && lhs.alchemist){
+				return +1;
+			} else if (!lhs.alchemist && rhs.alchemist){
 				return -1;
 			}
 			if (rhs.customSeed.isEmpty() && !lhs.customSeed.isEmpty()){

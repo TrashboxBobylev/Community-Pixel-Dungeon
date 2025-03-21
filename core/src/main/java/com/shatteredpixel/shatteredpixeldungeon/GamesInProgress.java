@@ -151,6 +151,7 @@ public class GamesInProgress {
 		info.daily = Dungeon.daily;
 		info.dailyReplay = Dungeon.dailyReplay;
 		info.explorer = Dungeon.explorer;
+		info.alchemist = Dungeon.alchemist;
 
 		info.level = Dungeon.hero.lvl;
 		info.str = Dungeon.hero.STR;
@@ -190,6 +191,7 @@ public class GamesInProgress {
 		public boolean dailyReplay;
 		public long lastPlayed;
 		public boolean explorer;
+		public boolean alchemist;
 
 		public int level;
 		public int str;

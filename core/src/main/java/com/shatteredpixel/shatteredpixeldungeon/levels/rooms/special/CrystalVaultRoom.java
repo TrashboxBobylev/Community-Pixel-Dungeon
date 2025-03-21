@@ -98,6 +98,8 @@ public class CrystalVaultRoom extends SpecialRoom {
 		Item prize;
 		do {
 			prize = Generator.random(cat);
+			if (Dungeon.alchemist)
+				prize = Generator.random();
 		} while (prize == null || Challenges.isItemBlocked(prize));
 		return prize;
 	}

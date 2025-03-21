@@ -24,6 +24,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.trinkets;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -49,7 +50,7 @@ public class ExoticCrystals extends Trinket {
 	}
 
 	public static float consumableExoticChance(){
-		return consumableExoticChance(trinketLevel(ExoticCrystals.class));
+		return consumableExoticChance(trinketLevel(ExoticCrystals.class)) + (Dungeon.alchemist ? 0.33f : 0f);
 	}
 
 	public static float consumableExoticChance( int level ){
