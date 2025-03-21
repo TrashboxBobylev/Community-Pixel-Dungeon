@@ -790,36 +790,38 @@ public class HeroSelectScene extends PixelScene {
 			add(challengeButton);
 			buttons.add(challengeButton);
 
-			StyledButton explorerButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "explorer"), 6){
-				@Override
-				protected void onClick() {
-					ShatteredPixelDungeon.scene().addToFront(new WndOptions(
-							Icons.get(Icons.TALENT),
-							Messages.get(HeroSelectScene.class, "explorer"),
-							Messages.get(HeroSelectScene.class, "explorer_desc"),
-							Messages.get(HeroSelectScene.class, "explorer_yes"),
-							Messages.get(HeroSelectScene.class, "explorer_no")
-					) {
-						@Override
-						protected void onSelect(int index) {
-							if (index == 0){
-								Dungeon.hero = null;
-								Dungeon.explorer = true;
-								ActionIndicator.clearAction();
-								InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+			if (Feature.EXPLORER_MODE.enabled) {
+				StyledButton explorerButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "explorer"), 6) {
+					@Override
+					protected void onClick() {
+						ShatteredPixelDungeon.scene().addToFront(new WndOptions(
+								Icons.get(Icons.TALENT),
+								Messages.get(HeroSelectScene.class, "explorer"),
+								Messages.get(HeroSelectScene.class, "explorer_desc"),
+								Messages.get(HeroSelectScene.class, "explorer_yes"),
+								Messages.get(HeroSelectScene.class, "explorer_no")
+						) {
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0) {
+									Dungeon.hero = null;
+									Dungeon.explorer = true;
+									ActionIndicator.clearAction();
+									InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
-								Game.switchScene( InterlevelScene.class );
+									Game.switchScene(InterlevelScene.class);
+								}
 							}
-						}
-					});
-				}
-			};
-			explorerButton.leftJustify = true;
-			explorerButton.icon(Icons.get(Icons.TALENT));
-			add(explorerButton);
-			buttons.add(explorerButton);
+						});
+					}
+				};
+				explorerButton.leftJustify = true;
+				explorerButton.icon(Icons.get(Icons.TALENT));
+				add(explorerButton);
+				buttons.add(explorerButton);
+			}
 
-			if (Dungeon.alchemist) {
+			if (Feature.ALCHEMIST_MODE.enabled) {
 				StyledButton alchemistButton = new StyledButton(Chrome.Type.BLANK, Messages.get(HeroSelectScene.class, "alchemist"), 6) {
 					@Override
 					protected void onClick() {
