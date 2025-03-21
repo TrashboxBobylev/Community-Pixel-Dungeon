@@ -659,7 +659,7 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.attackingWeapon();
 		int dmg;
 
-		if (!RingOfForce.fightingUnarmed(this) && !Dungeon.alchemist) {
+		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
 
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);

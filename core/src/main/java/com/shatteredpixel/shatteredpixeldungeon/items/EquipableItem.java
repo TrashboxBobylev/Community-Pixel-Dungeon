@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -136,7 +137,7 @@ public abstract class EquipableItem extends Item {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 
 		if (cursed
-				&& hero.buff(MagicImmune.class) == null
+				&& (hero.buff(MagicImmune.class) == null || (this instanceof WornShortsword && Dungeon.alchemist))
 				&& (!hero.belongings.lostInventory() || keptThroughLostInventory())) {
 			GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
 			return false;

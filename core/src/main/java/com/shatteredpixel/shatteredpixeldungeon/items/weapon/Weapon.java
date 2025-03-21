@@ -71,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampir
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -378,15 +379,17 @@ abstract public class Weapon extends KindOfWeapon {
 
 			//chance to remove curse is a static 33%
 			} else if (hasCurseEnchant()) {
-				if (Random.Int(3) == 0) enchant(null);
+				if (!(this instanceof WornShortsword && Dungeon.alchemist))
+					if (Random.Int(3) == 0) enchant(null);
 
 			//otherwise chance to lose enchant is 10/20/40/80/100% when upgrading from +4/5/6/7/8
 			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4) && !(Feature.RUNIC_BLADE_REWORK.enabled && this instanceof RunicBlade)){
 				enchant(null);
 			}
 		}
-		
-		cursed = false;
+
+		if (!(this instanceof WornShortsword && Dungeon.alchemist))
+			cursed = false;
 
 		return super.upgrade();
 	}

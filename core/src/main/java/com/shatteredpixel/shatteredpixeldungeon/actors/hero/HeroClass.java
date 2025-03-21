@@ -146,6 +146,8 @@ public enum HeroClass {
 		}
 
 		if (Dungeon.alchemist){
+			(hero.belongings.weapon = new WornShortsword()).identify();
+			hero.belongings.weapon.cursed = true;
 			AlchemistsToolkit toolkit = new AlchemistsToolkit();
 			toolkit.upgrade(10);
 			(hero.belongings.misc = toolkit).identify();

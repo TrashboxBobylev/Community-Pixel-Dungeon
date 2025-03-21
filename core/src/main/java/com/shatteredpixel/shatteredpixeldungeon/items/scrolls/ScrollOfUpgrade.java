@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -89,10 +90,12 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 			item = w.upgrade();
 
-			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
-				removeCurse( Dungeon.hero );
-			} else if (w.cursedKnown && wasCursed && !w.cursed){
-				weakenCurse( Dungeon.hero );
+			if (!(w instanceof WornShortsword && Dungeon.alchemist)) {
+				if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()) {
+					removeCurse(Dungeon.hero);
+				} else if (w.cursedKnown && wasCursed && !w.cursed) {
+					weakenCurse(Dungeon.hero);
+				}
 			}
 			if (wasHardened && !w.enchantHardened){
 				GLog.w( Messages.get(Weapon.class, "hardening_gone") );
