@@ -33,7 +33,7 @@ public class FeatureButton extends ChangeButton {
     protected Feature feature;
 
     public FeatureButton(Feature feature){
-        super(feature.icon(), feature.name,
+        super(feature.icon(), Messages.titleCase(feature.name),
                 Messages.get(Feature.class, "desc", feature.author, feature.description));
         this.feature = feature;
     }
