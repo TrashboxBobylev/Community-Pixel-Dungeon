@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 public class WndFeature extends WndTitledMessage {
 
 	public WndFeature(Feature feature) {
-		super(feature.icon(), feature.name,
+		super(feature.icon(), Messages.titleCase(feature.name),
 				Messages.get(Feature.class, "desc", feature.author, feature.description));
 
 		FeatureEnableButton button = new FeatureEnableButton(feature);
