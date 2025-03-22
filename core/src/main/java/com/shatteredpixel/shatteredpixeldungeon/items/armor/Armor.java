@@ -481,7 +481,7 @@ public class Armor extends EquipableItem {
 				if (trinityGlyph != null){
 					damage = trinityGlyph.proc( this, attacker, defender, damage );
 				}
-				if (((Hero) defender).pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
+				if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 3 &&
 						seal.getGlyph() != null){
 					damage = seal.getGlyph().proc( this, attacker, defender, damage );
 				}
