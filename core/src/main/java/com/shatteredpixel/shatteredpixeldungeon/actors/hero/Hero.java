@@ -1728,6 +1728,10 @@ public class Hero extends Char {
 		return visibleEnemies.get(index % visibleEnemies.size());
 	}
 
+	public boolean visibleEnemy( Mob mob ) {
+		return visibleEnemies.contains(mob);
+	}
+
 	public ArrayList<Mob> getVisibleEnemies(){
 		return new ArrayList<>(visibleEnemies);
 	}

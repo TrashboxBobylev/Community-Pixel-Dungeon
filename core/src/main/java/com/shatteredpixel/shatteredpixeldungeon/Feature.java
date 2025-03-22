@@ -327,6 +327,14 @@ public enum Feature {
     GHOST_HERO_ITEM_PICKUP("Dried Rose's ghost picks up items", "World First +24 Glaive/@heapheaus",
             "_-_ Made ghost ally from Dried Rose pick up items from the ground, when moving.", Category.MECHANICS){
         @Override public Image icon() {return new GhostSprite();}
+    },
+    SMART_TARGETING("Smart targeting", "484 Palkia/@zrp200",
+            "_-_ Enhances combo, preparation, monk abilities and some of cleric spells' targeting with new rules:\n\n" +
+                    "   _-_ If there is only one possible target, automatically uses the ability on them without requiring a tap\n" +
+                    "   _-_ If there are multiple possible targets, highlights valid ones to be tapped\n" +
+                    "   _-_ If there is only one valid target highlighted, and you click the ability button again, executes the ability on that target.\n\n" +
+                    "_-_ This may not work as well with Cleric spells due to many of them being ally-focused.", Category.MECHANICS){
+        @Override public Image icon() {return Icons.get(Icons.TARGET);}
     }
     ;
 

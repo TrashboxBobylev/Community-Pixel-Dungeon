@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -54,6 +55,12 @@ public class WndMonkAbilities extends Window {
 		add(title);
 
 		pos = title.bottom() + 3*MARGIN;
+
+		MonkEnergy.MonkAbility[] abilitySet = MonkEnergy.MonkAbility.abilities;
+		if (Feature.SMART_TARGETING.enabled){
+			abilitySet[0] = new MonkEnergy.MonkAbility.TargetedFlurry();
+			abilitySet[3] = new MonkEnergy.MonkAbility.TargetedDragonKick();
+		}
 
 		for (MonkEnergy.MonkAbility abil : MonkEnergy.MonkAbility.abilities) {
 			String text = "_" + Messages.titleCase(abil.name()) + " " + Messages.get(this, "energycost", abil.energyCost()) + ":_ " + abil.desc();

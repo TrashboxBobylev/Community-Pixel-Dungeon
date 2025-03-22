@@ -634,7 +634,7 @@ public class DriedRose extends Artifact {
 		}
 		
 		@Override
-		protected boolean canAttack(Char enemy) {
+		public boolean canAttack(Char enemy) {
 			return super.canAttack(enemy) || (rose != null && rose.weapon != null && rose.weapon.canReach(this, enemy.pos));
 		}
 		

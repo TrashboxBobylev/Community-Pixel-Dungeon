@@ -475,7 +475,7 @@ public abstract class Mob extends Char {
 		return false;
 	}
 	
-	protected boolean canAttack( Char enemy ) {
+	public boolean canAttack( Char enemy ) {
 		if (Dungeon.level.adjacent( pos, enemy.pos )){
 			return true;
 		}
