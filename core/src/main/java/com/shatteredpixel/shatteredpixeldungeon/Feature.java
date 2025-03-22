@@ -316,6 +316,12 @@ public enum Feature {
     SEAL_ENERGY_SYNERGY("Broken seal and Ring of Energy synergy", "-Rivlin- speedrunner #1/@-rivlin-",
             "_-_ Made Ring of Energy's recharge boost affect Warrior's broken seal.", Category.TWEAKS){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RING_TOPAZ);}
+    },
+    SUMMON_ELEMENTAL_BUFF("Summon Elemental buff", "MapleOak/@mapleoak-number-61",
+            "_-_ Ally elementals from Summon Elemental spell are now \"intelligent\", allowing them to follow players across floors and no longer target wandering or sleeping enemies.\n\n" +
+                    "_-_ Increased ally elemental's evasion by 20% and health by 33% and made them refresh on each recall.\n\n" +
+                    "_-_ Decreased amount of spell crafted from 6 to 5.", Category.TWEAKS){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SUMMON_ELE);}
     }
     ;
 

@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
@@ -108,6 +109,7 @@ public class SummonElemental extends Spell {
 				if (ch instanceof Elemental && ch.buff(InvisAlly.class) != null){
 					ScrollOfTeleportation.appear( ch, Random.element(spawnPoints) );
 					((Elemental) ch).state = ((Elemental) ch).HUNTING;
+					((Elemental) ch).setSummonedALly();
 					curUser.spendAndNext(Actor.TICK);
 					return;
 				}
@@ -225,6 +227,13 @@ public class SummonElemental extends Spell {
 	public static class InvisAlly extends AllyBuff{
 
 		@Override
+		public boolean attachTo(Char target) {
+			if (Feature.SUMMON_ELEMENTAL_BUFF.enabled)
+				((Elemental)target).intelligentAlly = true;
+			return super.attachTo(target);
+		}
+
+		@Override
 		public void fx(boolean on) {
 			if (on) target.sprite.add(CharSprite.State.HEARTS);
 			else    target.sprite.remove(CharSprite.State.HEARTS);
@@ -244,6 +253,8 @@ public class SummonElemental extends Spell {
 
 			output = SummonElemental.class;
 			outQuantity = OUT_QUANTITY;
+			if (Feature.SUMMON_ELEMENTAL_BUFF.enabled)
+				outQuantity -= 1;
 		}
 
 	}

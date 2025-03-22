@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -108,6 +109,10 @@ public abstract class Elemental extends Mob {
 		int regionScale = Math.max(2, (1 + Dungeon.scalingDepth()/5));
 		defenseSkill = 5*regionScale;
 		HT = 15*regionScale;
+		if (Feature.SUMMON_ELEMENTAL_BUFF.enabled){
+			defenseSkill = 6*regionScale;
+			HT = 20*regionScale;
+		}
 	}
 	
 	@Override
