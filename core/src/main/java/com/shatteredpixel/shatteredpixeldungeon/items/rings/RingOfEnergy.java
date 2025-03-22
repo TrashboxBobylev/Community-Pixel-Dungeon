@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -47,10 +48,15 @@ public class RingOfEnergy extends Ring {
 				info += "\n\n" + Messages.get(this, "combined_stats",
 						Messages.decimalFormat("#.##", 100f * (Math.pow(1.175f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
 			}
+			if (Feature.SEAL_ENERGY_SYNERGY.enabled)
+				info += Messages.get(this, "broken_seal");
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats",
+			String typicalStats = Messages.get(this, "typical_stats",
 					Messages.decimalFormat("#.##", 17.5f));
+			if (Feature.SEAL_ENERGY_SYNERGY.enabled)
+				typicalStats += Messages.get(this, "broken_seal");
+			return typicalStats;
 		}
 	}
 

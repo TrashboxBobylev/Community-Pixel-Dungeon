@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -233,7 +235,10 @@ public class BrokenSeal extends Item {
 		@Override
 		public synchronized boolean act() {
 			if (Regeneration.regenOn() && shielding() < maxShield()) {
-				partialShield += 1/30f;
+				float shieldInc = 1 / 30f;
+				if (Feature.SEAL_ENERGY_SYNERGY.enabled)
+					shieldInc *= RingOfEnergy.armorChargeMultiplier(Dungeon.hero);
+				partialShield += shieldInc;
 			}
 			
 			while (partialShield >= 1){

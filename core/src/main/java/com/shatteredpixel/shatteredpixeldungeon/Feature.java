@@ -312,6 +312,10 @@ public enum Feature {
                     "_-_ The player also starts with Alchemist's Toolkit +10, letting them to do any alchemy on the go, and with all common consumables identified.\n\n" +
                     "_-_ The Prime of Alchemist mode runs _cannot obtain badges_ and their runs will be at the bottom of rankings, like seeded runs.", Category.MECHANICS){
         @Override public Image icon() {return Icons.get(Icons.ALCHEMY);}
+    },
+    SEAL_ENERGY_SYNERGY("Broken seal and Ring of Energy synergy", "_Rivlin_ speedrunner #1/@_rivlin_",
+            "_-_ Made Ring of Energy's recharge boost affect Warrior's broken seal.", Category.TWEAKS){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.RING_TOPAZ);}
     }
     ;
 
