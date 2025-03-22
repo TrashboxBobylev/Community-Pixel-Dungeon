@@ -1025,7 +1025,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_INSCRIPTION, SUNRAY, DIVINE_SENSE, BLESS);
 				break;
 		}
-		if (Feature.NEW_RUNIC_TRANSFERENCE.enabled){
+		if (Feature.NEW_RUNIC_TRANSFERENCE.enabled && cls == HeroClass.WARRIOR){
 			tierTalents.remove(RUNIC_TRANSFERENCE);
 			tierTalents.add(2, HOLD_FAST);
 		}
@@ -1058,7 +1058,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, CLEANSE, LIGHT_READING);
 				break;
 		}
-		if (Feature.NEW_RUNIC_TRANSFERENCE.enabled){
+		if (Feature.NEW_RUNIC_TRANSFERENCE.enabled && cls == HeroClass.WARRIOR){
 			tierTalents.remove(HOLD_FAST);
 			tierTalents.add(0, RUNIC_TRANSFERENCE);
 		}
