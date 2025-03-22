@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenTreasureBox
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemicalAkrafena;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wakizashi;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DefenderSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
@@ -322,6 +323,10 @@ public enum Feature {
                     "_-_ Increased ally elemental's evasion by 20% and health by 33% and made them refresh on each recall.\n\n" +
                     "_-_ Decreased amount of spell crafted from 6 to 5.", Category.TWEAKS){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SUMMON_ELE);}
+    },
+    GHOST_HERO_ITEM_PICKUP("Dried Rose's ghost picks up items", "World First +24 Glaive/@heapheaus",
+            "_-_ Made ghost ally from Dried Rose pick up items from the ground, when moving.", Category.MECHANICS){
+        @Override public Image icon() {return new GhostSprite();}
     }
     ;
 

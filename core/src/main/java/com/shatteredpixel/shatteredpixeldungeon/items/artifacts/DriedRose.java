@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -48,12 +49,14 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -723,6 +726,44 @@ public class DriedRose extends Artifact {
 			} else {
 				return super.glyphLevel(cls);
 			}
+		}
+
+		@Override
+		public void move(int step, boolean travelling) {
+			super.move(step, travelling);
+			if (Feature.GHOST_HERO_ITEM_PICKUP.enabled && Dungeon.level.heaps.get(step) != null){
+
+				Heap h = Dungeon.level.heaps.get(step);
+
+				if (h.type != Heap.Type.HEAP){
+					GLog.w(Messages.get(this, "cant_grab"));
+					h.sprite.drop();
+					return;
+				}
+
+				while (!h.isEmpty()) {
+					Item item = h.peek();
+					if (item.doPickUp(Dungeon.hero, h.pos)) {
+						h.pickUp();
+						Dungeon.hero.spend(-Item.TIME_TO_PICK_UP); //casting the spell already takes a turn
+						GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", item.name())) );
+
+					} else {
+						GLog.w(Messages.get(TelekineticGrab.class, "cant_grab"));
+						h.sprite.drop();
+						return;
+					}
+				}
+
+			}
+		}
+
+		@Override
+		public String description() {
+			String description = super.description();
+			if (Feature.GHOST_HERO_ITEM_PICKUP.enabled)
+				description += "\n\n" + Messages.get(this, "desc_item_pickup");
+			return description;
 		}
 
 		@Override
