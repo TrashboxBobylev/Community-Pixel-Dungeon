@@ -66,6 +66,7 @@ public class MobSpawner extends Actor {
 		ArrayList<Class<? extends Mob>> mobs = standardMobRotation( depth );
 		addRareMobs(depth, mobs);
 		swapMobAlts(mobs);
+		addFeelingMobs(mobs);
 		Random.shuffle(mobs);
 		return mobs;
 	}
@@ -271,5 +272,15 @@ public class MobSpawner extends Actor {
 				rotation.set(i, cl);
 			}
 		}
+	}
+
+	// adds mobs depending on level feelings
+	private static void addFeelingMobs(ArrayList<Class<?extends Mob>> rotation){
+		Class<? extends Mob> cl;
+		switch (Dungeon.level.feeling){
+
+		}
+		if (cl != null)
+			rotation.add(cl);
 	}
 }

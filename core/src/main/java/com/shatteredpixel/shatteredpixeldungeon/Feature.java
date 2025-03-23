@@ -346,7 +346,9 @@ public enum Feature {
         public Class<? extends Item>[] associatedItems() {
             return new Class[]{RepairedRapier.class};
         }
-    }
+    },
+    LEVEL_FEELING_MOBS("Mobs exclusive to level feelings", "星月夜(MoonSaya)",
+            "", Category.OTHER_CONTENT)
     ;
 
     public enum Category {
