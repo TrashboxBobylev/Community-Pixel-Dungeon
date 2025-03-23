@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -202,7 +201,7 @@ public class WndUpgrade extends Window {
 					bottom);
 		}
 
-		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST
+		if (Dungeon.hero != null && MeleeWeapon.abilitiesActive(Dungeon.hero)
 				&& toUpgrade instanceof MeleeWeapon && ((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelFrom) != null){
 			bottom = fillFields(Messages.get(toUpgrade, "upgrade_ability_stat_name"),
 					((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelFrom),

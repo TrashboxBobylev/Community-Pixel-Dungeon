@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.CrossBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
@@ -126,7 +127,7 @@ public enum Feature {
                     "_-_ This interaction can be triggered with potions and elemental wands.", Category.MECHANICS){
         @Override public Image icon() {return new BuffIcon(BuffIndicator.FIRE, true);}
     },
-    ENCHANTING_RESULTS("Enchanting results", "Cilian/@cilian._ and _Zackary (Prof. Wand Hater)/@zackary4536",
+    ENCHANTING_RESULTS("Enchanting results", "Cilian/@cilian.",
             "_-_ _Arcane Stylus_ and _Stone of Enchantment_ state the enchantment/glyph they applied in their game log's message.", Category.TWEAKS){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.STONE_ENCHANT);}
     },
@@ -335,6 +336,16 @@ public enum Feature {
                     "   _-_ If there is only one valid target highlighted, and you click the ability button again, executes the ability on that target.\n\n" +
                     "_-_ This may not work as well with Cleric spells due to many of them being ally-focused.", Category.MECHANICS){
         @Override public Image icon() {return Icons.get(Icons.TARGET);}
+    },
+    REPAIRED_RAPIER("Repaired rapier", "Zackary (Prof. Wand Hater)/@zackary4536",
+            "_-_ Added a trinket-like item, _Repaired Rapier_, that can be made from Duelist's remain item, Broken Hilt.\n\n" +
+                    "_-_ When in inventory, Repaired Rapier allows to use weapon abilities even without being a Duelist.", Category.ITEMS){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.REPAIRED_RAPIER);}
+
+        @Override
+        public Class<? extends Item>[] associatedItems() {
+            return new Class[]{RepairedRapier.class};
+        }
     }
     ;
 

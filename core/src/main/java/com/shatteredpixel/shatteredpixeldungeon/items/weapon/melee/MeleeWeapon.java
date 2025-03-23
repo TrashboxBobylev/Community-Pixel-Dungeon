@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -66,17 +67,28 @@ public class MeleeWeapon extends Weapon {
 
 	public static String AC_ABILITY = "ABILITY";
 
+	public static boolean abilitiesActive(Char ch){
+		if (ch instanceof Hero) {
+			if (((Hero) ch).heroClass == HeroClass.DUELIST){
+				return true;
+			} else {
+				return ((Hero) ch).belongings.getItem(RepairedRapier.class) != null;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
-		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.DUELIST){
+		if (abilitiesActive(ch)){
 			Buff.affect(ch, Charger.class);
 		}
 	}
 
 	@Override
 	public String defaultAction() {
-		if (Dungeon.hero != null && (Dungeon.hero.heroClass == HeroClass.DUELIST
+		if (Dungeon.hero != null && (abilitiesActive(Dungeon.hero)
 			|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP))){
 			return AC_ABILITY;
 		} else {
@@ -87,7 +99,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
+		if (isEquipped(hero) && abilitiesActive(Dungeon.hero)){
 			actions.add(AC_ABILITY);
 		}
 		return actions;
@@ -113,13 +125,13 @@ public class MeleeWeapon extends Weapon {
 					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 						execute(hero, AC_EQUIP);
-					} else if (hero.heroClass == HeroClass.DUELIST) {
+					} else if (abilitiesActive(hero)) {
 						GLog.w(Messages.get(this, "ability_need_equip"));
 					}
-				} else if (hero.heroClass == HeroClass.DUELIST) {
+				} else if (abilitiesActive(hero)) {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 				}
-			} else if (hero.heroClass != HeroClass.DUELIST){
+			} else if (!abilitiesActive(hero)){
 				//do nothing
 			} else if (STRReq() > hero.STR()){
 				GLog.w(Messages.get(this, "ability_low_str"));
@@ -364,7 +376,7 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		//the mage's staff has no ability as it can only be gained by the mage
-		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
+		if (Dungeon.hero != null && abilitiesActive(Dungeon.hero) && !(this instanceof MagesStaff)){
 			info += "\n\n" + abilityInfo();
 		}
 		
