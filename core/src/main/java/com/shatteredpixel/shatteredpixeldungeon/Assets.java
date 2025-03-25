@@ -337,5 +337,6 @@ public class Assets {
 
 		public static final String WATER_STRIDER    = "sprites/water_strider.png";
 		public static final String WIND_SPIRIT      = "sprites/wind_spirit.png";
+		public static final String DMXXX            = "sprites/dmXXX.png";
 	}
 }
