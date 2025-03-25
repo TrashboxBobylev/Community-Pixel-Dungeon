@@ -47,7 +47,7 @@ public class WindSpirit extends Mob{
 
 		viewDistance = 5;
 
-		loot = new StoneOfBlink();
+		loot = StoneOfBlink.class;
 		lootChance = 0.5f;
 
 		properties.add(Property.INORGANIC);
