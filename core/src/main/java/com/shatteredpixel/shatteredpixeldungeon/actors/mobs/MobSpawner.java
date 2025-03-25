@@ -281,6 +281,8 @@ public class MobSpawner extends Actor {
 		switch (level.feeling){
 			case WATER:
 				cl = WaterStrider.class; break;
+			case CHASM:
+				cl = WindSpirit.class; break;
 		}
 		if (cl != null) {
 			// increase the spawnrate by putting two entries
