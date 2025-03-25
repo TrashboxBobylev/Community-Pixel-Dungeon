@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -62,11 +63,11 @@ public class MobSpawner extends Actor {
 		spend(Dungeon.level.respawnCooldown());
 	}
 
-	public static ArrayList<Class<? extends Mob>> getMobRotation(int depth ){
+	public static ArrayList<Class<? extends Mob>> getMobRotation(int depth, Level level){
 		ArrayList<Class<? extends Mob>> mobs = standardMobRotation( depth );
 		addRareMobs(depth, mobs);
 		swapMobAlts(mobs);
-		addFeelingMobs(mobs);
+		addFeelingMobs(mobs, level);
 		Random.shuffle(mobs);
 		return mobs;
 	}
@@ -275,12 +276,16 @@ public class MobSpawner extends Actor {
 	}
 
 	// adds mobs depending on level feelings
-	private static void addFeelingMobs(ArrayList<Class<?extends Mob>> rotation){
-		Class<? extends Mob> cl;
-		switch (Dungeon.level.feeling){
-
+	private static void addFeelingMobs(ArrayList<Class<?extends Mob>> rotation, Level level){
+		Class<? extends Mob> cl = null;
+		switch (level.feeling){
+			case WATER:
+				cl = WaterStrider.class; break;
 		}
-		if (cl != null)
+		if (cl != null) {
+			// increase the spawnrate by putting two entries
+			rotation.set(Random.index(rotation), cl);
 			rotation.add(cl);
+		}
 	}
 }
