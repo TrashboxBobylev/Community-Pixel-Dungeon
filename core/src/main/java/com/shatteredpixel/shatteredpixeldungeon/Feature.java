@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.WaterStriderSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -348,7 +349,14 @@ public enum Feature {
         }
     },
     LEVEL_FEELING_MOBS("Mobs exclusive to level feelings", "星月夜(MoonSaya)",
-            "", Category.OTHER_CONTENT)
+            "_-_ Added new mobs, that are exclusive to certain level feelings.\n\n" +
+                    "_-_ There is currently 4 mobs:\n" +
+                    "   _-_ _Wind Spirit_, the enemy for chasm floors, will attempt to push you over the edge with its attacks.\n" +
+                    "   _-_ _Giant Water Strider_, the enemy for water floors, will swiftly fly across the water ponds and spew water at you.\n" +
+                    "   _-_ _Angry Thorn_, the enemy for grass floors, will only attack enemies on grass with its thorns, that inflict Bleeding.\n" +
+                    "   _-_ _DM-XXX_, the enemy for trap floors, will reclaim traps and use them to attack you.", Category.OTHER_CONTENT){
+        @Override public Image icon() {return new WaterStriderSprite();}
+    }
     ;
 
     public enum Category {
