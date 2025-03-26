@@ -107,6 +107,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public abstract class Mob extends Char {
 
@@ -317,6 +318,9 @@ public abstract class Mob extends Char {
 		//We are charmed and current enemy is what charmed us
 		} else if (buff(Charm.class) != null && buff(Charm.class).object == enemy.id()) {
 			newEnemy = true;
+		//We are angry thorn and enemy isn't on grass or is flying above it
+		} else if (this instanceof AngryThorn && (!AngryThorn.isGrass(enemy.pos) || enemy.flying)){
+			newEnemy = true;
 		}
 
 		//additionally, if we are an ally, find a new enemy if...
@@ -392,6 +396,17 @@ public abstract class Mob extends Char {
 				Char source = (Char)Actor.findById( charm.object );
 				if (source != null && enemies.contains(source) && enemies.size() > 1){
 					enemies.remove(source);
+				}
+			}
+
+			// if we are angry thorn, ignore everything that is not in grass
+			if (this instanceof AngryThorn) {
+				Iterator<Char> iterator = enemies.iterator();
+				while (iterator.hasNext()) {
+					Char ch = iterator.next();
+					if ((!AngryThorn.isGrass(ch.pos) || ch.flying)) {
+						iterator.remove();
+					}
 				}
 			}
 
