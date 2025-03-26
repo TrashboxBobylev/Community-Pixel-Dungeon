@@ -25,6 +25,12 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.AngryThorn;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DMXXX;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FailedDefender;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WaterStrider;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WindSpirit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -291,6 +297,11 @@ public enum Feature {
                     "_-_ Failed defender has 3 more armor and 2 more evasion points, than normal guard, and _can teleport to the player_, when they are out to reach.\n\n" +
                     "_-_ His drop is _enchanted armor_ at 5x drop rate of normal guard.", Category.OTHER_CONTENT){
         @Override public Image icon() {return new DefenderSprite();}
+
+        @Override
+        public Class<? extends Mob>[] associatedMobs() {
+            return new Class[]{FailedDefender.class};
+        }
     },
     FORESIGHT_REWORK("Rogue's Foresight rework", "QKuroire/@qkuroire",
             "_-_ Reduced the chance to detect a secret from _75%/100%_ to _50%/75%_, but successful procs show the secret room entrances on the map.", Category.MECHANICS){
@@ -356,6 +367,11 @@ public enum Feature {
                     "   _-_ _Angry Thorn_, the enemy for grass floors, will only attack enemies on grass with its thorns, that inflict Bleeding.\n" +
                     "   _-_ _DM-XXX_, the enemy for trap floors, will reclaim traps and use them to attack you.", Category.OTHER_CONTENT){
         @Override public Image icon() {return new WaterStriderSprite();}
+
+        @Override
+        public Class<? extends Mob>[] associatedMobs() {
+            return new Class[]{WindSpirit.class, WaterStrider.class, AngryThorn.class, DMXXX.class};
+        }
     }
     ;
 
@@ -387,6 +403,10 @@ public enum Feature {
     }
 
     public Class<? extends Item>[] associatedItems(){
+        return new Class[]{};
+    }
+
+    public Class<? extends Mob>[] associatedMobs(){
         return new Class[]{};
     }
 

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
@@ -64,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Guard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.PhantomPiranha;
@@ -160,6 +162,7 @@ import com.watabou.utils.Bundle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 //contains all the game's various entities, mostly enemies, NPCS, and allies, but also traps and plants
@@ -188,8 +191,36 @@ public enum Bestiary {
 		}
 	}
 
+	// a view of seen, that filters out disabled mobs
+	private LinkedHashMap<Class<?>, Boolean> filteredSeen(){
+		LinkedHashMap<Class<?>, Boolean> initialSeen = seen;
+
+		ArrayList<Feature> disabledFeatures = new ArrayList<>();
+		for (Feature feature: Feature.values()){
+			if (!feature.enabled)
+				disabledFeatures.add(feature);
+		}
+
+		HashSet<Class> disabledClasses = new HashSet<>();
+
+		for (Class clazz: initialSeen.keySet()) {
+			for (Feature feature : disabledFeatures) {
+				for (Class<? extends Mob> mob : feature.associatedMobs()) {
+					if (clazz == mob)
+						disabledClasses.add(clazz);
+				}
+			}
+		}
+
+		for (Class clazz: disabledClasses){
+			initialSeen.remove(clazz);
+		}
+
+		return initialSeen;
+	}
+
 	public Collection<Class<?>> entities(){
-		return seen.keySet();
+		return filteredSeen().keySet();
 	}
 
 	public String title(){
@@ -197,12 +228,12 @@ public enum Bestiary {
 	}
 
 	public int totalEntities(){
-		return seen.size();
+		return filteredSeen().size();
 	}
 
 	public int totalSeen(){
 		int seenTotal = 0;
-		for (boolean entitySeen : seen.values()){
+		for (boolean entitySeen : filteredSeen().values()){
 			if (entitySeen) seenTotal++;
 		}
 		return seenTotal;
@@ -281,7 +312,7 @@ public enum Bestiary {
 
 	public static boolean isSeen(Class<?> cls){
 		for (Bestiary cat : values()) {
-			if (cat.seen.containsKey(cls)) {
+			if (cat.filteredSeen().containsKey(cls)) {
 				return cat.seen.get(cls);
 			}
 		}
