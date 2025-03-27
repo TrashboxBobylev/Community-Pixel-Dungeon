@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.BoilingWater;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
@@ -161,7 +162,7 @@ public class Piranha extends Mob {
 	
 	{
 		for (Class c : new BlobImmunity().immunities()){
-			if (c != Electricity.class && c != Freezing.class){
+			if (c != Electricity.class && c != Freezing.class && c != BoilingWater.class){
 				immunities.add(c);
 			}
 		}

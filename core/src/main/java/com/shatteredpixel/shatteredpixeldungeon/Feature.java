@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenTreasureBox;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemicalAkrafena;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wakizashi;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DefenderSprite;
@@ -371,6 +372,16 @@ public enum Feature {
         @Override
         public Class<? extends Mob>[] associatedMobs() {
             return new Class[]{WindSpirit.class, WaterStrider.class, AngryThorn.class, DMXXX.class};
+        }
+    },
+    BOILING_WATER("Boiling water effect", "Pixedex/@pixedex",
+            "_-_ The infernal brew cloud now _boils the water_ it is touching.\n\n" +
+                    "_-_ Boiling water will quickly spread across the rest of water tiles and damage everything it touches, including piranhas.\n\n" +
+                    "_-_ Boiling water can eventually dissipate with time or from touching coldness.", Category.MECHANICS){
+        @Override public Image icon() {
+            ItemSprite itemSprite = new ItemSprite(ItemSpriteSheet.BREW_INFERNAL);
+            itemSprite.glow(new Chilling().glowing());
+            return itemSprite;
         }
     }
     ;

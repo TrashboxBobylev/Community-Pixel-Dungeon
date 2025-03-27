@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -75,6 +76,9 @@ public class Inferno extends Blob {
 
 					if (fire == null || fire.cur == null || fire.cur[cell] == 0) {
 						GameScene.add(Fire.seed(cell, 4, Fire.class));
+						if (Feature.BOILING_WATER.enabled && Dungeon.level.water[cell]){
+							GameScene.add(Fire.seed(cell, 6, BoilingWater.class));
+						}
 					}
 
 				}
