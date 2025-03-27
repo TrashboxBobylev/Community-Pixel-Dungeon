@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -508,7 +509,13 @@ public abstract class Level implements Bundlable {
 	
 	public Mob createMob() {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
-			mobsToSpawn = MobSpawner.getMobRotation(Dungeon.depth, this);
+			int floor = Dungeon.depth;
+			if (Feature.CHAOTIC_ASCENSION_MOBS.enabled && Dungeon.hero != null && Dungeon.hero.buff(AscensionChallenge.class) != null) {
+				do {
+					floor = Random.Int(25);
+				} while (Dungeon.bossLevel(floor));
+			}
+			mobsToSpawn = MobSpawner.getMobRotation(floor, this);
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
