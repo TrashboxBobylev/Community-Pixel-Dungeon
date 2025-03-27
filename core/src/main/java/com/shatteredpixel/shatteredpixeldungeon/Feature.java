@@ -388,7 +388,7 @@ public enum Feature {
             "_-_ During Ascension route, the mobs selection can be from any non-boss floor, instead of just current one, allowing for monks in prison, rats in metro and evil eyes in sewers.", Category.TWEAKS){
         @Override public Image icon() {
             BuffIcon buffIcon = new BuffIcon(BuffIndicator.AMULET, true);
-            buffIcon.tint(0x00E500);
+            buffIcon.hardlight(0x00E500);
             return buffIcon;
         }
     }
