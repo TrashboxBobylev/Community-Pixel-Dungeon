@@ -391,6 +391,12 @@ public enum Feature {
             buffIcon.hardlight(0x00E500);
             return buffIcon;
         }
+    },
+    COPY_SEEDS("Copying seeds into clipboard", "DanteSuParda/@yeldzy",
+            "_-_ Added a button to copy the current displayed seed into clipboard.\n\n" +
+                    "_-_ This also works with rankings.\n\n" +
+                    "_-_ This is only accessible after one victory.", Category.TWEAKS){
+        @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SEED_SUNGRASS);}
     }
     ;
 

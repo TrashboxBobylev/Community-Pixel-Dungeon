@@ -24,7 +24,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.badlogic.gdx.Gdx;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -38,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
@@ -51,6 +55,7 @@ import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -211,6 +216,19 @@ public class WndHero extends WndTabbed {
 				statSlot( Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_" );
 			} else {
 				statSlot( Messages.get(this, "dungeon_seed"), DungeonSeed.convertToCode(Dungeon.seed) );
+			}
+			if (Feature.COPY_SEEDS.enabled && (Badges.isUnlocked(Badges.Badge.VICTORY) || DeviceCompat.isDebug())){
+				RenderedTextBlock seedTxt = (RenderedTextBlock) members.get(members.size()-1);
+				RedButton btnCopy = new RedButton(""){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						Gdx.app.getClipboard().setContents(seedTxt.text());
+					}
+				};
+				btnCopy.icon(Icons.SMALL_COPY.get());
+				btnCopy.setRect(seedTxt.right() + 2, seedTxt.top()-2, 10, 10);
+				add(btnCopy);
 			}
 
 			pos += GAP;

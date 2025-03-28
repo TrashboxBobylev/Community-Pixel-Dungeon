@@ -24,10 +24,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -249,6 +251,19 @@ public class WndRanking extends WndTabbed {
 						pos = statSlot(this, Messages.get(this, "custom_seed"), "_" + Dungeon.customSeedText + "_", pos);
 					} else {
 						pos = statSlot(this, Messages.get(this, "seed"), DungeonSeed.convertToCode(Dungeon.seed), pos);
+					}
+					if (Feature.COPY_SEEDS.enabled && (Badges.isUnlocked(Badges.Badge.VICTORY) || DeviceCompat.isDebug())){
+						RenderedTextBlock seedTxt = (RenderedTextBlock) members.get(members.size()-1);
+						RedButton btnCopy = new RedButton(""){
+							@Override
+							protected void onClick() {
+								super.onClick();
+								Gdx.app.getClipboard().setContents(seedTxt.text());
+							}
+						};
+						btnCopy.icon(Icons.SMALL_COPY.get());
+						btnCopy.setRect(seedTxt.right(), seedTxt.top()-2, 10, 10);
+						add(btnCopy);
 					}
 				} else {
 					pos += GAP + 5;
