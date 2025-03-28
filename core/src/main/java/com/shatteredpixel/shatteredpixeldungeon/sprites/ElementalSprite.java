@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -257,6 +258,30 @@ public abstract class ElementalSprite extends MobSprite {
 		@Override
 		public int blood() {
 			return 0xFFE3E3E3;
+		}
+	}
+
+	public static class Poison extends ElementalSprite {
+
+		{
+			boltType = MagicMissile.POISON;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 70;
+		}
+
+		@Override
+		protected Emitter createEmitter() {
+			Emitter emitter = emitter();
+			emitter.pour(PoisonParticle.SPLASH, 0.06f );
+			return emitter;
+		}
+
+		@Override
+		public int blood() {
+			return 0xFF87FF49;
 		}
 	}
 }

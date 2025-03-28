@@ -38,13 +38,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
@@ -602,6 +605,32 @@ public abstract class Elemental extends Mob {
 			});
 		}
 	}
+
+	public static class PoisonElemental extends Elemental {
+
+		{
+			spriteClass = ElementalSprite.Poison.class;
+
+			loot = PotionOfToxicGas.class;
+			lootChance = 1/8f;
+
+			properties.add( Property.ACIDIC );
+		}
+
+		@Override
+		protected void meleeProc( Char enemy, int damage ) {
+			if (Random.Int( 3 ) == 0) {
+				Buff.affect( enemy, Poison.class ).set( 3 + Math.round(Dungeon.scalingDepth() / 3f) );
+				if (enemy.sprite.visible) enemy.sprite.centerEmitter().burst( PoisonParticle.SPLASH, 3 );
+			}
+		}
+
+		@Override
+		protected void rangedProc( Char enemy ) {
+			Buff.affect( enemy, Poison.class ).set( 5 + Math.round(Dungeon.scalingDepth() / 3f) );
+			if (enemy.sprite.visible) enemy.sprite.centerEmitter().burst( PoisonParticle.SPLASH, 6 );
+		}
+	}
 	
 	public static Class<? extends Elemental> random(){
 		float altChance = 1/50f * RatSkull.exoticChanceMultiplier();
@@ -615,6 +644,9 @@ public abstract class Elemental extends Mob {
 		} else if (roll < 0.8f){
 			return FrostElemental.class;
 		} else {
+			if (Feature.POISON_ELEMENTAL.enabled && Random.Int(2) == 0){
+				return PoisonElemental.class;
+			}
 			return ShockElemental.class;
 		}
 	}

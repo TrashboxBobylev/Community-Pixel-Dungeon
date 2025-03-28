@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilli
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemicalAkrafena;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wakizashi;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DefenderSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -397,6 +398,11 @@ public enum Feature {
                     "_-_ This also works with rankings.\n\n" +
                     "_-_ This is only accessible after one victory.", Category.TWEAKS){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.SEED_SUNGRASS);}
+    },
+    POISON_ELEMENTAL("Poison Elemental", "kryr the wrong server guy/@isothedragon",
+            "_-_ Added a poisonous kind of elemental, that uses poisonous attacks.\n\n" +
+                    "_-_ It drops potion of toxic gas.", Category.OTHER_CONTENT){
+        @Override public Image icon() {return new ElementalSprite.Poison();}
     }
     ;
 
