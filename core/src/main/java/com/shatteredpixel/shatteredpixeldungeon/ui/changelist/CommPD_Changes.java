@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -53,6 +54,42 @@ public class CommPD_Changes {
                 }
             }
         }
+
+        changes = new ChangeInfo("CommPD-2.0.0", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHECKED), "Feature screen overhaul",
+                "_-_ All features are now _split into 4 categories_ for easier analysis: items, non-items, new mechanics and QoL/minor tweaks.\n\n" +
+                        "_-_ Made all features _toggleable_, allowing for fully customizable experience!\n\n" +
+                        "   _-_ To toggle a feature, press a button in its description in this very screen.\n\n" +
+                        "   _-_ The disabled items and mobs will persist in already ongoing runs, but will not be accessible in any future ones."));
+
+        changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Shattered Ports",
+                "Ported all content from Shattered 3.0.2.\n\n" +
+                        "_-_ Added all new content into journal, with it disappearing when the things are disabled in feature screen.\n\n" +
+                        "_-_ Slightly redesigned the title to fit more with new Shattered title banner.\n\n" +
+                        "_-_ Removed custom notes feature due to being made obsolete by Shattered's new journal.\n\n" +
+                        "_-_ Added minimal armor to Hold Fast rework."));
+
+        changes.addButton( new ChangeButton(new RatKingSprite(), Feature.RAT_KING_CURSE.name,
+                "Nerfed the rat king curse into the ground after huge feedback.\n\n" +
+                        "_-_ Now makes player drop their weapon instead of murdering them."));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+                "_-_ Made explorer mode accessible without having to win the game."));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed the following bugs:\n" +
+                        "_-_ The sword's sprite having incorrect width and height.\n" +
+                        "_-_ RNG Manipulator feature removing extra upgrades on special room loot, when not interacting with the spell.\n" +
+                        "_-_ Explorer Mode sticking to new runs until the game is closed.\n" +
+                        "_-_ Rings getting extra upgrades on transmutation, when being imbued with Arcane Resin or Gemstone Dust."
+        ));
+
+        changes = new ChangeInfo("CommPD-1.0.0", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
 
         changes = new ChangeInfo("v0.1.1", false, null);
         changes.hardlight(Window.TITLE_COLOR);
