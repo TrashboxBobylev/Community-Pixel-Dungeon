@@ -6,7 +6,7 @@
  * Copyright (C) 2014-2024 Evan Debenham
  *
  * Community Pixel Dungeon
- * Copyright (C) 2024 Trashbox Bobylev and Pixel Dungeon's community
+ * Copyright (C) 2024-2025 Trashbox Bobylev and Pixel Dungeon's community
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.watabou.noosa.Game;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -6,7 +6,7 @@
  * Copyright (C) 2014-2024 Evan Debenham
  *
  * Community Pixel Dungeon
- * Copyright (C) 2024 Trashbox Bobylev and Pixel Dungeon's community
+ * Copyright (C) 2024-2025 Trashbox Bobylev and Pixel Dungeon's community
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,10 +31,9 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
+import com.zrp200.scrollofdebug.PackageTrie;
 
 import java.util.HashMap;
-
-import com.zrp200.scrollofdebug.PackageTrie;
 
 public abstract class PlatformSupport {
 	public PackageTrie findClasses(String pckgname) throws ClassNotFoundException {

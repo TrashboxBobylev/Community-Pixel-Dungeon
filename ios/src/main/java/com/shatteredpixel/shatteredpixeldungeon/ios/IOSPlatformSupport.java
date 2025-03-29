@@ -6,7 +6,7 @@
  * Copyright (C) 2014-2024 Evan Debenham
  *
  * Community Pixel Dungeon
- * Copyright (C) 2024 Trashbox Bobylev and Pixel Dungeon's community
+ * Copyright (C) 2024-2025 Trashbox Bobylev and Pixel Dungeon's community
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
-
 import org.robovm.apple.audiotoolbox.AudioServices;
 import org.robovm.apple.systemconfiguration.SCNetworkReachability;
 import org.robovm.apple.systemconfiguration.SCNetworkReachabilityFlags;
