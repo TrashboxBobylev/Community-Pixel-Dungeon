@@ -42,9 +42,6 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AboutScene extends PixelScene {
 
 	private static class AuthorInfo {
@@ -93,7 +90,16 @@ public class AboutScene extends PixelScene {
 		new AuthorInfo("Hrohlu", "hrohlu"),
 		new AuthorInfo("Gamma", "gammalolman"),
 		new AuthorInfo("QKuroire", "qkuroire"),
-		new AuthorInfo("Lootbug", "thelootbug")
+		new AuthorInfo("Lootbug", "thelootbug"),
+		new AuthorInfo("下水道螃蟹", ""),
+		new AuthorInfo("-Rivlin- speedrunner #1", "-rivlin-"),
+		new AuthorInfo("MapleOak", "mapleoak-number-61"),
+		new AuthorInfo("Heapheaus", "heapheaus"),
+		new AuthorInfo("484 Palkia", "zrp200"),
+		new AuthorInfo("星月夜", "MoonSaya"),
+		new AuthorInfo("Pixedex", "pixedex"),
+		new AuthorInfo("DanteSuParda", "yeldzy"),
+		new AuthorInfo("kryr the wrong server guy", "isothedragon")
 	};
 
 	@Override
@@ -157,7 +163,7 @@ public class AboutScene extends PixelScene {
 
 		float creditWidth = Math.min(Camera.main.width / 3f, colWidth / 2f);
 
-		for (int i = 0; i < 36; i++){
+		for (int i = 0; i < 45; i++){
 			if (i % 3 == 0 && i != 0)
 				currentDepth += 36;
 
