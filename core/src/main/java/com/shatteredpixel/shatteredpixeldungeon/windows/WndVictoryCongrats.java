@@ -118,7 +118,7 @@ public class WndVictoryCongrats extends Window {
 				ShatteredPixelDungeon.switchScene(SupporterScene.class);
 			}
 		};
-		btnSupport.icon(Icons.GOLD.get());
+		btnSupport.icon(Icons.COMMUNITY.get());
 		btnSupport.setRect(0, height, width / 2, 18);
 		add(btnSupport);
 
