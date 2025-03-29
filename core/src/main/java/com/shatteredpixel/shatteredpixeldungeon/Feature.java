@@ -403,6 +403,10 @@ public enum Feature {
             "_-_ Added a poisonous kind of elemental, that uses poisonous attacks.\n\n" +
                     "_-_ It drops potion of toxic gas.", Category.OTHER_CONTENT){
         @Override public Image icon() {return new ElementalSprite.Poison();}
+    },
+    REGROWTH_TRAP("Regrowth Trap", "Sir Ayin/@uchufoxgd",
+            "_-_ Added uncommon regrowth trap to caves and metropolis, that spawns spreading grass and roots characters.", Category.OTHER_CONTENT){
+        @Override public Image icon() {return new Image(Assets.Environment.TERRAIN_FEATURES, 48, 48, 16, 16);}
     }
     ;
 

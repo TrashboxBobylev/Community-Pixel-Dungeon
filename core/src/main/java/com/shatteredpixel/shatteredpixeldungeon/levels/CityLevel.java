@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
@@ -42,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GatewayTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RegrowthTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
@@ -111,6 +113,12 @@ public class CityLevel extends RegularLevel {
 	
 	@Override
 	protected Class<?>[] trapClasses() {
+		if (Feature.REGROWTH_TRAP.enabled){
+			return new Class[]{
+					FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
+					RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
+					DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, PitfallTrap.class, DistortionTrap.class, GatewayTrap.class, GeyserTrap.class, RegrowthTrap.class };
+		}
 		return new Class[]{
 				FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
 				RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
@@ -119,6 +127,12 @@ public class CityLevel extends RegularLevel {
 
 	@Override
 	protected float[] trapChances() {
+		if (Feature.REGROWTH_TRAP.enabled){
+			return new float[]{
+					4, 4, 4, 4, 4,
+					2, 2, 2, 2,
+					1, 1, 1, 1, 1, 1, 1, 1, 2 };
+		}
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2, 2,

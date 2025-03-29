@@ -26,6 +26,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -46,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RegrowthTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
@@ -179,6 +181,12 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected Class<?>[] trapClasses() {
+		if (Feature.REGROWTH_TRAP.enabled){
+			return new Class[]{
+					BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
+					GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
+					ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class, GatewayTrap.class, GeyserTrap.class, RegrowthTrap.class };
+		}
 		return new Class[]{
 				BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
 				GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
@@ -187,6 +195,12 @@ public class CavesLevel extends RegularLevel {
 
 	@Override
 	protected float[] trapChances() {
+		if (Feature.REGROWTH_TRAP.enabled){
+			return new float[]{
+					4, 4, 4, 4, 4,
+					2, 2, 2,
+					1, 1, 1, 1, 1, 1, 2 };
+		}
 		return new float[]{
 				4, 4, 4, 4, 4,
 				2, 2, 2,
