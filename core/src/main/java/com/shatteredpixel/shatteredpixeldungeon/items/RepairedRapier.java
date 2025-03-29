@@ -67,7 +67,7 @@ public class RepairedRapier extends Item {
             inputs =  new Class[]{BrokenHilt.class};
             inQuantity = new int[]{1};
 
-            cost = 20;
+            cost = 30;
 
             output = RepairedRapier.class;
             outQuantity = 1;

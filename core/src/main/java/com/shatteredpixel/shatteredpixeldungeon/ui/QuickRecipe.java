@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -367,8 +368,13 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new LiquidMetal.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new MissileWeapon.PlaceHolder().quantity(3))),
 						new LiquidMetal()));
-				if (Feature.REPAIRED_RAPIER.enabled){
+				if (Feature.REPAIRED_ITEMS.enabled){
+					result.add(new QuickRecipe(new RemainsItem.SealRecipe()));
+					result.add(new QuickRecipe(new RemainsItem.StaffRecipe()));
+					result.add(new QuickRecipe(new RemainsItem.CloakRecipe()));
+					result.add(new QuickRecipe(new RemainsItem.BowRecipe()));
 					result.add(new QuickRecipe(new RepairedRapier.Recipe()));
+					result.add(new QuickRecipe(new RemainsItem.TomeRecipe()));
 				}
 				result.add(null);
 				result.add(null);

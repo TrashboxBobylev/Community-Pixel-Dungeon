@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -208,6 +209,11 @@ public abstract class Recipe {
 		new SummonElemental.Recipe(),
 		new Fury.Recipe(),
 		new RepairedRapier.Recipe(),
+		new RemainsItem.SealRecipe(),
+		new RemainsItem.StaffRecipe(),
+		new RemainsItem.CloakRecipe(),
+		new RemainsItem.BowRecipe(),
+		new RemainsItem.TomeRecipe(),
 		new StewedMeat.oneMeat(),
 		new TrinketCatalyst.Recipe(),
 		new Trinket.UpgradeTrinket()

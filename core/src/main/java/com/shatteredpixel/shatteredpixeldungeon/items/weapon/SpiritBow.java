@@ -26,11 +26,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -189,17 +191,25 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public int min(int lvl) {
-		int dmg = 1 + Dungeon.hero.lvl/5
+		int level = Dungeon.hero.lvl;
+		if (Feature.REPAIRED_ITEMS.enabled && Dungeon.hero.heroClass != HeroClass.HUNTRESS){
+			level /= 2;
+		}
+		int dmg = 1 + level/5
 				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0);
+				+ (curseInfusionBonus ? 1 + level/30 : 0);
 		return Math.max(0, dmg);
 	}
 	
 	@Override
 	public int max(int lvl) {
-		int dmg = 6 + (int)(Dungeon.hero.lvl/2.5f)
+		int level = Dungeon.hero.lvl;
+		if (Feature.REPAIRED_ITEMS.enabled && Dungeon.hero.heroClass != HeroClass.HUNTRESS){
+			level /= 2;
+		}
+		int dmg = 6 + (int)(level/2.5f)
 				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 2 + Dungeon.hero.lvl/15 : 0);
+				+ (curseInfusionBonus ? 2 + level/15 : 0);
 		return Math.max(0, dmg);
 	}
 
@@ -274,6 +284,9 @@ public class SpiritBow extends Weapon {
 	public int level() {
 		int level = Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5;
 		if (curseInfusionBonus) level += 1 + level/6;
+		if (Feature.REPAIRED_ITEMS.enabled && (Dungeon.hero != null && Dungeon.hero.heroClass != HeroClass.HUNTRESS)){
+			level /= 2;
+		}
 		return level;
 	}
 

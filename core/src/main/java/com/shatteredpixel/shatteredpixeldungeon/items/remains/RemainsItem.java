@@ -27,7 +27,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.remains;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 
 import java.util.ArrayList;
@@ -96,6 +101,76 @@ public abstract class RemainsItem extends Item {
 			case CLERIC:
 				return new TornPage();
 		}
+	}
+
+	public static class SealRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{SealShard.class};
+			inQuantity = new int[]{1};
+
+			cost = 15;
+
+			output = BrokenSeal.class;
+			outQuantity = 1;
+		}
+
+	}
+
+	public static class StaffRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{BrokenStaff.class};
+			inQuantity = new int[]{1};
+
+			cost = 25;
+
+			output = MagesStaff.class;
+			outQuantity = 1;
+		}
+
+	}
+
+	public static class CloakRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{CloakScrap.class};
+			inQuantity = new int[]{1};
+
+			cost = 45;
+
+			output = CloakOfShadows.class;
+			outQuantity = 1;
+		}
+
+	}
+
+	public static class BowRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{BowFragment.class};
+			inQuantity = new int[]{1};
+
+			cost = 45;
+
+			output = SpiritBow.class;
+			outQuantity = 1;
+		}
+
+	}
+
+	public static class TomeRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{TornPage.class};
+			inQuantity = new int[]{1};
+
+			cost = 25;
+
+			output = HolyTome.class;
+			outQuantity = 1;
+		}
+
 	}
 
 }

@@ -351,9 +351,11 @@ public enum Feature {
                     "_-_ This may not work as well with Cleric spells due to many of them being ally-focused.", Category.MECHANICS){
         @Override public Image icon() {return Icons.get(Icons.TARGET);}
     },
-    REPAIRED_RAPIER("Repaired rapier", "Zackary (Prof. Wand Hater)/@zackary4536",
-            "_-_ Added a trinket-like item, _Repaired Rapier_, that can be made from Duelist's remain item, Broken Hilt.\n\n" +
-                    "_-_ When in inventory, Repaired Rapier allows to use weapon abilities even without being a Duelist.", Category.ITEMS){
+    REPAIRED_ITEMS("Repaired remains items", "Zackary (Prof. Wand Hater)/@zackary4536",
+            "_-_ Added ability to \"repair\" items from hero remains into proper form with alchemical energy.\n\n" +
+                    "_-_ The energy requirements are steep, with seal requiring 15 up to cloak/bow requiring 45.\n\n" +
+                    "_-_ Cloak of Shadows and Spirit Bow, crafted from remains, will be 2x weaker, if not used on proper class.\n\n" +
+                    "_-_ Added a trinket-like item, _Repaired Rapier_, that can be made from Duelist's remain item. When in inventory, Repaired Rapier allows to use weapon abilities even without being a Duelist.", Category.MECHANICS){
         @Override public Image icon() {return new ItemSprite(ItemSpriteSheet.REPAIRED_RAPIER);}
 
         @Override
