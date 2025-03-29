@@ -28,6 +28,7 @@ import com.badlogic.gdx.Input;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
@@ -216,7 +217,7 @@ public class SPDAction extends GameAction {
 			LinkedHashMap<Integer, GameAction> merged = new LinkedHashMap<>();
 
 			for (GameAction a : allActions()) {
-				if (firstKeys.contains(a.name()) && !ControllerHandler.icControllerKey(firstKeys.getInt(a.name()))) {
+				if (firstKeys.contains(a.name()) && KeyEvent.isKeyboardKey(firstKeys.getInt(a.name()))) {
 					if (firstKeys.getInt(a.name()) == 0){
 						continue; //we have no keys assigned to this action, move to the next one
 					} else {
@@ -239,7 +240,7 @@ public class SPDAction extends GameAction {
 					}
 				}
 
-				if (secondKeys.contains(a.name()) && !ControllerHandler.icControllerKey(secondKeys.getInt(a.name()))) {
+				if (secondKeys.contains(a.name()) && KeyEvent.isKeyboardKey(secondKeys.getInt(a.name()))) {
 					if (secondKeys.getInt(a.name()) == 0){
 						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
@@ -262,7 +263,7 @@ public class SPDAction extends GameAction {
 					}
 				}
 
-				if (thirdKeys.contains(a.name()) && !ControllerHandler.icControllerKey(thirdKeys.getInt(a.name()))) {
+				if (thirdKeys.contains(a.name()) && KeyEvent.isKeyboardKey(thirdKeys.getInt(a.name()))) {
 					if (thirdKeys.getInt(a.name()) == 0){
 						continue; //we have no more keys assigned to this action, move to the next one
 					} else {
