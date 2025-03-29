@@ -34,10 +34,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WindSpirit;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.CrossBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing;
@@ -362,6 +364,11 @@ public enum Feature {
         public Class<? extends Item>[] associatedItems() {
             return new Class[]{RepairedRapier.class};
         }
+
+        @Override
+        public Class<? extends Recipe>[] associatedRecipes() {
+            return new Class[]{RemainsItem.SealRecipe.class, RemainsItem.StaffRecipe.class, RemainsItem.CloakRecipe.class, RemainsItem.BowRecipe.class, RemainsItem.TomeRecipe.class};
+        }
     },
     LEVEL_FEELING_MOBS("Mobs exclusive to level feelings", "星月夜(MoonSaya)",
             "_-_ Added new mobs, that are exclusive to certain level feelings.\n\n" +
@@ -440,6 +447,10 @@ public enum Feature {
     }
 
     public Class<? extends Item>[] associatedItems(){
+        return new Class[]{};
+    }
+
+    public Class<? extends Recipe>[] associatedRecipes(){
         return new Class[]{};
     }
 

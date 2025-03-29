@@ -246,16 +246,18 @@ public abstract class Recipe {
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
 
 		HashSet<Class> disabledClasses = new HashSet<>();
+		HashSet<Class> disabledRecipes = new HashSet<>();
 		for (Feature feature: Feature.values()){
 			if (!feature.enabled){
                 disabledClasses.addAll(Arrays.asList(feature.associatedItems()));
+				disabledRecipes.addAll(Arrays.asList(feature.associatedRecipes()));
 			}
 		}
 
 		ArrayList<Recipe> result = new ArrayList<>();
 
 		for (Recipe recipe : variableRecipes){
-			if (recipe.testIngredients(ingredients)){
+			if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 				Item output = recipe.sampleOutput(ingredients);
 				if (output != null && disabledClasses.contains(output.getClass()))
 					result.add(recipe);
@@ -264,7 +266,7 @@ public abstract class Recipe {
 
 		if (ingredients.size() == 1){
 			for (Recipe recipe : oneIngredientRecipes){
-				if (recipe.testIngredients(ingredients)){
+				if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 					Item output = recipe.sampleOutput(ingredients);
 					if (output != null && disabledClasses.contains(output.getClass()))
 						result.add(recipe);
@@ -273,7 +275,7 @@ public abstract class Recipe {
 			
 		} else if (ingredients.size() == 2){
 			for (Recipe recipe : twoIngredientRecipes){
-				if (recipe.testIngredients(ingredients)){
+				if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 					Item output = recipe.sampleOutput(ingredients);
 					if (output != null && disabledClasses.contains(output.getClass()))
 						result.add(recipe);
@@ -282,7 +284,7 @@ public abstract class Recipe {
 			
 		} else if (ingredients.size() == 3){
 			for (Recipe recipe : threeIngredientRecipes){
-				if (recipe.testIngredients(ingredients)){
+				if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 					Item output = recipe.sampleOutput(ingredients);
 					if (output != null && disabledClasses.contains(output.getClass()))
 						result.add(recipe);
