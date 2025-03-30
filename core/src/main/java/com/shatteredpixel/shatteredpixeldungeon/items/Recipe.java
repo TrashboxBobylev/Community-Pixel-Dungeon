@@ -259,7 +259,7 @@ public abstract class Recipe {
 		for (Recipe recipe : variableRecipes){
 			if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 				Item output = recipe.sampleOutput(ingredients);
-				if (output != null && disabledClasses.contains(output.getClass()))
+				if (output != null && !disabledClasses.contains(output.getClass()))
 					result.add(recipe);
 			}
 		}
@@ -268,7 +268,7 @@ public abstract class Recipe {
 			for (Recipe recipe : oneIngredientRecipes){
 				if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 					Item output = recipe.sampleOutput(ingredients);
-					if (output != null && disabledClasses.contains(output.getClass()))
+					if (output != null && !disabledClasses.contains(output.getClass()))
 						result.add(recipe);
 				}
 			}
@@ -277,7 +277,7 @@ public abstract class Recipe {
 			for (Recipe recipe : twoIngredientRecipes){
 				if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 					Item output = recipe.sampleOutput(ingredients);
-					if (output != null && disabledClasses.contains(output.getClass()))
+					if (output != null && !disabledClasses.contains(output.getClass()))
 						result.add(recipe);
 				}
 			}
@@ -286,7 +286,7 @@ public abstract class Recipe {
 			for (Recipe recipe : threeIngredientRecipes){
 				if (!disabledRecipes.contains(recipe.getClass()) && recipe.testIngredients(ingredients)){
 					Item output = recipe.sampleOutput(ingredients);
-					if (output != null && disabledClasses.contains(output.getClass()))
+					if (output != null && !disabledClasses.contains(output.getClass()))
 						result.add(recipe);
 				}
 			}
