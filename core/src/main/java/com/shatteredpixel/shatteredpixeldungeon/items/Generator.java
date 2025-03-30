@@ -695,6 +695,8 @@ public class Generator {
 			}
 		}
 	}
+
+	static int alchemistTries = 50;
 	
 	public static Item random() {
 		Category cat = Random.chances( categoryProbs );
@@ -706,8 +708,12 @@ public class Generator {
 
 		// if in alchemist mode, roll until we get consumable item
 		if (Dungeon.alchemist && !(cat == Category.POTION || cat == Category.SCROLL || cat == Category.STONE ||
-				cat == Category.GOLD || cat == Category.FOOD || cat == Category.SEED || cat == Category.TRINKET))
+				cat == Category.GOLD || cat == Category.FOOD || cat == Category.SEED || cat == Category.TRINKET) && alchemistTries > 0) {
+			alchemistTries--;
 			return random();
+		}
+
+		alchemistTries = 50;
 
 		categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
 
@@ -724,9 +730,14 @@ public class Generator {
 	public static Item randomUsingDefaults(){
 		Category cat = Random.chances(defaultCatProbs);
 		// if in alchemist mode, roll until we get consumable item
+		// if in alchemist mode, roll until we get consumable item
 		if (Dungeon.alchemist && !(cat == Category.POTION || cat == Category.SCROLL || cat == Category.STONE ||
-				cat == Category.GOLD || cat == Category.FOOD || cat == Category.SEED || cat == Category.TRINKET))
+				cat == Category.GOLD || cat == Category.FOOD || cat == Category.SEED || cat == Category.TRINKET) && alchemistTries > 0) {
+			alchemistTries--;
 			return randomUsingDefaults();
+		}
+
+		alchemistTries = 50;
 		return randomUsingDefaults(cat);
 	}
 	
