@@ -17,8 +17,8 @@ allprojects {
         appName = 'Community Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.communitypixeldungeon'
 
-        appVersionCode = 832
-        appVersionName = 'CommPD-2.0.0'
+        appVersionCode = 833
+        appVersionName = 'CommPD-2.0.1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

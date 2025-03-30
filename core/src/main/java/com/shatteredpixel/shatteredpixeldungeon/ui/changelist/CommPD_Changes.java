@@ -59,6 +59,16 @@ public class CommPD_Changes {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
+        changes = new ChangeInfo("v2.0.1", false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "Fixed the following bugs:\n" +
+                        "_-_ Players only being able to craft items from disabled features.\n\n" +
+                        "_-_ Alchemist mode item generation running into stack overflow."
+        ));
+
         changes.addButton(new ChangeButton(Icons.get(Icons.CHECKED), "Feature screen overhaul",
                 "_-_ All features are now _split into 4 categories_ for easier analysis: items, non-items, new mechanics and QoL/minor tweaks.\n\n" +
                         "_-_ Made all features _toggleable_, allowing for fully customizable experience!\n\n" +
